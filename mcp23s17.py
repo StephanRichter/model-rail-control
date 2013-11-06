@@ -9,10 +9,10 @@
 
 
 import time
-imrpot PRi.GPI as GPIO
+import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM);
-GPIO.setwarnings(False);
+#GPIO.setwarnings(False);
 
 # MCP23S17 Werte
 SPI_SLAVE_ADDR = 0x40
@@ -31,8 +31,6 @@ CS   = 25 # Chip-Select
 ledPattern = (0b01010101, 0b10101010, 0b01010101, 0b10101010, \
               0b00000001, 0b00000010, 0b00000100, 0b00001000, \
               0b00010000, 0b00100000, 0b01000000, 0b10000000)
-
-
 
 def sendValue(value):
     # wert senden
@@ -62,18 +60,19 @@ def main():
     GPIO.setup(SCLK, GPIO.OUT)
     GPIO.setup(MOSI, GPIO.OUT)
     GPIO.setup(MISO, GPIO.IN)
-    GPIO.setup(CS, GPIO.OUT)
+    GPIO.setup(CS,   GPIO.OUT)
     
     # Pegel vorbereiten
-    GPIO.output(CS, GPIO.HIGH);
-    GPIO.output(SCLK, GPIO.HIGH);
+    GPIO.output(CS,  GPIO.HIGH);
+    GPIO.output(SCLK, GPIO.LOW);
     
     # Initialisierung des MCP23S17
-    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgänge programmieren
+    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgaenge programmieren
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
     
     while True:
         for i in range(len(ledPattern)):
             sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
-            time.sleep(0.5)
-            
+            time.sleep(0.05)
+
+main()
