@@ -27,3 +27,30 @@ SCLK = 18 # Serial clock
 MOSI = 24 # Master-Out-Slave-In
 MISO = 23 # Master-In-Slave-Out
 CS   = 25 # Chip-Select
+
+
+
+
+
+def sendValue(value):
+    # wert senden
+    for i in range(8):
+        if (value & 0x80):
+            GPIO.output(MOSI, GPIO.HIGH)
+        else:
+            GPIO.output(MOSI, GPIO.LOW)
+        # negative flanke des clocksignals generieren
+        GPIO.output(SCLK, GPIO.HIGH)
+        GPIO.output(SCLK, GPIO.LOW)
+        value <<=1 # Bitfolge eine Position nach links schieben
+        
+def sendSPI(opcode, addr, data):
+    # CS aktiv (LOW-Aktiv)
+    GPIO.output(CS, GPIO.LOW)
+    
+    sendValue(opcode)
+    sendValue(addr)
+    sendValue(data)
+    
+    # CS inaktiv
+    GPIO.output(CS, GPIO.HIGH)
