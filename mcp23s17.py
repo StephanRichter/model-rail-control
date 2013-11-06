@@ -28,7 +28,9 @@ MOSI = 24 # Master-Out-Slave-In
 MISO = 23 # Master-In-Slave-Out
 CS   = 25 # Chip-Select
 
-
+ledPattern = (0b01010101, 0b10101010, 0b01010101, 0b10101010, \
+              0b00000001, 0b00000010, 0b00000100, 0b00001000, \
+              0b00010000, 0b00100000, 0b01000000, 0b10000000)
 
 
 
@@ -54,3 +56,24 @@ def sendSPI(opcode, addr, data):
     
     # CS inaktiv
     GPIO.output(CS, GPIO.HIGH)
+    
+def main():
+    # Programmierung der Pins
+    GPIO.setup(SCLK, GPIO.OUT)
+    GPIO.setup(MOSI, GPIO.OUT)
+    GPIO.setup(MISO, GPIO.IN)
+    GPIO.setup(CS, GPIO.OUT)
+    
+    # Pegel vorbereiten
+    GPIO.output(CS, GPIO.HIGH);
+    GPIO.output(SCLK, GPIO.HIGH);
+    
+    # Initialisierung des MCP23S17
+    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgänge programmieren
+    sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
+    
+    while True:
+        for i in range(len(ledPattern)):
+            sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
+            time.sleep(0.5)
+            
