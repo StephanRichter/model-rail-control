@@ -28,9 +28,13 @@ MOSI = 24 # Master-Out-Slave-In
 MISO = 23 # Master-In-Slave-Out
 CS   = 25 # Chip-Select
 
-ledPattern = (0b01010101, 0b10101010, 0b01010101, 0b10101010, \
-              0b00000001, 0b00000010, 0b00000100, 0b00001000, \
-              0b00010000, 0b00100000, 0b01000000, 0b10000000)
+ledPattern = (0b00001110,\
+              0b00011100,\
+              0b00111000,\
+              0b01110000,\
+              0b11100001,\
+              0b11000011,\
+              0b10000111)
 
 def sendValue(value):
     # wert senden
@@ -73,6 +77,6 @@ def main():
     while True:
         for i in range(len(ledPattern)):
             sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
-            time.sleep(0.05)
+            time.sleep(0.1)
 
 main()
