@@ -21,6 +21,10 @@ SPI_IODIRA     = 0x00
 SPI_IODIRB     = 0x01
 SPI_GPIOA      = 0x12
 SPI_GPIOB      = 0x13
+SPI_PULLUP_A   = 0x0C
+SPI_POL_A      = 0x02
+SPI_SLAVE_WRITE = 0x00
+SPI_SLAVE_READ  = 0x01
 
 # MCP23S17-Pins
 SCLK = 18 # Serial clock
@@ -59,6 +63,27 @@ def sendSPI(opcode, addr, data):
     # CS inaktiv
     GPIO.output(CS, GPIO.HIGH)
     
+def readSPI(opcode, addr):
+    # CS aktiv (Low-Aktiv)
+    GPIO.output(CS, GPIO.LOW)
+    
+    sendValue(opcode|SPI_SLAVE_READ) # opcode senden
+    sendValue(addr)
+    
+    # empfangen
+    value = 0
+    for i in range(8):
+        value <<= 1 # 1 position nach links schieben
+        if (GPIO.input(MISO)):
+            value |= 0x01
+        # abfallende flanke generieren
+        GPIO.output(SCLK, GPIO.HIGH)
+        GPIO.output(SCLK, GPIO.LOW)
+        
+    # CS deaktivieren
+    GPIO.output(CS, GPIO.HIGH)
+    return value
+    
 def main():
     # Programmierung der Pins
     GPIO.setup(SCLK, GPIO.OUT)
@@ -71,12 +96,16 @@ def main():
     GPIO.output(SCLK, GPIO.LOW);
     
     # Initialisierung des MCP23S17
+    sendSPI(SPI_SLAVE_ADDR, SPI_PULLUP_A, 0xFF) # enable internal pullups
+    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRA, 0xFF) # GPPIOA als Eingaenge definieren
+    sendSPI(SPI_SLAVE_ADDR, SPI_POL_A, 0xff) # invert logic
     sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgaenge programmieren
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
     
     while True:
         for i in range(len(ledPattern)):
             sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
+            print bin(readSPI(SPI_SLAVE_ADDR, SPI_GPIOA))
             time.sleep(0.1)
 
 main()
