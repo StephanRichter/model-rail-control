@@ -27,10 +27,10 @@ SPI_SLAVE_WRITE = 0x00
 SPI_SLAVE_READ  = 0x01
 
 # MCP23S17-Pins
-SCLK = 18 # Serial clock
-MOSI = 24 # Master-Out-Slave-In
+SCLK = 25 # Serial clock
+MOSI = 18 # Master-Out-Slave-In
 MISO = 23 # Master-In-Slave-Out
-CS   = 25 # Chip-Select
+CS   = 24 # Chip-Select
 
 ledPattern = (0b00001110,\
               0b00011100,\
@@ -85,20 +85,20 @@ def readSPI(opcode, addr):
     return value
 
 brake_active = False
-brkae_lock = allocate_lock()
+brake_lock = allocate_lock()
 
-def brake(time):
+def brake(delay):
     global brake_active
-    print "test"
     brake_lock.acquire()
-    if (brake_aktive):
+    if (brake_active):
         brake_lock.release()
         return
-    brake_active = True_
+    brake_active = True
     brake_lock.release()
     print "preparing brake"
-    sleep(time)
+    time.sleep(1)
     print "brake"
+    brake_active = False
     
     
 def main():
@@ -123,7 +123,6 @@ def main():
         for i in range(len(ledPattern)):
             sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
 	    val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA);
-            print val
 	    if (val != 0):
                 start_new_thread(brake,(1,))
             time.sleep(0.01)
