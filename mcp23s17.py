@@ -7,7 +7,7 @@
 
 
 
-
+from thread import start_new_thread, allocate_lock
 import time
 import RPi.GPIO as GPIO
 
@@ -83,6 +83,23 @@ def readSPI(opcode, addr):
     # CS deaktivieren
     GPIO.output(CS, GPIO.HIGH)
     return value
+
+brake_active = False
+brkae_lock = allocate_lock()
+
+def brake(time):
+    global brake_active
+    print "test"
+    brake_lock.acquire()
+    if (brake_aktive):
+        brake_lock.release()
+        return
+    brake_active = True_
+    brake_lock.release()
+    print "preparing brake"
+    sleep(time)
+    print "brake"
+    
     
 def main():
     # Programmierung der Pins
@@ -105,7 +122,10 @@ def main():
     while True:
         for i in range(len(ledPattern)):
             sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
-            print bin(readSPI(SPI_SLAVE_ADDR, SPI_GPIOA))
-            time.sleep(0.1)
+	    val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA);
+            print val
+	    if (val != 0):
+                start_new_thread(brake,(1,))
+            time.sleep(0.01)
 
 main()
