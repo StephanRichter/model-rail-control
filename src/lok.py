@@ -48,3 +48,21 @@ class Lok:
         self.lock64.acquire()
         self.act64 = False
         self.lock64.release();
+        
+    def direction(self,dir):
+        self.lok.setDirection(dir)        
+        self.lok.send()
+    def speed(self,speed):
+        self.lok.setSpeed(speed)
+        self.lok.send()
+        
+    def stop(self):
+        self.lok.setSpeed(0)
+        self.lok.send()
+        time.sleep(0.1)
+        self.lok.setSpeed(0)
+        self.lok.send()
+        time.sleep(0.1)
+        self.lok.setSpeed(0)
+        self.lok.send()
+        

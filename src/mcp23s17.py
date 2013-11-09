@@ -73,6 +73,10 @@ BR110 = BR110(srcp.GL(SRCP_BUS,2))
     
 loks = [ ICE, BR110 ]
 
+BR110.direction(0)
+BR110.speed(50)
+time.sleep(5)
+
 def sendValue(value):
     # wert senden
     for i in range(8):
@@ -117,6 +121,7 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
+start_new_thread(BR110.entkuppeln3,())
 
 # Programmierung der Pins
 GPIO.setup(SCLK, GPIO.OUT)
