@@ -5,13 +5,12 @@ import time
 
 SRCP_BUS=1
 
-Lok = srcp.GL(SRCP_BUS, 1)
+ICE = srcp.GL(SRCP_BUS, 1)
 
-Lok.setF(1,1)
-Lok.send()
+ICE.setDirection(0)
+ICE.setSpeed(100)
+ICE.send()
 
-time.sleep(3)
-
-Lok.setF(1,0)
-Lok.send()
-
+time.sleep(5)
+ICE.setSpeed(0)
+ICE.send()
