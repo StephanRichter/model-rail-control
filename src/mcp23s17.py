@@ -70,12 +70,16 @@ switch8=srcp.GA(SRCP_BUS,8)
 
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
-    
+gleis34=srcp.GA(1,8)
 loks = [ ICE, BR110 ]
-
+gleis34.actuate(0, 1)
+time.sleep(.1)
+gleis34.actuate(0, 1)
+time.sleep(.1)
+        
 BR110.direction(0)
 BR110.speed(50)
-time.sleep(5)
+time.sleep(7)
 
 def sendValue(value):
     # wert senden
