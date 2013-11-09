@@ -8,6 +8,8 @@
 
 
 from thread import start_new_thread, allocate_lock
+from ice import *
+from br110 import *
 import time,os
 
 try:
@@ -56,7 +58,6 @@ SRCP_BUS=1
 
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
-ICE = srcp.GL(SRCP_BUS, 1)
 
 switch1=srcp.GA(SRCP_BUS,1)
 switch2=srcp.GA(SRCP_BUS,2)
@@ -66,9 +67,11 @@ switch5=srcp.GA(SRCP_BUS,5)
 switch6=srcp.GA(SRCP_BUS,6)
 switch7=srcp.GA(SRCP_BUS,7)
 switch8=srcp.GA(SRCP_BUS,8)
-    
-max = ICE.getMaxspeed()
 
+ICE = ICE(srcp.GL(SRCP_BUS, 1))
+BR110 = BR110(srcp.GL(SRCP_BUS,2))
+    
+loks = [ ICE, BR110 ]
 
 def sendValue(value):
     # wert senden
@@ -114,108 +117,6 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
-def stop():
-    ICE.setSpeed(0)
-    ICE.send()
-    time.sleep(0.1)
-    
-    ICE.setSpeed(0)
-    ICE.send()
-    time.sleep(0.1)
-    
-    ICE.setSpeed(0)
-    ICE.send()    
-    
-def ICE_dir1():
-    ICE.setDirection(1)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(70)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(max)
-    ICE.send()
-
-def ICE_dir2():
-    ICE.setDirection(0)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(50)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(max)
-    ICE.send()
-
-    time.sleep(13)
-
-    ICE.setSpeed(50)
-    ICE.send()
-    time.sleep(6)
-    
-    stop()
-    
-    
-def ausfahrt3():
-    switch2.actuate(0,1)
-    switch1.actuate(0,1)
-    switch3.actuate(0,1)
-
-def einfahrt3():
-    switch3.actuate(0,1)
-    switch1.actuate(0,1)
-    switch4.actuate(0,1)
-    switch8.actuate(0,1)
-
-brake_active = False
-brake_lock = allocate_lock()
-
-def brake(delay):
-    global brake_active
-    brake_lock.acquire()
-    if (brake_active):
-        brake_lock.release()
-        return
-    brake_active = True
-    brake_lock.release()
-    ICE.setSpeed(80)
-    ICE.send()
-    print "preparing brake"
-    time.sleep(3.7)
-    print "stopping"
-    stop()
-
-    time.sleep(5)
-    ausfahrt3()
-    time.sleep(5)
-    ICE_dir2()
-    
-    time.sleep(5)
-    einfahrt3()
-    time.sleep(5)
-    ICE_dir1()
-
-    brake_active = False
-
-
-
-time.sleep(3)
-ausfahrt3()
-#print("Max speed of ICE: "+str(max))
-ICE.setF(1, 1)
-ICE.send()
-
-time.sleep(3)
-
-ICE_dir2()
-
-time.sleep(5)
-
-einfahrt3()
-ICE_dir1()
 
 # Programmierung der Pins
 GPIO.setup(SCLK, GPIO.OUT)
@@ -239,5 +140,6 @@ while True:
         sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
         val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
         if (val != 0):
-            start_new_thread(brake,(1,))
+            for lok in loks:
+                start_new_thread(lok.action, (val,))
         time.sleep(0.01)
