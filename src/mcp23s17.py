@@ -57,6 +57,15 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 ICE = srcp.GL(SRCP_BUS, 1)
+
+switch1=srcp.GA(SRCP_BUS,1)
+switch2=srcp.GA(SRCP_BUS,2)
+switch3=srcp.GA(SRCP_BUS,3)
+switch4=srcp.GA(SRCP_BUS,4)
+switch5=srcp.GA(SRCP_BUS,5)
+switch6=srcp.GA(SRCP_BUS,6)
+switch7=srcp.GA(SRCP_BUS,7)
+switch8=srcp.GA(SRCP_BUS,8)
     
 max = ICE.getMaxspeed()
 
@@ -117,6 +126,17 @@ def stop():
     ICE.setSpeed(0)
     ICE.send()    
     
+def ICE_dir1():
+    ICE.setDirection(1)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(70)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(max)
+    ICE.send()
 
 def ICE_dir2():
     ICE.setDirection(0)
@@ -130,25 +150,25 @@ def ICE_dir2():
     ICE.setSpeed(max)
     ICE.send()
 
-    time.sleep(12)
+    time.sleep(13)
 
     ICE.setSpeed(50)
     ICE.send()
-    time.sleep(9)
+    time.sleep(6)
     
     stop()
     
-def ICE_dir1():
-    ICE.setDirection(1)
-    ICE.send()
+    
+def ausfahrt3():
+    switch2.actuate(0,1)
+    switch1.actuate(0,1)
+    switch3.actuate(0,1)
 
-    time.sleep(5)
-    ICE.setSpeed(70)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(max)
-    ICE.send()
+def einfahrt3():
+    switch3.actuate(0,1)
+    switch1.actuate(0,1)
+    switch4.actuate(0,1)
+    switch8.actuate(0,1)
 
 brake_active = False
 brake_lock = allocate_lock()
@@ -169,17 +189,22 @@ def brake(delay):
     stop()
 
     time.sleep(5)
+    ausfahrt3()
+    time.sleep(5)
     ICE_dir2()
     
+    time.sleep(5)
+    einfahrt3()
     time.sleep(5)
     ICE_dir1()
 
     brake_active = False
-    
+
+
 
 time.sleep(3)
+ausfahrt3()
 #print("Max speed of ICE: "+str(max))
-ICE.setDirection(0)
 ICE.setF(1, 1)
 ICE.send()
 
@@ -189,6 +214,7 @@ ICE_dir2()
 
 time.sleep(5)
 
+einfahrt3()
 ICE_dir1()
 
 # Programmierung der Pins
