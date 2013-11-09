@@ -8,11 +8,23 @@
 
 
 from thread import start_new_thread, allocate_lock
-import time
-import RPi.GPIO as GPIO
+import time,os
+
+try:
+    import RPi.GPIO as GPIO
+except:
+    print "Was not able to import GPIO"
+    exit()
+
+try:
+    import srcp
+except:
+    print "%Can't connect to the srcp server!"
+    print "Please start it before or check srcp.py config!"
+    exit()
 
 GPIO.setmode(GPIO.BCM);
-#GPIO.setwarnings(False);
+GPIO.setwarnings(False);
 
 # MCP23S17 Werte
 SPI_SLAVE_ADDR = 0x40
@@ -39,6 +51,11 @@ ledPattern = (0b00001110,\
               0b11100001,\
               0b11000011,\
               0b10000111)
+
+SRCP_BUS=1    
+    
+ICE = srcp.GL(SRCP_BUS, 1)
+ 
 
 def sendValue(value):
     # wert senden
@@ -95,36 +112,86 @@ def brake(delay):
         return
     brake_active = True
     brake_lock.release()
+    ICE.setSpeed(80)
+    ICE.send()
     print "preparing brake"
-    time.sleep(1)
-    print "brake"
+    time.sleep(3.45)
+    print "stopping"
+    ICE.setSpeed(0)
+    ICE.send()
+    time.sleep(0.1)
+    ICE.setSpeed(0)
+    ICE.send()
+    time.sleep(0.1)
+    ICE.setSpeed(0)
+    ICE.send()
+    
+
+    time.sleep(5)
+
+    ICE.setDirection(0)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(max)
+    ICE.send()
+
+    time.sleep(18.3)
+    ICE.setSpeed(0)
+    ICE.send()
+    
+    time.sleep(5)
+    
+    ICE.setDirection(1)
+    ICE.setSpeed(max)
+    ICE.send()
+
     brake_active = False
     
     
-def main():
-    # Programmierung der Pins
-    GPIO.setup(SCLK, GPIO.OUT)
-    GPIO.setup(MOSI, GPIO.OUT)
-    GPIO.setup(MISO, GPIO.IN)
-    GPIO.setup(CS,   GPIO.OUT)
-    
-    # Pegel vorbereiten
-    GPIO.output(CS,  GPIO.HIGH);
-    GPIO.output(SCLK, GPIO.LOW);
-    
-    # Initialisierung des MCP23S17
-    sendSPI(SPI_SLAVE_ADDR, SPI_PULLUP_A, 0xFF) # enable internal pullups
-    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRA, 0xFF) # GPPIOA als Eingaenge definieren
-    sendSPI(SPI_SLAVE_ADDR, SPI_POL_A, 0xff) # invert logic
-    sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgaenge programmieren
-    sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
-    
-    while True:
-        for i in range(len(ledPattern)):
-            sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
-	    val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA);
-	    if (val != 0):
-                start_new_thread(brake,(1,))
-            time.sleep(0.01)
+max = ICE.getMaxspeed()
+print max
+ICE.setDirection(0)
+ICE.setSpeed(max)
+ICE.send()
 
-main()
+time.sleep(16)
+ICE.setSpeed(0)
+ICE.send()
+time.sleep(0.1)
+ICE.setSpeed(0)
+ICE.send()
+time.sleep(0.1)
+ICE.setSpeed(0)
+ICE.send()
+    
+time.sleep(5)
+    
+ICE.setDirection(1)
+ICE.setSpeed(max)
+ICE.send()
+    
+# Programmierung der Pins
+GPIO.setup(SCLK, GPIO.OUT)
+GPIO.setup(MOSI, GPIO.OUT)
+GPIO.setup(MISO, GPIO.IN)
+GPIO.setup(CS,   GPIO.OUT)
+    
+# Pegel vorbereiten
+GPIO.output(CS,  GPIO.HIGH);
+GPIO.output(SCLK, GPIO.LOW);
+    
+# Initialisierung des MCP23S17
+sendSPI(SPI_SLAVE_ADDR, SPI_PULLUP_A, 0xFF) # enable internal pullups
+sendSPI(SPI_SLAVE_ADDR, SPI_IODIRA, 0xFF) # GPPIOA als Eingaenge definieren
+sendSPI(SPI_SLAVE_ADDR, SPI_POL_A, 0xff) # invert logic
+sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgaenge programmieren
+sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
+    
+while True:
+    for i in range(len(ledPattern)):
+        sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
+        val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
+        if (val != 0):
+            start_new_thread(brake,(1,))
+        time.sleep(0.01)
