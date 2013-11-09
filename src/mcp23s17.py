@@ -53,9 +53,13 @@ ledPattern = (0b00001110,\
               0b10000111)
 
 SRCP_BUS=1    
-    
+
+commandbus=srcp.BUS(SRCP_BUS);    
+commandbus.powerOn()
 ICE = srcp.GL(SRCP_BUS, 1)
- 
+    
+max = ICE.getMaxspeed()
+
 
 def sendValue(value):
     # wert senden
@@ -101,6 +105,51 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
+def stop():
+    ICE.setSpeed(0)
+    ICE.send()
+    time.sleep(0.1)
+    
+    ICE.setSpeed(0)
+    ICE.send()
+    time.sleep(0.1)
+    
+    ICE.setSpeed(0)
+    ICE.send()    
+    
+
+def ICE_dir2():
+    ICE.setDirection(0)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(50)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(max)
+    ICE.send()
+
+    time.sleep(12)
+
+    ICE.setSpeed(50)
+    ICE.send()
+    time.sleep(9)
+    
+    stop()
+    
+def ICE_dir1():
+    ICE.setDirection(1)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(70)
+    ICE.send()
+
+    time.sleep(5)
+    ICE.setSpeed(max)
+    ICE.send()
+
 brake_active = False
 brake_lock = allocate_lock()
 
@@ -115,62 +164,33 @@ def brake(delay):
     ICE.setSpeed(80)
     ICE.send()
     print "preparing brake"
-    time.sleep(3.45)
+    time.sleep(3.7)
     print "stopping"
-    ICE.setSpeed(0)
-    ICE.send()
-    time.sleep(0.1)
-    ICE.setSpeed(0)
-    ICE.send()
-    time.sleep(0.1)
-    ICE.setSpeed(0)
-    ICE.send()
-    
+    stop()
 
     time.sleep(5)
-
-    ICE.setDirection(0)
-    ICE.send()
-
-    time.sleep(5)
-    ICE.setSpeed(max)
-    ICE.send()
-
-    time.sleep(18.3)
-    ICE.setSpeed(0)
-    ICE.send()
+    ICE_dir2()
     
     time.sleep(5)
-    
-    ICE.setDirection(1)
-    ICE.setSpeed(max)
-    ICE.send()
+    ICE_dir1()
 
     brake_active = False
     
-    
-max = ICE.getMaxspeed()
-print max
+
+time.sleep(3)
+#print("Max speed of ICE: "+str(max))
 ICE.setDirection(0)
-ICE.setSpeed(max)
+ICE.setF(1, 1)
 ICE.send()
 
-time.sleep(16)
-ICE.setSpeed(0)
-ICE.send()
-time.sleep(0.1)
-ICE.setSpeed(0)
-ICE.send()
-time.sleep(0.1)
-ICE.setSpeed(0)
-ICE.send()
-    
+time.sleep(3)
+
+ICE_dir2()
+
 time.sleep(5)
-    
-ICE.setDirection(1)
-ICE.setSpeed(max)
-ICE.send()
-    
+
+ICE_dir1()
+
 # Programmierung der Pins
 GPIO.setup(SCLK, GPIO.OUT)
 GPIO.setup(MOSI, GPIO.OUT)
