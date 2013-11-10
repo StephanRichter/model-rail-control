@@ -25,7 +25,7 @@ class BR110(Lok):
         time.sleep(1)
         self.direction(0)
         self.speed(1)
-        time.sleep(0.7)        
+        time.sleep(0.9)        
         entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
         entkuppler3.actuate(0, 1, 0)
@@ -78,9 +78,9 @@ class BR110(Lok):
         #anrücken:
         time.sleep(1)
         self.direction(1)
-        time.sleep(0.5)        
+        time.sleep(0.6)        
         self.speed(40)
-        time.sleep(0.62)        
+        time.sleep(0.65)        
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
@@ -126,16 +126,14 @@ class BR110(Lok):
     def von3nachLinks1(self,delay=1):
         print "BR 110 nach links in",delay,"sekunden"
         time.sleep(delay)
+        ausfahrt3()
+        bahnhofLinksGerade()
         self.direction(0)
         time.sleep(1)
-        ausfahrt3()
-        time.sleep(1)
-        bahnhofLinksGerade()
-        time.sleep(1)
-        self.speed(60)
-        time.sleep(20)
+        self.speed(61)
+        time.sleep(19)
         self.speed(128)
-        time.sleep(37)
+        time.sleep(36)
         self.stop()
         self.status=self.EINGEFAHREN_LINKS1
         

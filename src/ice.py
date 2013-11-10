@@ -11,7 +11,7 @@ class ICE(Lok):
         self.lichtAn()
         time.sleep(0.5)
         time.sleep(delay-1)
-        ausfahrt3()
+        ausfahrt4()
         time.sleep(1)
         self.speed(128)
         time.sleep(19)
@@ -20,11 +20,13 @@ class ICE(Lok):
         self.speed(60)
         time.sleep(1)
         self.speed(40)
-        time.sleep(2)
+        time.sleep(1)
         self.speed(20)
         time.sleep(1)
         self.stop()
         self.status=Lok.BEREIT_LINKS1
+        time.sleep(15)
+        self.lichtAus()      
         
     def von1nachRechts3(self,delay=1):
         print "ICE startet nach rechts 3 in",delay,"sekunden"
@@ -38,7 +40,7 @@ class ICE(Lok):
         time.sleep(8)
         self.speed(128)
         time.sleep(7)
-        einfahrt3()
+        einfahrt4()
     
     def action32(self):
         print "ice 32"
@@ -53,6 +55,6 @@ class ICE(Lok):
             time.sleep(2)
             self.stop()
             self.status=Lok.BEREIT_RECHTS3
-            time.sleep(5)
+            time.sleep(15)
             self.lichtAus()      
 
