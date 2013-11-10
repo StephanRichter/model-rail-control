@@ -34,3 +34,15 @@ def entkupplenLinks(count=1):
     for i in range(count,0,-1):
         weiche9.actuate(0, 1,1000)
         time.sleep(0.2*i)
+        
+def bahnhofLinksGerade():
+    time.sleep(2)
+    weiche9.actuate(1, 1)
+    time.sleep(1)
+    weiche9.actuate(1, 1)
+    time.sleep(1)
+    weiche9.actuate(1, 1)
+    time.sleep(2)
+    weiche10.actuate(1, 1)
+    time.sleep(2)
+

@@ -2,12 +2,14 @@
 from lok import *
 import time,os,srcp
 import weichen
-from weichen import ausfahrt3, weiche9, weiche10, entkupplenLinks
+from weichen import ausfahrt3, weiche9, weiche10, entkupplenLinks,\
+    bahnhofLinksGerade
 
 class BR110(Lok):
     
+    BEREIT_LINKS=2
     KOPFMACHEN_LINKS=1
-    
+    KRITISCHE_PHASE=666
     kpl=False
     status=0
     
@@ -74,16 +76,8 @@ class BR110(Lok):
             
     def pendelnVonGleis3(self):
         ausfahrt3()
-        time.sleep(2)
-        weiche9.actuate(1, 1)
-        time.sleep(0.1)
-        weiche9.actuate(1, 1)
-        time.sleep(0.1)
-        weiche9.actuate(1, 1)
-        time.sleep(2)
-        weiche10.actuate(1, 1)
-        time.sleep(2)
         self.direction(0)
+        bahnhofLinksGerade()
         self.status=self.KOPFMACHEN_LINKS
 #        self.speed(60)
 #        time.sleep(20)
@@ -92,13 +86,15 @@ class BR110(Lok):
         self.speed(40)
 
     def kopfmachenLinks(self):
-        time.sleep(2)
+        time.sleep(1.5)
+        self.status=self.KRITISCHE_PHASE
+        self.status=0
         self.stop()
         time.sleep(1)
         self.direction(1)
         time.sleep(0.5)
         self.speed(40)
-        time.sleep(1)        
+        time.sleep(0.61)        
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
@@ -107,14 +103,44 @@ class BR110(Lok):
         self.speed(40)
         entkupplenLinks(2)
         time.sleep(4)
-        self.stop()        
+        self.stop()
+        time.sleep(1)        
+        weiche10.actuate(0, 1)
+        time.sleep(0.2)        
+        weiche10.actuate(0, 1)
+        time.sleep(0.2)        
+        weiche10.actuate(0, 1)
+        time.sleep(1)        
+        weiche10.actuate(0, 1)
+        time.sleep(0.2)        
+        weiche10.actuate(0, 1)
+        time.sleep(0.2)        
+        weiche10.actuate(0, 1)
+        time.sleep(1)
+        self.direction(1)
+        time.sleep(1)
+        self.speed(60)
+        time.sleep(25)
+        self.stop()
+        bahnhofLinksGerade()
+        self.direction(0)
+        time.sleep(1)
+        self.speed(60)
+        time.sleep(10)
+        self.speed(20)
+        time.sleep(10)
+        self.stop()
+        self.status=self.BEREIT_LINKS
+
 
         
             
     def action16(self):
         if (self.status==self.KOPFMACHEN_LINKS):
             self.kopfmachenLinks()
-        os._exit(0)
+        else:     
+            self.stop()
+            os._exit(0)
     
     def action32(self):
         if (self.kpl):

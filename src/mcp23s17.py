@@ -116,7 +116,7 @@ def readSPI(opcode, addr):
 
 BR110.direction(1)
 BR110.speed(128)
-time.sleep(5)
+time.sleep(3)
 BR110.stop()
 
 start_new_thread(BR110.pendelnVonGleis3,())

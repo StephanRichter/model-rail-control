@@ -26,7 +26,7 @@ class Lok:
             print "contact",contact 
             
     def action16(self):
-        print "action 32"
+        print "action 16"
         time.sleep(5)
 
     def action32(self):
