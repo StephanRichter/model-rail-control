@@ -2,17 +2,20 @@
 from lok import *
 import time,os,srcp
 from weichen import ausfahrt3, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade, einfahrt3
+    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
 
 class BR110(Lok):
         
-    def ankuppeln(self):
+    def ankuppeln3(self):
+        time.sleep(1)
+        einfahrt3()
+        time.sleep(2)
         self.direction(1)
         time.sleep(2)
         self.speed(60)
         time.sleep(15)
         self.stop()
-        os._exit(0)
+        self.status=Lok.BEREIT_RECHTS3
     
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -23,46 +26,46 @@ class BR110(Lok):
         self.direction(0)
         self.speed(1)
         time.sleep(0.4)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
         self.direction(1)
-        self.entkuppler3.actuate(0, 1,0)
+        entkuppler3.actuate(0, 1,0)
         time.sleep(1)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
         self.speed(40)
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)        
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)
-        self.entkuppler3.actuate(0, 1, 0)
+        entkuppler3.actuate(0, 1, 0)
         time.sleep(0.1)
         time.sleep(3)  
         self.stop()
         time.sleep(2)      
-        self.weiche34.actuate(1, 1)
+        weiche34.actuate(1, 1)
         time.sleep(1)
-        self.einfahrt4()
+        einfahrt4()
         time.sleep(2)
         self.direction(0)
         self.speed(50)
@@ -111,13 +114,29 @@ class BR110(Lok):
         self.status=self.BEREIT_LINKS1
 
     def von1nachRechts3(self,delay):
-        time.sleep(delay)
-        print "BR110 startet nach rechts 3"
+        print "BR110 startet nach rechts 3 in",delay,"sekunden"
+        time.sleep(delay)        
         self.direction(1)
         time.sleep(3)
         self.speed(128)
-        time.sleep(25)
-        einfahrt3()        
+        time.sleep(28)
+        einfahrt3()
+        
+    def von3nachLinks1(self,delay=1):
+        print "BR 110 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        self.direction(0)
+        time.sleep(1)
+        ausfahrt3()
+        time.sleep(1)
+        bahnhofLinksGerade()
+        time.sleep(1)
+        self.speed(65)
+        time.sleep(20)
+        self.speed(128)
+        time.sleep(35)
+        self.status=self.KOPFMACHEN_LINKS
+        self.speed(40)
             
     def action16(self):
         if (self.status==self.KOPFMACHEN_LINKS):
@@ -136,15 +155,12 @@ class BR110(Lok):
         if (self.status==Lok.KUPPLUNG_AKTIV):
             self.stop()
             time.sleep(2)
-            self.weiche34.actuate(0, 1)
-            time.sleep(1)
-            self.einfahrt3()
-            time.sleep(2)
-            self.ankuppeln()
+            weiche34.actuate(0, 1)
+            self.ankuppeln3()
         elif (self.status==Lok.NACH_RECHTS3):
             print "brake..."
             self.speed(40)
-            time.sleep(12)
+            time.sleep(24)
             self.stop()
             time.sleep(1)
             self.status=Lok.EINGEFAHREN_RECHTS3

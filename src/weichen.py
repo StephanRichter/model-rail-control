@@ -16,6 +16,13 @@ def ausfahrt3():
     time.sleep(1)
     weiche3.actuate(0, 1)
       
+def ausfahrt4():
+    weiche2.actuate(0, 1)
+    time.sleep(1)
+    weiche1.actuate(0, 1)
+    time.sleep(1)
+    weiche3.actuate(1, 1)
+
 def einfahrt3():
     weiche3.actuate(0, 1)
     time.sleep(1)

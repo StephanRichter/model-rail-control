@@ -10,6 +10,7 @@ class Lok:
     NACH_LINKS1=5
     KUPPLUNG_AKTIV=6
     EINGEFAHREN_RECHTS3=7
+    NACH_RECHTS4=8
     KRITISCHE_PHASE=666
     status=0
 
@@ -90,7 +91,6 @@ class Lok:
         
     def lichtAn(self):
         self.lok.setF(0,1)
-        self.lok.setF(1,1)
         
     def direction(self,dir):
         self.lok.setDirection(dir)        
