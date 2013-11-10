@@ -5,7 +5,7 @@ import time
 
 SRCP_BUS=1
 
-ICE = srcp.GL(SRCP_BUS, 1)
+ICE = srcp.GL(SRCP_BUS, 3)
 
 ICE.setDirection(0)
 ICE.setSpeed(100)

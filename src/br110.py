@@ -1,32 +1,13 @@
 # coding=utf8
 from lok import *
 import time,os,srcp
+import weichen
+from weichen import ausfahrt3
 
 class BR110(Lok):
     
-    entkuppler3=srcp.GA(1,7)
-    weiche1=srcp.GA(1,1)
-    weiche3=srcp.GA(1,3)
-    weiche34=srcp.GA(1,8)
-    weiche4=srcp.GA(1,4)
-    
-      
     kpl=False
     
-    def einfahrt3(self):
-        self.weiche3.actuate(0, 1)
-        time.sleep(1)
-        self.weiche1.actuate(0, 1)
-        time.sleep(1)
-        self.weiche4.actuate(0, 1)            
-
-    def einfahrt4(self):
-        self.weiche3.actuate(1, 1)
-        time.sleep(1)
-        self.weiche1.actuate(0, 1)
-        time.sleep(1)
-        self.weiche4.actuate(0, 1)            
-            
     def ankuppeln(self):
         self.direction(1)
         time.sleep(2)
@@ -36,57 +17,67 @@ class BR110(Lok):
         os._exit(0)
     
     def entkuppeln(self):
-            # überfahren lassen
-            time.sleep(2)
-            self.stop()
-            # anrücken
-            time.sleep(1)
-            self.direction(0)
-            self.speed(1)
-            time.sleep(0.4)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.direction(1)
-            self.entkuppler3.actuate(0, 1,0)
-            time.sleep(1)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.2)        
-            self.speed(40)
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)        
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)
-            self.entkuppler3.actuate(0, 1, 0)
-            time.sleep(0.1)
-            time.sleep(3)  
-            self.stop()
-            time.sleep(2)      
-            self.weiche34.actuate(1, 1)
-            time.sleep(1)
-            self.einfahrt4()
-            time.sleep(2)
-            self.direction(0)
-            self.speed(50)
+        # überfahren lassen
+        time.sleep(2)
+        self.stop()
+        # anrücken
+        time.sleep(1)
+        self.direction(0)
+        self.speed(1)
+        time.sleep(0.4)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.direction(1)
+        self.entkuppler3.actuate(0, 1,0)
+        time.sleep(1)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.speed(40)
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)
+        self.entkuppler3.actuate(0, 1, 0)
+        time.sleep(0.1)
+        time.sleep(3)  
+        self.stop()
+        time.sleep(2)      
+        self.weiche34.actuate(1, 1)
+        time.sleep(1)
+        self.einfahrt4()
+        time.sleep(2)
+        self.direction(0)
+        self.speed(50)
+            
+    def pendelnVonGleis3(self):
+        ausfahrt3()
+        self.direction(0)
+        self.speed(60)
+        time.sleep(20)
+        self.speed(128)
+        time.sleep(30)
+        self.stop()
+    
     
     def action32(self):
         if (self.kpl):

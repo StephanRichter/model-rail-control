@@ -1,8 +1,10 @@
 from thread import allocate_lock
 import time
+import srcp
 class Lok:
     def __init__(self,lok):
         self.lok=lok
+        lok.init('N', '1', 128, 4)
         
     lock32 = allocate_lock()
     act32 = False
@@ -11,11 +13,19 @@ class Lok:
     act64 = False
         
     def action(self,contact):
-        if (contact == 32):
+        if (contact == 16):
+            self.contact16()
+        elif (contact == 32):
             self.contact32()
         elif (contact == 64):
             self.contact64()
+        else:
+            print "contact",contact 
             
+    def action16(self):
+        print "action 32"
+        time.sleep(5)
+
     def action32(self):
         print "action 32"
         time.sleep(5)
@@ -24,6 +34,18 @@ class Lok:
         print "action 64"
         time.sleep(5)
             
+    def contact16(self):
+        self.lock16.acquire()
+        if (self.act16):
+            self.lock16.release();
+            return
+        self.act16 = True
+        self.lock16.release();
+        self.action16()
+        self.lock16.acquire()
+        self.act16 = False
+        self.lock16.release();
+
     def contact32(self):
         self.lock32.acquire()
         if (self.act32):
@@ -65,4 +87,5 @@ class Lok:
         time.sleep(0.1)
         self.lok.setSpeed(0)
         self.lok.send()
+        
         

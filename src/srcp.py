@@ -425,6 +425,7 @@ class GL(srcp_object):
         ''' init a new loco
             after init the description must be updated because it is None
         '''
+        print("INIT %d GL %d %s %s %d %d" % (self.bus, self.addr, protocol, protocolversion, nfs, nf))
         srcpcommand.command("INIT %d GL %d %s %s %d %d" % (self.bus, self.addr, protocol, protocolversion, nfs, nf))
         self.description = string.split(srcpcommand.command("GET %d DESCRIPTION GL %d" % (self.bus, self.addr)))
 

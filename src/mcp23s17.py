@@ -59,27 +59,16 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-switch1=srcp.GA(SRCP_BUS,1)
-switch2=srcp.GA(SRCP_BUS,2)
-switch3=srcp.GA(SRCP_BUS,3)
-switch4=srcp.GA(SRCP_BUS,4)
-switch5=srcp.GA(SRCP_BUS,5)
-switch6=srcp.GA(SRCP_BUS,6)
-switch7=srcp.GA(SRCP_BUS,7)
-switch8=srcp.GA(SRCP_BUS,8)
-
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
-gleis34=srcp.GA(1,8)
 loks = [ ICE, BR110 ]
+
+gleis34=srcp.GA(SRCP_BUS,8)
+
 gleis34.actuate(0, 1)
 time.sleep(.1)
 gleis34.actuate(0, 1)
 time.sleep(.1)
-        
-BR110.direction(0)
-BR110.speed(50)
-time.sleep(7)
 
 def sendValue(value):
     # wert senden
@@ -125,7 +114,7 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
-start_new_thread(BR110.entkuppeln3,())
+start_new_thread(BR110.pendelnVonGleis3,())
 
 # Programmierung der Pins
 GPIO.setup(SCLK, GPIO.OUT)
