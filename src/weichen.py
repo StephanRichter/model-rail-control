@@ -6,6 +6,8 @@ weiche2=srcp.GA(1,2)
 weiche3=srcp.GA(1,3)
 weiche34=srcp.GA(1,8)
 weiche4=srcp.GA(1,4)
+weiche9=srcp.GA(1,9)
+weiche10=srcp.GA(1,10)
 
 def ausfahrt3():
     weiche2.actuate(0, 1)
@@ -27,3 +29,8 @@ def einfahrt4():
     weiche1.actuate(0, 1)
     time.sleep(1)
     weiche4.actuate(0, 1)            
+
+def entkupplenLinks(count=1):
+    for i in range(count,0,-1):
+        weiche9.actuate(0, 1,1000)
+        time.sleep(0.2*i)

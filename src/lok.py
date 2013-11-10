@@ -6,6 +6,9 @@ class Lok:
         self.lok=lok
         lok.init('N', '1', 128, 4)
         
+    lock16 = allocate_lock()
+    act16 = False
+
     lock32 = allocate_lock()
     act32 = False
     

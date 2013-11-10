@@ -114,6 +114,11 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
+BR110.direction(1)
+BR110.speed(128)
+time.sleep(5)
+BR110.stop()
+
 start_new_thread(BR110.pendelnVonGleis3,())
 
 # Programmierung der Pins
