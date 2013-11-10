@@ -24,9 +24,9 @@ class ICE(Lok):
         self.speed(60)
         time.sleep(1)
         self.speed(40)
-        time.sleep(1)
-        self.speed(20)
         time.sleep(2)
+        self.speed(20)
+        time.sleep(1)
         self.stop()
         self.status=Lok.BEREIT_LINKS1
         
@@ -42,7 +42,9 @@ class ICE(Lok):
         time.sleep(8)
         self.speed(128)
         time.sleep(7)
-        einfahrt4()  
+        einfahrt4()
+        time.sleep(1)
+        self.speed(100)  
     
     def action32(self):
         print "ice 32"
@@ -50,8 +52,6 @@ class ICE(Lok):
         
     def action64(self):
         if (self.status==Lok.NACH_RECHTS4):
-            time.sleep(1)
-            self.speed(100)
             time.sleep(1)
             self.speed(80)
             time.sleep(1)

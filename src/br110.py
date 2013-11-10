@@ -131,12 +131,19 @@ class BR110(Lok):
         time.sleep(1)
         bahnhofLinksGerade()
         time.sleep(1)
-        self.speed(65)
+        self.speed(60)
         time.sleep(20)
         self.speed(128)
         time.sleep(35)
+        self.stop()
+        self.status=self.EINGEFAHREN_LINKS1
+        
+    def startEntkuppelnLinks(self,delay=1):
+        time.sleep(delay)
+        self.direction(0)
+        time.sleep(1)        
         self.status=self.KOPFMACHEN_LINKS
-        self.speed(40)
+        self.speed(40)        
             
     def action16(self):
         if (self.status==self.KOPFMACHEN_LINKS):
