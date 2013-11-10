@@ -95,6 +95,10 @@ class Lok:
         self.lok.setF(0,1)
         self.lok.send()
         
+    def lichtAus(self):
+        self.lok.setF(0,0)
+        self.lok.send()
+        
     def direction(self,dir):
         self.lok.setDirection(dir)        
         self.lok.send()

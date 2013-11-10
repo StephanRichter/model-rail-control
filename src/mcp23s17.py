@@ -103,12 +103,7 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
-gleis34.actuate(0, 1)
-time.sleep(.1)
-gleis34.actuate(0, 1)
-time.sleep(.1)
-
-ICE.status=Lok.BEREIT_RECHTS4
+ICE.status=Lok.BEREIT_RECHTS3
 BR110.status=Lok.BEREIT_LINKS1
 #BR110.direction(1)
 #BR110.speed(128)
@@ -142,20 +137,20 @@ while True:
             start_new_thread(lok.action, (val,))
         
     # folgende Zeilen sind zur Ablaufsteuerung
-    if ((BR110.status==Lok.BEREIT_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS4)):
+    if ((BR110.status==Lok.BEREIT_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS3)):
         BR110.status=Lok.NACH_RECHTS3
         ICE.status=Lok.NACH_LINKS1
         start_new_thread(BR110.von1nachRechts3,(5,))
-        start_new_thread(ICE.von4nachLinks1,(15,))
+        start_new_thread(ICE.von3nachLinks1,(15,))
     elif ((BR110.status==Lok.EINGEFAHREN_RECHTS3) & (ICE.status==Lok.BEREIT_LINKS1)):
         BR110.status=Lok.KUPPLUNG_AKTIV
         start_new_thread(BR110.startEntkuppelnRechts,(5,))
     elif ((BR110.status==Lok.BEREIT_RECHTS3) & (ICE.status==Lok.BEREIT_LINKS1)):
         BR110.status=Lok.NACH_LINKS1
-        ICE.status=Lok.NACH_RECHTS4
+        ICE.status=Lok.NACH_RECHTS3
         start_new_thread(BR110.von3nachLinks1,(1,))
-        start_new_thread(ICE.von1nachRechts4,(15,))
-    elif ((BR110.status==Lok.EINGEFAHREN_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS4)):
+        start_new_thread(ICE.von1nachRechts3,(17,))
+    elif ((BR110.status==Lok.EINGEFAHREN_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS3)):
         BR110.status=Lok.KOPFMACHEN_LINKS
         start_new_thread(BR110.startEntkuppelnLinks,(5,))
         

@@ -25,7 +25,7 @@ class BR110(Lok):
         time.sleep(1)
         self.direction(0)
         self.speed(1)
-        time.sleep(0.4)        
+        time.sleep(0.6)        
         entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
         entkuppler3.actuate(0, 1, 0)
@@ -75,11 +75,12 @@ class BR110(Lok):
         self.status=self.KRITISCHE_PHASE
         self.status=0
         self.stop()
+        #anrücken:
         time.sleep(1)
         self.direction(1)
-        time.sleep(0.5)
+        time.sleep(0.5)        
         self.speed(40)
-        time.sleep(0.61)        
+        time.sleep(0.62)        
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
@@ -134,7 +135,7 @@ class BR110(Lok):
         self.speed(60)
         time.sleep(20)
         self.speed(128)
-        time.sleep(35)
+        time.sleep(37)
         self.stop()
         self.status=self.EINGEFAHREN_LINKS1
         
