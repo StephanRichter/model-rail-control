@@ -46,13 +46,7 @@ MOSI = 18 # Master-Out-Slave-In
 MISO = 23 # Master-In-Slave-Out
 CS   = 24 # Chip-Select
 
-ledPattern = (0b00001110,\
-              0b00011100,\
-              0b00111000,\
-              0b01110000,\
-              0b11100001,\
-              0b11000011,\
-              0b10000111)
+ledPattern = 0b00000000
 
 SRCP_BUS=1    
 
@@ -64,11 +58,6 @@ BR110 = BR110(srcp.GL(SRCP_BUS,2))
 loks = [ ICE, BR110 ]
 
 gleis34=srcp.GA(SRCP_BUS,8)
-
-gleis34.actuate(0, 1)
-time.sleep(.1)
-gleis34.actuate(0, 1)
-time.sleep(.1)
 
 def sendValue(value):
     # wert senden
@@ -114,12 +103,19 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
-BR110.direction(1)
-BR110.speed(128)
-time.sleep(3)
-BR110.stop()
+gleis34.actuate(0, 1)
+time.sleep(.1)
+gleis34.actuate(0, 1)
+time.sleep(.1)
 
-start_new_thread(BR110.pendelnVonGleis3,())
+ICE.status=Lok.BEREIT_LINKS1
+BR110.status=Lok.EINGEFAHREN_RECHTS3
+#BR110.direction(1)
+#BR110.speed(128)
+#time.sleep(3)
+#BR110.stop()
+
+#start_new_thread(BR110.pendelnVonGleis3,())
 
 # Programmierung der Pins
 GPIO.setup(SCLK, GPIO.OUT)
@@ -139,10 +135,20 @@ sendSPI(SPI_SLAVE_ADDR, SPI_IODIRB, 0x00) # GPPIOB als Ausgaenge programmieren
 sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, 0x00) # Reset des GPIOB
     
 while True:
-    for i in range(len(ledPattern)):
-        sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern[i])
-        val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
-        if (val != 0):
-            for lok in loks:
-                start_new_thread(lok.action, (val,))
-        time.sleep(0.01)
+    sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
+    val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
+    if (val != 0):
+        for lok in loks:
+            start_new_thread(lok.action, (val,))
+        
+    # folgende Zeilen sind zur Ablaufsteuerung
+    if ((BR110.status==Lok.BEREIT_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS3)):
+        BR110.status=Lok.NACH_RECHTS3
+        ICE.status=Lok.NACH_LINKS1
+        start_new_thread(BR110.von1nachRechts3,(5,))
+        start_new_thread(ICE.von3nachLinks1,(15,))
+    elif ((BR110.status==Lok.EINGEFAHREN_RECHTS3) & (ICE.status==Lok.BEREIT_LINKS1)):
+        BR110.status=Lok.KUPPLUNG_AKTIV
+        BR110.startEntkuppelnRechts(5)
+
+    time.sleep(0.01)

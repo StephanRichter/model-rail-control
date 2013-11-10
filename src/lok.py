@@ -2,6 +2,20 @@ from thread import allocate_lock
 import time
 import srcp
 class Lok:
+    
+    KOPFMACHEN_LINKS=1
+    BEREIT_LINKS1=2
+    NACH_RECHTS3=3
+    BEREIT_RECHTS3=4
+    NACH_LINKS1=5
+    KUPPLUNG_AKTIV=6
+    EINGEFAHREN_RECHTS3=7
+    KRITISCHE_PHASE=666
+    status=0
+
+    
+    
+    
     def __init__(self,lok):
         self.lok=lok
         lok.init('N', '1', 128, 4)
@@ -73,6 +87,10 @@ class Lok:
         self.lock64.acquire()
         self.act64 = False
         self.lock64.release();
+        
+    def lichtAn(self):
+        self.lok.setF(0,1)
+        self.lok.setF(1,1)
         
     def direction(self,dir):
         self.lok.setDirection(dir)        

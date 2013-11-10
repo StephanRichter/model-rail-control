@@ -1,18 +1,11 @@
 # coding=utf8
 from lok import *
 import time,os,srcp
-import weichen
-from weichen import ausfahrt3, weiche9, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade
+from weichen import ausfahrt3, weiche10, entkupplenLinks,\
+    bahnhofLinksGerade, einfahrt3
 
 class BR110(Lok):
-    
-    BEREIT_LINKS=2
-    KOPFMACHEN_LINKS=1
-    KRITISCHE_PHASE=666
-    kpl=False
-    status=0
-    
+        
     def ankuppeln(self):
         self.direction(1)
         time.sleep(2)
@@ -21,7 +14,7 @@ class BR110(Lok):
         self.stop()
         os._exit(0)
     
-    def entkuppeln(self):
+    def kopfmachenRechts3(self):
         # überfahren lassen
         time.sleep(2)
         self.stop()
@@ -74,17 +67,6 @@ class BR110(Lok):
         self.direction(0)
         self.speed(50)
             
-    def pendelnVonGleis3(self):
-        ausfahrt3()
-        self.direction(0)
-        bahnhofLinksGerade()
-        self.status=self.KOPFMACHEN_LINKS
-#        self.speed(60)
-#        time.sleep(20)
-#        self.speed(128)
-#        time.sleep(35)
-        self.speed(40)
-
     def kopfmachenLinks(self):
         time.sleep(1.5)
         self.status=self.KRITISCHE_PHASE
@@ -106,13 +88,9 @@ class BR110(Lok):
         self.stop()
         time.sleep(1)        
         weiche10.actuate(0, 1)
-        time.sleep(0.2)        
-        weiche10.actuate(0, 1)
-        time.sleep(0.2)        
-        weiche10.actuate(0, 1)
         time.sleep(1)        
         weiche10.actuate(0, 1)
-        time.sleep(0.2)        
+        time.sleep(1)        
         weiche10.actuate(0, 1)
         time.sleep(0.2)        
         weiche10.actuate(0, 1)
@@ -130,10 +108,16 @@ class BR110(Lok):
         self.speed(20)
         time.sleep(10)
         self.stop()
-        self.status=self.BEREIT_LINKS
+        self.status=self.BEREIT_LINKS1
 
-
-        
+    def von1nachRechts3(self,delay):
+        time.sleep(delay)
+        print "BR110 startet nach rechts 3"
+        self.direction(1)
+        time.sleep(3)
+        self.speed(128)
+        time.sleep(25)
+        einfahrt3()        
             
     def action16(self):
         if (self.status==self.KOPFMACHEN_LINKS):
@@ -143,11 +127,13 @@ class BR110(Lok):
             os._exit(0)
     
     def action32(self):
-        if (self.kpl):
-            self.entkuppeln()
+        if (self.status==Lok.KUPPLUNG_AKTIV):
+            self.kopfmachenRechts3()     
+        else:
+            os._exit(0)
     
     def action64(self):
-        if (self.kpl):
+        if (self.status==Lok.KUPPLUNG_AKTIV):
             self.stop()
             time.sleep(2)
             self.weiche34.actuate(0, 1)
@@ -155,9 +141,18 @@ class BR110(Lok):
             self.einfahrt3()
             time.sleep(2)
             self.ankuppeln()
+        elif (self.status==Lok.NACH_RECHTS3):
+            print "brake..."
+            self.speed(40)
+            time.sleep(12)
+            self.stop()
+            time.sleep(1)
+            self.status=Lok.EINGEFAHREN_RECHTS3
                 
-    def entkuppeln3(self):
-        self.kpl=True  
+    def startEntkuppelnRechts(self,delay):
+        time.sleep(delay)
+        self.status=Lok.KUPPLUNG_AKTIV  
         self.direction(1)
+        time.sleep(0.5)        
         self.speed(30)
         
