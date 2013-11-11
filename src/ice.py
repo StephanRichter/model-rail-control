@@ -35,6 +35,15 @@ class ICE(Lok):
         time.sleep(1)
         self.lichtAn()
         time.sleep(1)
+        time.sleep(delay)
+        self.speed(50)
+
+    def von1nachRechts4(self,delay=1):
+        print "ICE startet nach rechts 4 in",delay,"sekunden"
+        self.direction(1)
+        time.sleep(1)
+        self.lichtAn()
+        time.sleep(1)
         time.sleep(delay-1)
         time.sleep(1)
         self.speed(50)
@@ -46,7 +55,7 @@ class ICE(Lok):
     def einfahrtRechtsEvent(self):
         if (self.status==Lok.NACH_RECHTS3):
             time.sleep(1)
-            self.speed(100)
+            self.speed(80)
             time.sleep(1)
             self.speed(50)
             time.sleep(2)
@@ -55,5 +64,11 @@ class ICE(Lok):
             time.sleep(15)
             self.lichtAus()
         else:
-            self.stop()            
+            self.stop()
+            
+    def einfahrtLinksEvent(self):
+        if (self.status==Lok.NACH_RECHTS4):
+            self.speed(128)            
+            time.sleep(7)
+            einfahrt3()
 

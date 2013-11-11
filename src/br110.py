@@ -132,9 +132,8 @@ class BR110(Lok):
         self.speed(61)
         time.sleep(19)
         self.speed(128)
-        time.sleep(36)
-        self.stop()
-        self.status=self.EINGEFAHREN_LINKS1
+        time.sleep(6)
+        self.status=self.EINFAHRT_LINKS1
         
     def startEntkuppelnLinks(self,delay=1):
         time.sleep(delay)
@@ -142,20 +141,37 @@ class BR110(Lok):
         time.sleep(1)        
         self.status=self.KOPFMACHEN_LINKS
         self.speed(40)        
-            
+
+    def startEntkuppelnRechts(self,delay):
+        time.sleep(delay)
+        self.status=Lok.KUPPLUNG_AKTIV  
+        self.direction(1)
+        time.sleep(0.5)        
+        self.speed(30)
+        
+# EVENTS
+        
     def entkupplerLinksEvent(self):
         if (self.status==self.KOPFMACHEN_LINKS):
             self.kopfmachenLinks()
-        else:     
-            self.stop()
-            os._exit(0)
+        else:
+            self.notbremse()   
     
     def entkupplerRechts3Event(self):
         if (self.status==Lok.KUPPLUNG_AKTIV):
             self.kopfmachenRechts3()     
         else:
-            os._exit(0)
-    
+            self.notbremse()
+            
+    def einfahrtLinksEvent(self):
+        if (self.status==Lok.EINFAHRT_LINKS1):
+            self.stop()
+            self.status=0
+        elif (self.status==Lok.NACH_LINKS1):
+            pass
+        else:
+            self.notbremse()
+
     def einfahrtRechtsEvent(self):
         if (self.status==Lok.KUPPLUNG_AKTIV):
             self.stop()
@@ -169,11 +185,5 @@ class BR110(Lok):
             self.stop()
             time.sleep(1)
             self.status=Lok.EINGEFAHREN_RECHTS3
-                
-    def startEntkuppelnRechts(self,delay):
-        time.sleep(delay)
-        self.status=Lok.KUPPLUNG_AKTIV  
-        self.direction(1)
-        time.sleep(0.5)        
-        self.speed(30)
-        
+        else:
+            self.notbremse()

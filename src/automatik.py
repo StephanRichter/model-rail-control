@@ -44,13 +44,15 @@ while True:
         start_new_thread(BR110.startEntkuppelnRechts,(25,))
     elif ((BR110.status==Lok.BEREIT_RECHTS3) & (ICE.status==Lok.BEREIT_LINKS1)):
         BR110.status=Lok.NACH_LINKS1
-        ICE.status=Lok.NACH_RECHTS3
+        ICE.status=Lok.NACH_RECHTS4
         start_new_thread(BR110.von3nachLinks1,(21,))
-        start_new_thread(ICE.von1nachRechts3,(40,))
+        start_new_thread(ICE.von1nachRechts4,(40,))
     elif ((BR110.status==Lok.EINGEFAHREN_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS3)):
         BR110.status=Lok.KOPFMACHEN_LINKS
         start_new_thread(BR110.startEntkuppelnLinks,(25,))
     elif ((BR110.status==Lok.NACH_LINKS1)&(ICE.status==Lok.NACH_RECHTS3)):
+        pass
+    elif ((BR110.status==Lok.NACH_LINKS1)&(ICE.status==Lok.NACH_RECHTS4)):
         pass
     else:
         print "Status nicht definiert!"
