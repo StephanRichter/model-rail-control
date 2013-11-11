@@ -32,7 +32,7 @@ class BR110(Lok):
         self.speed(20)
         time.sleep(2)
         self.speed(5)
-        time.sleep(2)
+        time.sleep(4)
         self.stop()
         self.status=BEREIT_RECHTS3
         
