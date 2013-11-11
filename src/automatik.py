@@ -26,13 +26,13 @@ loks = [ ICE, BR110 ]
 #BR110.status=BEREIT_LINKS1
 #BR110.status=BEREIT_RECHTS3
 #BR110.status=EINFAHRT_LINKS1
-BR110.status=EINGEFAHREN_LINKS1
-#BR110.status=EINGEFAHREN_RECHTS3
+#BR110.status=EINGEFAHREN_LINKS1
+BR110.status=EINGEFAHREN_RECHTS3
 
 
-#ICE.status=BEREIT_LINKS1
+ICE.status=BEREIT_LINKS1
 #ICE.status=BEREIT_RECHTS3
-ICE.status=BEREIT_RECHTS4
+#ICE.status=BEREIT_RECHTS4
     
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
@@ -118,9 +118,9 @@ while True:
         pass
     
     else:
-        print "Status nicht definiert:"
         print "BR110 =", BR110.status
         print "ICE =", ICE.status
+        print "(Status nicht definiert)"
         
         ICE.stop()
         BR110.stop()

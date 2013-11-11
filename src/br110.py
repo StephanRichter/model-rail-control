@@ -30,11 +30,9 @@ class BR110(Lok):
         self.speed(60)
         time.sleep(13)
         self.speed(20)
-        time.sleep(4)
-        self.speed(10)
-        time.sleep(1)
+        time.sleep(2)
         self.speed(5)
-        time.sleep(1)
+        time.sleep(2)
         self.stop()
         self.status=BEREIT_RECHTS3
         
@@ -63,6 +61,8 @@ class BR110(Lok):
         time.sleep(2)
         self.speed(40)
         time.sleep(13)
+        self.speed(20)
+        time.sleep(2)
         self.stop()
         time.sleep(1)
         self.status=EINGEFAHREN_RECHTS3
@@ -129,9 +129,9 @@ class BR110(Lok):
         #anrücken:
         time.sleep(1)
         self.direction(RECHTS)
-        time.sleep(0.6)        
+        time.sleep(1)        
         self.speed(40)
-        time.sleep(0.65)        
+        time.sleep(0.5)        
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
@@ -181,7 +181,7 @@ class BR110(Lok):
         self.direction(LINKS)
         time.sleep(1)        
         self.status=KOPFMACHEN_LINKS
-        self.speed(39)
+        self.speed(40)
 
     def startEntkuppelnRechts(self,delay):
         print "Abkuppeln rechts"
