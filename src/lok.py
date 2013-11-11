@@ -4,21 +4,24 @@ import time
 import srcp
 from kontakte import *
 
-class Lok:
+KOPFMACHEN_LINKS=1
+BEREIT_LINKS1=2
+NACH_RECHTS3=3
+BEREIT_RECHTS3=4
+NACH_LINKS1=5
+KUPPLUNG_AKTIV=6
+EINGEFAHREN_RECHTS3=7
+NACH_RECHTS4=8
+BEREIT_RECHTS4=9
+EINGEFAHREN_LINKS1=10
+EINFAHRT_LINKS1=11
+ANKUPPELN=12
+KRITISCHE_PHASE=666
     
-    KOPFMACHEN_LINKS=1
-    BEREIT_LINKS1=2
-    NACH_RECHTS3=3
-    BEREIT_RECHTS3=4
-    NACH_LINKS1=5
-    KUPPLUNG_AKTIV=6
-    EINGEFAHREN_RECHTS3=7
-    NACH_RECHTS4=8
-    BEREIT_RECHTS4=9
-    EINGEFAHREN_LINKS1=10
-    EINFAHRT_LINKS1=11
-    KRITISCHE_PHASE=666
-    
+RECHTS=1
+LINKS=0
+
+class Lok:    
     status=0    
     
     def __init__(self,lok):
@@ -44,11 +47,11 @@ class Lok:
     
     def notbremse(self):
         self.stop()
-        time.sleep(5)
         self.status=0               
             
     def einfahrtRechtsEvent(self):
         print "Einfahrtkontakt rechts ausgelöst"
+        time.sleep(5)
 
 
     def fireEinfahrtRechtsEvent(self):
@@ -68,7 +71,8 @@ class Lok:
             
     def einfahrtLinksEvent(self):
         print "Einfahrtkontakt Links ausgelöst"
-        self.notbremse()
+        time.sleep(5)
+
 
     def fireEinfahrtLinksEvent(self):
         self.einfahrtLinksLock.acquire()
@@ -87,7 +91,7 @@ class Lok:
             
     def entkupplerLinksEvent(self):
         print "Entkupplerkontakt Links ausgelöst"
-        self.notbremse()
+        time.sleep(5)
 
     def fireEntkupplerLinksEvent(self):
         self.entkupplerLinksLock.acquire()
@@ -106,7 +110,7 @@ class Lok:
             
     def entkupplerRechts2Event(self):
         print "Entkupplerkontakt Rechts2 ausgelöst"
-        self.notbremse()
+        time.sleep(5)
 
     def fireEntkupplerRechts2Event(self):
         self.entkupplerRechts2Lock.acquire()
@@ -125,7 +129,7 @@ class Lok:
             
     def entkupplerRechts3Event(self):
         print "Entkupplerkontakt Rechts3 ausgelöst"
-        self.notbremse()
+        time.sleep(5)
 
     def fireEntkupplerRechts3Event(self):
         self.entkupplerRechts3Lock.acquire()
