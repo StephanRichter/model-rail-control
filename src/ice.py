@@ -2,7 +2,6 @@
 from lok import *
 from weichen import *
 import time
-from kontakte import EINFAHRT_RECHTS
 
 class ICE(Lok):
     
@@ -14,12 +13,20 @@ class ICE(Lok):
         time.sleep(2)
         self.stop()
         self.status=BEREIT_LINKS1
+        time.sleep(15)
+        self.lichtAus()
             
     def einfahrt3(self):
         print "ICE: Einfahrt rechts (Gleis 3)"
-        self.status=EINFAHRT_RECHTS
-        self.speed(50)
-        time.sleep(2)
+        self.status=EINFAHRT_RECHTS3
+        self.speed(60)
+        time.sleep(3)
+        self.speed(40)
+        time.sleep(1)
+        self.speed(20)
+        time.sleep(1)
+        self.speed(10)
+        time.sleep(1)
         self.stop()
         self.status=BEREIT_RECHTS3
         time.sleep(15)
@@ -27,9 +34,15 @@ class ICE(Lok):
             
     def einfahrt4(self):
         print "ICE: Einfahrt rechts (Gleis 4)"
-        self.status=EINFAHRT_RECHTS
-        self.speed(50)
-        time.sleep(2)
+        self.status=EINFAHRT_RECHTS4
+        self.speed(60)
+        time.sleep(3)
+        self.speed(40)
+        time.sleep(1)
+        self.speed(20)
+        time.sleep(1)
+        self.speed(10)
+        time.sleep(1)
         self.stop()
         self.status=BEREIT_RECHTS4
         time.sleep(15)
@@ -61,6 +74,7 @@ class ICE(Lok):
         
     def von1nachRechts3(self,delay=1):
         print "ICE startet nach rechts 3 in",delay,"sekunden"
+        self.status=EINFAHRT_RECHTS3
         self.direction(1)
         time.sleep(1)
         self.lichtAn()
@@ -74,27 +88,28 @@ class ICE(Lok):
         time.sleep(1)
         self.lichtAn()
         time.sleep(1)
-        time.sleep(delay-1)
+        time.sleep(delay)
         time.sleep(1)
         self.speed(50)
-        time.sleep(8)
-        self.speed(128)
-        time.sleep(7)
-        einfahrt4()
    
     def einfahrtRechtsEvent(self):
         if (self.status==NACH_RECHTS3):
-            einfahrt3()
+            self.einfahrt3() # Abbremsen
         elif (self.status==NACH_RECHTS4):
-            einfahrt4()
+            self.einfahrt4() # Abbremsen
+        elif (self.status==BEREIT_LINKS1):
+            pass
         else:
             self.stop()
+            print "KOntakt ausgelöst, aber keine Ereignis definiert!"
+            print "status: ", self.status
+            self.notbremse()
             
     def einfahrtLinksEvent(self):
         if (self.status==NACH_RECHTS4):
             self.speed(128)            
             time.sleep(7)
-            einfahrt3()
+            einfahrt4() # Weichenstraße
         elif (self.status==EINFAHRT_LINKS1):
             self.einfahrtLinks()
 

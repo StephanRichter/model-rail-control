@@ -28,24 +28,44 @@ class BR110(Lok):
         self.direction(1)
         time.sleep(2)
         self.speed(60)
-        time.sleep(15)
+        time.sleep(13)
+        self.speed(20)
+        time.sleep(4)
+        self.speed(10)
+        time.sleep(1)
+        self.speed(5)
+        time.sleep(1)
         self.stop()
         self.status=BEREIT_RECHTS3
         
     def einfahrtLinks(self):
-            self.speed(100)
-            time.sleep(4)
-            self.speed(80)
-            time.sleep(2)
-            self.speed(60)
-            time.sleep(2)
-            self.speed(40)
-            time.sleep(2)
-            self.speed(20)
-            time.sleep(2)
-            self.stop()
-            self.notbremse()
+        print "BR fährt auf Gleis 1 (links) ein"
+        self.speed(100)
+        time.sleep(4)
+        self.speed(80)
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(4)
+        self.speed(20)
+        time.sleep(2)
+        self.stop()
+        self.status=EINGEFAHREN_LINKS1
 
+    def einfahrtRechts3(self):
+        print "BR fährt auf Gleis 3 (rechts) ein"
+        self.speed(100)
+        time.sleep(2)
+        self.speed(80)
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(13)
+        self.stop()
+        time.sleep(1)
+        self.status=EINGEFAHREN_RECHTS3
         
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -132,7 +152,8 @@ class BR110(Lok):
 
     def von1nachRechts3(self,delay):
         print "BR110 startet nach rechts 3 in",delay,"sekunden"
-        time.sleep(delay)        
+        time.sleep(delay)
+        bahnhofLinksGerade()        
         self.direction(1)
         time.sleep(3)
         self.speed(128)
@@ -143,13 +164,13 @@ class BR110(Lok):
         print "BR 110 nach links in",delay,"sekunden"
         time.sleep(delay)
         ausfahrt3()
-        bahnhofLinksGerade()
         self.direction(0)
         time.sleep(1)
         self.speed(61)
         time.sleep(19)
         self.speed(128)
         time.sleep(6)
+        bahnhofLinksGerade()
         self.status=EINFAHRT_LINKS1
         
     def startEntkuppelnLinks(self,delay=1):
@@ -160,7 +181,7 @@ class BR110(Lok):
         self.direction(LINKS)
         time.sleep(1)        
         self.status=KOPFMACHEN_LINKS
-        self.speed(35)        
+        self.speed(39)
 
     def startEntkuppelnRechts(self,delay):
         print "Abkuppeln rechts"
@@ -195,9 +216,4 @@ class BR110(Lok):
             weiche34.actuate(0, 1)
             self.ankuppeln3()
         elif (self.status==NACH_RECHTS3):
-            print "brake..."
-            self.speed(40)
-            time.sleep(24)
-            self.stop()
-            time.sleep(1)
-            self.status=EINGEFAHREN_RECHTS3
+            self.einfahrtRechts3()

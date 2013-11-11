@@ -16,6 +16,8 @@ BEREIT_RECHTS4=9
 EINGEFAHREN_LINKS1=10
 EINFAHRT_LINKS1=11
 ANKUPPELN=12
+EINFAHRT_RECHTS3=13
+EINFAHRT_RECHTS4=14
 KRITISCHE_PHASE=666
     
 RECHTS=1
@@ -29,15 +31,15 @@ class Lok:
         lok.init('N', '1', 128, 4)
 
     def action(self,contact):
-        if (contact == EINFAHRT_RECHTS):
+        if (contact == KONTAKT_EINFAHRT_RECHTS):
             self.fireEinfahrtRechtsEvent()
-        elif (contact == EINFAHRT_LINKS):
+        elif (contact == KONTAKT_EINFAHRT_LINKS):
             self.fireEinfahrtLinksEvent()
-        elif (contact == ENTKUPPLER_LINKS):
+        elif (contact == KONTAKT_ENTKUPPLER_LINKS):
             self.fireEntkupplerLinksEvent()
-        elif (contact == ENTKUPPLER_RECHTS2):
+        elif (contact == KONTAKT_ENTKUPPLER_RECHTS2):
             self.fireEntkupplerRechts2Event()
-        elif (contact == ENTKUPPLER_RECHTS3):
+        elif (contact == KONTAKT_ENTKUPPLER_RECHTS3):
             self.fireEntkupplerRechts3Event()
         else:
             print "contact",contact
