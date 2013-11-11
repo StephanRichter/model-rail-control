@@ -72,7 +72,6 @@ class BR110(Lok):
             
     def kopfmachenLinks(self):
         time.sleep(1.5)
-        self.status=self.KRITISCHE_PHASE
         self.status=0
         self.stop()
         #anrücken:
