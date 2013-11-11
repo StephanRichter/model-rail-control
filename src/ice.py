@@ -2,8 +2,38 @@
 from lok import *
 from weichen import *
 import time
+from kontakte import EINFAHRT_RECHTS
 
 class ICE(Lok):
+    
+    def einfahrtLinks(self):
+        print "ICE: Einfahrt links"
+        self.speed(50)
+        time.sleep(3)
+        self.speed(30)
+        time.sleep(2)
+        self.stop()
+        self.status=BEREIT_LINKS1
+            
+    def einfahrt3(self):
+        print "ICE: Einfahrt rechts (Gleis 3)"
+        self.status=EINFAHRT_RECHTS
+        self.speed(50)
+        time.sleep(2)
+        self.stop()
+        self.status=BEREIT_RECHTS3
+        time.sleep(15)
+        self.lichtAus()
+            
+    def einfahrt4(self):
+        print "ICE: Einfahrt rechts (Gleis 4)"
+        self.status=EINFAHRT_RECHTS
+        self.speed(50)
+        time.sleep(2)
+        self.stop()
+        self.status=BEREIT_RECHTS4
+        time.sleep(15)
+        self.lichtAus()
     
     def von3nachLinks1(self,delay=1):        
         print "ICE startet nach links 1 in",delay,"sekunden"
@@ -54,15 +84,9 @@ class ICE(Lok):
    
     def einfahrtRechtsEvent(self):
         if (self.status==NACH_RECHTS3):
-            time.sleep(1)
-            self.speed(80)
-            time.sleep(1)
-            self.speed(50)
-            time.sleep(2)
-            self.stop()
-            self.status=BEREIT_RECHTS3
-            time.sleep(15)
-            self.lichtAus()
+            einfahrt3()
+        elif (self.status==NACH_RECHTS4):
+            einfahrt4()
         else:
             self.stop()
             
@@ -72,8 +96,6 @@ class ICE(Lok):
             time.sleep(7)
             einfahrt3()
         elif (self.status==EINFAHRT_LINKS1):
-            self.speed(20)
-            time.sleep(1)
-            self.stop()
+            self.einfahrtLinks()
 
 

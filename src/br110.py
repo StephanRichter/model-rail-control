@@ -32,6 +32,21 @@ class BR110(Lok):
         self.stop()
         self.status=BEREIT_RECHTS3
         
+    def einfahrtLinks(self):
+            self.speed(100)
+            time.sleep(4)
+            self.speed(80)
+            time.sleep(2)
+            self.speed(60)
+            time.sleep(2)
+            self.speed(40)
+            time.sleep(2)
+            self.speed(20)
+            time.sleep(2)
+            self.stop()
+            self.notbremse()
+
+        
     def kopfmachenRechts3(self):
         # überfahren lassen
         time.sleep(2)
@@ -135,7 +150,7 @@ class BR110(Lok):
         time.sleep(19)
         self.speed(128)
         time.sleep(6)
-        self.status=self.EINFAHRT_LINKS1
+        self.status=EINFAHRT_LINKS1
         
     def startEntkuppelnLinks(self,delay=1):
         print "Abkuppeln links"
@@ -150,7 +165,7 @@ class BR110(Lok):
     def startEntkuppelnRechts(self,delay):
         print "Abkuppeln rechts"
         time.sleep(delay)
-        self.status=KUPPLUNG_AKTIV  
+        self.status=KOPFMACHEN_RECHTS3  
         self.direction(1)
         time.sleep(0.5)        
         self.speed(30)
@@ -162,20 +177,19 @@ class BR110(Lok):
             self.kopfmachenLinks()  
     
     def entkupplerRechts3Event(self):
-        if (self.status==KUPPLUNG_AKTIV):
+        if (self.status==KOPFMACHEN_RECHTS3):
             self.kopfmachenRechts3()     
             
     def einfahrtLinksEvent(self):
         if (self.status==EINFAHRT_LINKS1):
-            self.stop()
-            self.notbremse()
+            self.einfahrtLinks()
         elif (self.status==KOPFMACHEN_LINKS):
             self.stop()
             time.sleep(1)
             self.ankuppeln1()
 
     def einfahrtRechtsEvent(self):
-        if (self.status==KUPPLUNG_AKTIV):
+        if (self.status==KOPFMACHEN_RECHTS3):
             self.stop()
             time.sleep(2)
             weiche34.actuate(0, 1)
