@@ -25,7 +25,7 @@ class BR110(Lok):
         time.sleep(1)
         self.direction(0)
         self.speed(1)
-        time.sleep(0.9)        
+        time.sleep(1)        
         entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
         entkuppler3.actuate(0, 1, 0)

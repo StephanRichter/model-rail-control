@@ -103,8 +103,8 @@ def readSPI(opcode, addr):
     GPIO.output(CS, GPIO.HIGH)
     return value
 
-BR110.status=Lok.BEREIT_RECHTS3
-ICE.status=Lok.BEREIT_LINKS1
+ICE.status=Lok.BEREIT_RECHTS3
+BR110.status=Lok.EINGEFAHREN_LINKS1
 #BR110.direction(1)
 #BR110.speed(128)
 #time.sleep(3)
