@@ -1,6 +1,9 @@
+# coding=utf8
 from thread import allocate_lock
 import time
 import srcp
+from kontakte import *
+
 class Lok:
     
     KOPFMACHEN_LINKS=1
@@ -14,82 +17,126 @@ class Lok:
     BEREIT_RECHTS4=9
     EINGEFAHREN_LINKS1=10
     KRITISCHE_PHASE=666
-    status=0
-
     
-    
+    status=0    
     
     def __init__(self,lok):
         self.lok=lok
         lok.init('N', '1', 128, 4)
-        
-    lock16 = allocate_lock()
-    act16 = False
 
-    lock32 = allocate_lock()
-    act32 = False
-    
-    lock64 = allocate_lock()
-    act64 = False
-        
     def action(self,contact):
-        if (contact == 16):
-            self.contact16()
-        elif (contact == 32):
-            self.contact32()
-        elif (contact == 64):
-            self.contact64()
+        if (contact == EINFAHRT_RECHTS):
+            self.fireEinfahrtRechtsEvent()
+        elif (contact == EINFAHRT_LINKS):
+            self.fireEinfahrtLinksEvent()
+        elif (contact == ENTKUPPLER_LINKS):
+            self.fireEntkupplerLinksEvent()
+        elif (contact == ENTKUPPLER_RECHTS2):
+            self.fireEntkupplerRechts2Event()
+        elif (contact == ENTKUPPLER_RECHTS3):
+            self.fireEntkupplerRechts3Event()
         else:
-            print "contact",contact 
+            print "contact",contact
             
-    def action16(self):
-        print "action 16"
-        time.sleep(5)
-
-    def action32(self):
-        print "action 32"
-        time.sleep(5)
-
-    def action64(self):
-        print "action 64"
-        time.sleep(5)
-            
-    def contact16(self):
-        self.lock16.acquire()
-        if (self.act16):
-            self.lock16.release();
-            return
-        self.act16 = True
-        self.lock16.release();
-        self.action16()
-        self.lock16.acquire()
-        self.act16 = False
-        self.lock16.release();
-
-    def contact32(self):
-        self.lock32.acquire()
-        if (self.act32):
-            self.lock32.release();
-            return
-        self.act32 = True
-        self.lock32.release();
-        self.action32()
-        self.lock32.acquire()
-        self.act32 = False
-        self.lock32.release();
-        
+    einfahrtRechtsLock = allocate_lock()
+    einfahrtRechtsActive = False
     
-    def contact64(self):
-        self.lock64.acquire()
-        if (self.act64):
-            self.lock64.release();
+    def notbremse(self):
+        self.stop()
+        time.sleep(5)
+        self.status=0               
+            
+    def einfahrtRechtsEvent(self):
+        print "Einfahrtkontakt rechts ausgelöst"
+
+
+    def fireEinfahrtRechtsEvent(self):
+        self.einfahrtRechtsLock.acquire()
+        if (self.einfahrtRechtsActive):
+            self.einfahrtRechtsLock.release();
             return
-        self.act64 = True
-        self.lock64.release();
-        self.action64()
-        self.lock64.acquire()
-        self.act64 = False
-        self.lock64.release();
+        self.einfahrtRechtsActive = True
+        self.einfahrtRechtsLock.release();
+        self.einfahrtRechtsEvent()
+        self.einfahrtRechtsLock.acquire()
+        self.einfahrtRechtsActive = False
+        self.einfahrtRechtsLock.release();
+        
+    einfahrtLinksLock = allocate_lock()
+    einfahrtLinksActive = False             
+            
+    def einfahrtLinksEvent(self):
+        print "Einfahrtkontakt Links ausgelöst"
+        self.notbremse()
+
+    def fireEinfahrtLinksEvent(self):
+        self.einfahrtLinksLock.acquire()
+        if (self.einfahrtLinksActive):
+            self.einfahrtLinksLock.release();
+            return
+        self.einfahrtLinksActive = True
+        self.einfahrtLinksLock.release();
+        self.einfahrtLinksEvent()
+        self.einfahrtLinksLock.acquire()
+        self.einfahrtLinksActive = False
+        self.einfahrtLinksLock.release();
+
+    entkupplerLinksLock = allocate_lock()
+    entkupplerLinksActive = False             
+            
+    def entkupplerLinksEvent(self):
+        print "Entkupplerkontakt Links ausgelöst"
+        self.notbremse()
+
+    def fireEntkupplerLinksEvent(self):
+        self.entkupplerLinksLock.acquire()
+        if (self.entkupplerLinksActive):
+            self.entkupplerLinksLock.release();
+            return
+        self.entkupplerLinksActive = True
+        self.entkupplerLinksLock.release();
+        self.entkupplerLinksEvent()
+        self.entkupplerLinksLock.acquire()
+        self.entkupplerLinksActive = False
+        self.entkupplerLinksLock.release();
+        
+    entkupplerRechts2Lock = allocate_lock()
+    entkupplerRechts2Active = False             
+            
+    def entkupplerRechts2Event(self):
+        print "Entkupplerkontakt Rechts2 ausgelöst"
+        self.notbremse()
+
+    def fireEntkupplerRechts2Event(self):
+        self.entkupplerRechts2Lock.acquire()
+        if (self.entkupplerRechts2Active):
+            self.entkupplerRechts2Lock.release();
+            return
+        self.entkupplerRechts2Active = True
+        self.entkupplerRechts2Lock.release();
+        self.entkupplerRechts2Event()
+        self.entkupplerRechts2Lock.acquire()
+        self.entkupplerRechts2Active = False
+        self.entkupplerRechts2Lock.release();     
+        
+    entkupplerRechts3Lock = allocate_lock()
+    entkupplerRechts3Active = False             
+            
+    def entkupplerRechts3Event(self):
+        print "Entkupplerkontakt Rechts3 ausgelöst"
+        self.notbremse()
+
+    def fireEntkupplerRechts3Event(self):
+        self.entkupplerRechts3Lock.acquire()
+        if (self.entkupplerRechts3Active):
+            self.entkupplerRechts3Lock.release();
+            return
+        self.entkupplerRechts3Active = True
+        self.entkupplerRechts3Lock.release();
+        self.entkupplerRechts3Event()
+        self.entkupplerRechts3Lock.acquire()
+        self.entkupplerRechts3Active = False
+        self.entkupplerRechts3Lock.release();     
         
     def lichtAn(self):
         self.lok.setF(0,1)
@@ -102,6 +149,7 @@ class Lok:
     def direction(self,dir):
         self.lok.setDirection(dir)        
         self.lok.send()
+        
     def speed(self,speed):
         self.lok.setSpeed(speed)
         self.lok.send()

@@ -143,20 +143,20 @@ class BR110(Lok):
         self.status=self.KOPFMACHEN_LINKS
         self.speed(40)        
             
-    def action16(self):
+    def entkupplerLinksEvent(self):
         if (self.status==self.KOPFMACHEN_LINKS):
             self.kopfmachenLinks()
         else:     
             self.stop()
             os._exit(0)
     
-    def action32(self):
+    def entkupplerRechts3Event(self):
         if (self.status==Lok.KUPPLUNG_AKTIV):
             self.kopfmachenRechts3()     
         else:
             os._exit(0)
     
-    def action64(self):
+    def einfahrtRechtsEvent(self):
         if (self.status==Lok.KUPPLUNG_AKTIV):
             self.stop()
             time.sleep(2)

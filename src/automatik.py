@@ -1,7 +1,9 @@
-from thread import start_new_thread, allocate_lock
-from ice import *
-from br110 import *
+from thread import start_new_thread
+from lok import Lok
+from ice import ICE
+from br110 import BR110
 from mcp23s17 import *
+from kontakte import *
 import time,os
 
 
@@ -21,20 +23,10 @@ ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
 loks = [ ICE, BR110 ]
 
-gleis34=srcp.GA(SRCP_BUS,8)
-
-ICE.status=Lok.BEREIT_RECHTS3
-BR110.status=Lok.EINGEFAHREN_LINKS1
-#BR110.direction(1)
-#BR110.speed(128)
-#time.sleep(3)
-#BR110.stop()
-
-#start_new_thread(BR110.pendelnVonGleis3,())
-
-# Programmierung der Pins
+ICE.status=Lok.BEREIT_LINKS1
+BR110.status=Lok.BEREIT_RECHTS3
     
-while True:
+while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
     if (val != 0):
@@ -58,6 +50,15 @@ while True:
     elif ((BR110.status==Lok.EINGEFAHREN_LINKS1) & (ICE.status==Lok.BEREIT_RECHTS3)):
         BR110.status=Lok.KOPFMACHEN_LINKS
         start_new_thread(BR110.startEntkuppelnLinks,(25,))
+    elif ((BR110.status==Lok.NACH_LINKS1)&(ICE.status==Lok.NACH_RECHTS3)):
+        pass
+    else:
+        print "Status nicht definiert!"
+        ICE.stop()
+        BR110.stop()
+        commandbus.powerOff()
+        time.sleep(2)        
+        os._exit(0)
         
 
     time.sleep(0.01)

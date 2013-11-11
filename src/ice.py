@@ -1,3 +1,4 @@
+# coding=utf8
 from lok import *
 from weichen import *
 import time
@@ -41,12 +42,8 @@ class ICE(Lok):
         self.speed(128)
         time.sleep(7)
         einfahrt4()
-    
-    def action32(self):
-        print "ice 32"
-        time.sleep(5)
-        
-    def action64(self):
+   
+    def einfahrtRechtsEvent(self):
         if (self.status==Lok.NACH_RECHTS3):
             time.sleep(1)
             self.speed(100)
@@ -56,5 +53,7 @@ class ICE(Lok):
             self.stop()
             self.status=Lok.BEREIT_RECHTS3
             time.sleep(15)
-            self.lichtAus()      
+            self.lichtAus()
+        else:
+            self.stop()            
 
