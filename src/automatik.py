@@ -25,7 +25,8 @@ pause=0
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
-loks = [ ICE, BR110 ]
+
+loks = [ ICE, BR110, BR86 ]
 
 #BR110.status=BEREIT_LINKS1
 BR110.status=BEREIT_RECHTS3
@@ -38,7 +39,9 @@ ICE.status=BEREIT_RECHTS4
 #ICE.status=BEREIT_RECHTS3
 #ICE.status=BEREIT_RECHTS4
 
-BR86.status=BEREIT_RECHTS1
+BR86.status=BEREIT_LINKS1
+#BR86.status=BEREIT_RECHTS1
+#BR86.status=EINGEFAHREN_LINKS1
     
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
@@ -53,11 +56,11 @@ while True:
         pass
     
     elif (( BR110.status == ANKUPPELN )
-         &( ICE.status   ==BEREIT_RECHTS4)):
+         &( ICE.status   == BEREIT_RECHTS4)):
         pass
         
     elif (( BR110.status == BEREIT_LINKS1 )
-         &( ICE.status   ==BEREIT_RECHTS3)):        
+         &( ICE.status   == BEREIT_RECHTS3)):        
             BR110.status=NACH_RECHTS3
             ICE.status=NACH_LINKS1
             start_new_thread(BR110.von1nachRechts3,(pause+5,))
@@ -78,8 +81,56 @@ while True:
             start_new_thread(ICE.von1nachRechts4,(pause+1,))
     
     elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == ANKUPPELN)):
+        pass
+    
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == BEREIT_LINKS1)):
+        ICE.status=NACH_LINKS2
+        start_new_thread(ICE.von4nachLinks2, (pause+1,)) # hier gehts weiter
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == BEREIT_RECHTS1)):
+        BR86.status=NACH_LINKS1
+        start_new_thread(BR86.von1nachLinks1,(pause+1,))
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == EINFAHRT_LINKS1)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == EINGEFAHREN_LINKS1)):
+        BR86.status = KOPFMACHEN_LINKS
+        start_new_thread(BR86.startEntkuppelnLinks,(pause, ))
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == KOPFMACHEN_LINKS)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS4)
+         &( BR86.status  == NACH_LINKS1)):
+        pass
+    
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == EINFAHRT_LINKS2)
+         &( BR86.status  == BEREIT_LINKS1)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == EINFAHRT_RECHTS4)
          &( BR86.status  == BEREIT_RECHTS1)):
+        pass
+    
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == NACH_LINKS2)
+         &( BR86.status  == BEREIT_LINKS1)):
         pass
 
     elif (( BR110.status == BEREIT_RECHTS3 )
@@ -89,7 +140,7 @@ while True:
 
     elif (( BR110.status == EINFAHRT_LINKS1 )
          &( ICE.status   == BEREIT_RECHTS4)):
-            pass
+        pass
 
     elif (( BR110.status == EINFAHRT_LINKS1 )
          &( ICE.status   == EINFAHRT_RECHTS4)):

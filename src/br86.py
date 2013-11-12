@@ -1,13 +1,10 @@
 # coding=utf8
 from lok import *
 import time,os,srcp
-from weichen import ausfahrt3, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
+from weichen import *
 
 class BR86(Lok):
     
-    wendezug = True
-        
     def ankuppeln1(self):
         print "Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        
@@ -15,10 +12,8 @@ class BR86(Lok):
         time.sleep(1)
         bahnhofLinksGerade()
         time.sleep(1)
-        self.speed(60)
-        time.sleep(8)
         self.speed(20)
-        time.sleep(11)
+        time.sleep(17)
         self.stop()
         self.status=BEREIT_LINKS1
         
@@ -45,27 +40,20 @@ class BR86(Lok):
         self.speed(80)
         time.sleep(2)
         self.speed(60)
-        time.sleep(2)
+        time.sleep(3)
         self.speed(40)
         time.sleep(4)
         self.speed(20)
         time.sleep(4)
         self.stop()
-        if (self.wendezug):
-            self.status=BEREIT_LINKS1
-        else:
-            self.status=EINGEFAHREN_LINKS1
+        self.status=EINGEFAHREN_LINKS1
 
     def einfahrtRechts3(self):
         print "BR fährt auf Gleis 3 (rechts) ein"
-        if (self.wendezug):
-            pass
-        else:
-            time.sleep(2)          
-            self.speed(100)            
-            time.sleep(3)
-            self.speed(80)
-            
+        time.sleep(2)          
+        self.speed(100)            
+        time.sleep(3)
+        self.speed(80)            
         time.sleep(2)
         self.speed(60)
         time.sleep(2)
@@ -75,10 +63,7 @@ class BR86(Lok):
         time.sleep(2)
         self.stop()
         time.sleep(1)
-        if (self.wendezug):
-            self.status=BEREIT_RECHTS3
-        else:
-            self.status=EINGEFAHREN_RECHTS3
+        self.status=EINGEFAHREN_RECHTS3
         
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -135,7 +120,7 @@ class BR86(Lok):
         self.speed(50)
             
     def kopfmachenLinks(self):
-        time.sleep(1.4)
+        time.sleep(3)
         self.stop()
         print "Abkuppeln auf Gleis 1 (links)"
 
@@ -163,6 +148,21 @@ class BR86(Lok):
         time.sleep(1)
         self.speed(60)
 
+    def von1nachLinks1(self,delay=1):
+        print "BR 86 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        self.lichtAn()
+        time.sleep(1)        
+        ausfahrt1()
+        self.direction(0)
+        time.sleep(1)
+        self.speed(70)
+        time.sleep(16)
+        self.speed(128)
+        time.sleep(6)
+        bahnhofLinksGerade()
+        self.status=EINFAHRT_LINKS1
+
     def von1nachRechts3(self,delay):
         print "BR110 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
@@ -174,7 +174,7 @@ class BR86(Lok):
         einfahrt3()
         
     def von3nachLinks1(self,delay=1):
-        print "BR 110 nach links in",delay,"sekunden"
+        print "BR 86 nach links in",delay,"sekunden"
         time.sleep(delay)
         ausfahrt3()
         self.direction(0)

@@ -17,6 +17,11 @@ weiche9.init("N")
 weiche10=srcp.GA(1,10)
 weiche10.init("N")
 
+def ausfahrt1():
+    weiche4.actuate(0, 1)
+    time.sleep(1)
+    weiche2.actuate(0, 1)      
+
 def ausfahrt3():
     weiche2.actuate(0, 1)
     time.sleep(1)
@@ -50,6 +55,11 @@ def entkupplenLinks(count=1):
         weiche9.actuate(0, 1,1000)
         time.sleep(0.2*i)
         
+def bahnhofLinksAbzweig():
+    weiche10.actuate(0, 1)
+    time.sleep(1)
+    weiche10.actuate(0, 1)
+
 def bahnhofLinksGerade():
     time.sleep(2)
     weiche9.actuate(1, 1)
