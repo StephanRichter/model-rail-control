@@ -5,6 +5,8 @@ from weichen import ausfahrt3, weiche10, entkupplenLinks,\
     bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
 
 class BR110(Lok):
+    
+    wendezug = True
         
     def ankuppeln1(self):
         print "Ankuppeln auf Gleis 1 (links)"
@@ -45,18 +47,25 @@ class BR110(Lok):
         self.speed(60)
         time.sleep(2)
         self.speed(40)
-        time.sleep(2)
+        time.sleep(4)
         self.speed(20)
-        time.sleep(2)
+        time.sleep(4)
         self.stop()
-        self.status=EINGEFAHREN_LINKS1
+        if (self.wendezug):
+            self.status=BEREIT_LINKS1
+        else:
+            self.status=EINGEFAHREN_LINKS1
 
     def einfahrtRechts3(self):
         print "BR fährt auf Gleis 3 (rechts) ein"
-        time.sleep(2)
-        self.speed(100)
-        time.sleep(3)
-        self.speed(80)
+        if (self.wendezug):
+            pass
+        else:
+            time.sleep(2)          
+            self.speed(100)            
+            time.sleep(3)
+            self.speed(80)
+            
         time.sleep(2)
         self.speed(60)
         time.sleep(2)
@@ -66,7 +75,10 @@ class BR110(Lok):
         time.sleep(2)
         self.stop()
         time.sleep(1)
-        self.status=EINGEFAHREN_RECHTS3
+        if (self.wendezug):
+            self.status=BEREIT_RECHTS3
+        else:
+            self.status=EINGEFAHREN_RECHTS3
         
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -168,7 +180,7 @@ class BR110(Lok):
         self.direction(0)
         time.sleep(1)
         self.speed(70)
-        time.sleep(19)
+        time.sleep(16)
         self.speed(128)
         time.sleep(6)
         bahnhofLinksGerade()
