@@ -102,8 +102,8 @@ while True:
         
         BR86.status=NACH_RECHTS2
         BR118.status=NACH_LINKS1
-        start_new_thread(BR86.von1nachRechts2,(pause,)) # hier gehts weiter
-        start_new_thread(BR118.von2nachLinks1,(pause+8,))
+        start_new_thread(BR86.von1nachRechts2,(pause,)) # hier gehts weiter, sobald der Einfahrtkontakt links
+        start_new_thread(BR118.von2nachLinks1,(pause+8,)) # auch von der BR 118 ausgelöst wird
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)
