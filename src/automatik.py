@@ -112,6 +112,12 @@ while True:
         pass
     
     elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == NACH_RECHTS2)
+         &( BR118.status == NACH_LINKS1)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_RECHTS4)
          &( BR86.status  == ANKUPPELN)
          &( BR118.status == BEREIT_RECHTS2)):

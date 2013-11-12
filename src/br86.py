@@ -4,7 +4,7 @@ import time,os,srcp
 from weichen import *
 
 class BR86(Lok):
-    name = "BR 86"
+    name = "BR 86 "
     def ankuppeln1(self):
         print "Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        
@@ -172,7 +172,7 @@ class BR86(Lok):
         self.direction(1)
         time.sleep(3)
         self.speed(128)
-        time.sleep(28)
+        time.sleep(20)
         einfahrt2()
 
     def von1nachRechts3(self,delay):

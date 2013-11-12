@@ -20,16 +20,19 @@ weiche10=srcp.GA(1,10)
 weiche10.init("N")
 
 def ausfahrt1():
+    print "Ausfahrt 1"
     weiche4.actuate(0, 1)
     time.sleep(1)
     weiche2.actuate(0, 1)      
 
 def ausfahrt2():
+    print "Ausfahrt 2"
     weiche4.actuate(1, 1)
     time.sleep(1)
     weiche2.actuate(0, 1)
 
 def ausfahrt3():
+    print "Ausfahrt 3"
     weiche2.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -37,6 +40,7 @@ def ausfahrt3():
     weiche3.actuate(0, 1)
       
 def ausfahrt4():
+    print "Ausfahrt 4"
     weiche2.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -44,6 +48,7 @@ def ausfahrt4():
     weiche3.actuate(1, 1)
 
 def einfahrt2():
+    print "Einfahrt 2"
     weiche4.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(1, 1)
@@ -53,6 +58,7 @@ def einfahrt2():
     weiche5.actuate(0, 1)            
 
 def einfahrt3():
+    print "Einfahrt 3"
     weiche3.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -60,6 +66,7 @@ def einfahrt3():
     weiche4.actuate(0, 1)            
 
 def einfahrt4():
+    print "Einfahrt 4"
     weiche3.actuate(1, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -72,11 +79,13 @@ def entkupplenLinks(count=1):
         time.sleep(0.2*i)
         
 def bahnhofLinksAbzweig():
+    print "Bahnhof (links) Abzweig"
     weiche10.actuate(0, 1)
     time.sleep(1)
     weiche10.actuate(0, 1)
 
 def bahnhofLinksGerade():
+    print "Bahnhof (links) Gerade"
     time.sleep(1)
     weiche9.actuate(1, 1)
     time.sleep(1)
