@@ -166,13 +166,15 @@ class BR86(Lok):
     def von1nachRechts2(self,delay):
         print "BR 86 startet nach rechts 2 in",delay,"sekunden"
         time.sleep(delay)
-        self.lichtAn()
-        time.sleep(1)        
-        bahnhofLinksGerade()        
         self.direction(1)
-        time.sleep(3)
+        time.sleep(0.5)
+        self.lichtAn()
+        time.sleep(0.5)        
+        bahnhofLinksGerade()        
+        time.sleep(1)
         self.speed(128)
         time.sleep(20)
+        self.stop()
         einfahrt2()
 
     def von1nachRechts3(self,delay):
@@ -244,5 +246,7 @@ class BR86(Lok):
             time.sleep(2)
             weiche34.actuate(0, 1)
             self.ankuppeln3()
+        elif (self.status==NACH_RECHTS2):
+            self.einfahrtRechts2()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()

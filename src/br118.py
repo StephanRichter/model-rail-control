@@ -6,7 +6,6 @@ from weichen import *
 class BR118(Lok):
     
     name = "BR 118"
-    wendezug = True
         
     def ankuppeln1(self):
         print "BR 118 Ankuppeln auf Gleis 1 (links)"
@@ -40,32 +39,25 @@ class BR118(Lok):
         
     def einfahrtLinks(self):
         print "BR 118 fährt auf Gleis 1 (links) ein"
-        self.speed(100)
-        time.sleep(4)
-        self.speed(80)
-        time.sleep(2)
-        self.speed(60)
-        time.sleep(2)
-        self.speed(40)
-        time.sleep(4)
-        self.speed(20)
-        time.sleep(4)
+        #self.speed(100)
+        #time.sleep(4)
+        #self.speed(80)
+        #time.sleep(2)
+        #self.speed(60)
+        #time.sleep(2)
+        #self.speed(40)
+        #time.sleep(4)
+        #self.speed(20)
+        #time.sleep(4)
         self.stop()
-        if (self.wendezug):
-            self.status=BEREIT_LINKS1
-        else:
-            self.status=EINGEFAHREN_LINKS1
-
-    def einfahrtRechts3(self):
-        print "BR 118 fährt auf Gleis 3 (rechts) ein"
-        if (self.wendezug):
-            pass
-        else:
-            time.sleep(2)          
-            self.speed(100)            
-            time.sleep(3)
-            self.speed(80)
+        self.status=EINGEFAHREN_LINKS1
             
+    def einfahrtRechts2(self):
+        print "BR 118 fährt auf Gleis 2 (rechts) ein"
+        time.sleep(2)          
+        self.speed(100)            
+        time.sleep(3)
+        self.speed(80)            
         time.sleep(2)
         self.speed(60)
         time.sleep(2)
@@ -75,10 +67,25 @@ class BR118(Lok):
         time.sleep(2)
         self.stop()
         time.sleep(1)
-        if (self.wendezug):
-            self.status=BEREIT_RECHTS3
-        else:
-            self.status=EINGEFAHREN_RECHTS3
+        self.status=EINGEFAHREN_RECHTS2
+
+
+    def einfahrtRechts3(self):
+        print "BR 118 fährt auf Gleis 3 (rechts) ein"
+        time.sleep(2)          
+        self.speed(100)            
+        time.sleep(3)
+        self.speed(80)            
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(7)
+        self.speed(20)
+        time.sleep(2)
+        self.stop()
+        time.sleep(1)
+        self.status=EINGEFAHREN_RECHTS3
         
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -178,22 +185,20 @@ class BR118(Lok):
     def von2nachLinks1(self,delay=1):
         print "BR 118 nach links in",delay,"sekunden"
         time.sleep(delay)
-        self.direction(0)
+        self.direction(LINKS)
         self.lichtAn()
         time.sleep(1)
         ausfahrt2()
         time.sleep(1)
-        self.speed(70)
-        time.sleep(16)
         self.speed(128)
-        time.sleep(6)
+        time.sleep(10)
         bahnhofLinksGerade()
         self.status=EINFAHRT_LINKS1
 
     def von3nachLinks1(self,delay=1):
         print "BR 118 nach links in",delay,"sekunden"
         time.sleep(delay)
-        self.direction(0)
+        self.direction(LINKS)
         self.lichtAn()
         time.sleep(1)
         ausfahrt3()
@@ -233,7 +238,7 @@ class BR118(Lok):
         if (self.status==KOPFMACHEN_RECHTS3):
             self.kopfmachenRechts3()     
             
-    def einfahrtLinksEvent(self):
+    def einfahrtLinksEvent(self):        
         if (self.status==EINFAHRT_LINKS1):
             self.einfahrtLinks()
         elif (self.status==KOPFMACHEN_LINKS):
@@ -247,5 +252,7 @@ class BR118(Lok):
             time.sleep(2)
             weiche34.actuate(0, 1)
             self.ankuppeln3()
+        elif (self.status==NACH_RECHTS2):
+            self.einfahrtRechts2()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()

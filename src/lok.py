@@ -26,6 +26,7 @@ EINFAHRT_LINKS2=17
 BEREIT_LINKS2=18
 NACH_RECHTS2=19
 BEREIT_RECHTS2=20
+EINGEFAHREN_RECHTS2=21
     
 RECHTS=1
 LINKS=0
@@ -73,6 +74,7 @@ class Lok:
         self.einfahrtRechtsActive = True
         self.einfahrtRechtsLock.release();
         self.einfahrtRechtsEvent()
+        print "Einfahrtkontakt rechts"
         self.einfahrtRechtsLock.acquire()
         self.einfahrtRechtsActive = False
         self.einfahrtRechtsLock.release();
@@ -225,5 +227,7 @@ class Lok:
             print self.name,": NACH_RECHTS2"
         elif (self.status == BEREIT_RECHTS2):
             print self.name,": BEREIT_RECHTS2"
+        elif (self.status == EINGEFAHREN_RECHTS2):
+            print self.name,": EINGEFAHREN_RECHTS2"
         else:
             print self.name,": unknown:",self.status

@@ -103,7 +103,7 @@ while True:
         BR86.status=NACH_RECHTS2
         BR118.status=NACH_LINKS1
         start_new_thread(BR86.von1nachRechts2,(pause,)) # hier gehts weiter
-        start_new_thread(BR118.von2nachLinks1,(pause+6,))
+        start_new_thread(BR118.von2nachLinks1,(pause+8,))
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)
@@ -111,6 +111,12 @@ while True:
          &( BR118.status == BEREIT_RECHTS2)):
         pass
     
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == NACH_RECHTS2)
+         &( BR118.status == EINFAHRT_LINKS1)):
+        pass
+
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)
          &( BR86.status  == NACH_RECHTS2)
