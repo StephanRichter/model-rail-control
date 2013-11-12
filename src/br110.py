@@ -14,7 +14,7 @@ class BR110(Lok):
         bahnhofLinksGerade()
         time.sleep(1)
         self.speed(60)
-        time.sleep(9)
+        time.sleep(8)
         self.speed(20)
         time.sleep(11)
         self.stop()
@@ -28,7 +28,7 @@ class BR110(Lok):
         self.direction(1)
         time.sleep(2)
         self.speed(60)
-        time.sleep(13)
+        time.sleep(12)
         self.speed(20)
         time.sleep(2)
         self.speed(5)
@@ -53,14 +53,15 @@ class BR110(Lok):
 
     def einfahrtRechts3(self):
         print "BR fährt auf Gleis 3 (rechts) ein"
-        self.speed(100)
         time.sleep(2)
+        self.speed(100)
+        time.sleep(3)
         self.speed(80)
         time.sleep(2)
         self.speed(60)
         time.sleep(2)
         self.speed(40)
-        time.sleep(13)
+        time.sleep(10)
         self.speed(20)
         time.sleep(2)
         self.stop()
@@ -69,7 +70,7 @@ class BR110(Lok):
         
     def kopfmachenRechts3(self):
         # überfahren lassen
-        time.sleep(2)
+        time.sleep(2.5)
         self.stop()
         print "Abkuppeln auf Gleis 3 (rechts)"
         # anrücken
@@ -166,7 +167,7 @@ class BR110(Lok):
         ausfahrt3()
         self.direction(0)
         time.sleep(1)
-        self.speed(61)
+        self.speed(70)
         time.sleep(19)
         self.speed(128)
         time.sleep(6)
@@ -181,7 +182,7 @@ class BR110(Lok):
         self.direction(LINKS)
         time.sleep(1)        
         self.status=KOPFMACHEN_LINKS
-        self.speed(40)
+        self.speed(41)
 
     def startEntkuppelnRechts(self,delay):
         print "Abkuppeln rechts"

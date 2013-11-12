@@ -19,7 +19,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=20
+pause=0
 
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
