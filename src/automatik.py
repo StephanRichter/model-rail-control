@@ -2,6 +2,7 @@ from thread import start_new_thread
 from lok import *
 from ice import ICE
 from br110 import BR110
+from br86 import BR86
 from mcp23s17 import *
 from kontakte import *
 import time,os
@@ -23,6 +24,7 @@ pause=0
 
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
+BR86 = BR86(srcp.GL(SRCP_BUS,3))
 loks = [ ICE, BR110 ]
 
 BR110.status=BEREIT_LINKS1
@@ -35,96 +37,97 @@ BR110.status=BEREIT_LINKS1
 #ICE.status=BEREIT_LINKS1
 #ICE.status=BEREIT_RECHTS3
 ICE.status=BEREIT_RECHTS4
+
+BR86.status=BEREIT_RECHTS1
     
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
     if (val != 0):
         for lok in loks:
-            start_new_thread(lok.action, (val,))
-        
+            start_new_thread(lok.action, (val,))    
+    
     # folgende Zeilen sind zur Ablaufsteuerung
-    if   ((BR110.status== ANKUPPELN )&(ICE.status==BEREIT_RECHTS3)):
-        pass
-    
-    elif   ((BR110.status== ANKUPPELN )&(ICE.status==BEREIT_RECHTS4)):
-        pass
-
-    elif ((BR110.status== BEREIT_LINKS1 ) & (ICE.status==BEREIT_RECHTS3)):
+    if   ( BR110.status == ANKUPPELN ):
+        if ( ICE.status == BEREIT_RECHTS3 ):
+            pass
+        elif  (ICE.status == BEREIT_RECHTS4):
+            pass
         
-        BR110.status=NACH_RECHTS3
-        ICE.status=NACH_LINKS1
-        start_new_thread(BR110.von1nachRechts3,(pause+5,))
-        start_new_thread(ICE.von3nachLinks1,(pause+22,))
-
-    elif ((BR110.status== BEREIT_LINKS1 ) & (ICE.status==BEREIT_RECHTS4)):
         
-        BR110.status=NACH_RECHTS3
-        ICE.status=NACH_LINKS1
-        start_new_thread(BR110.von1nachRechts3,(pause+5,))
-        start_new_thread(ICE.von4nachLinks1,(pause+22,))
-    
-    elif ((BR110.status== BEREIT_RECHTS3 ) & (ICE.status==BEREIT_LINKS1)):
         
-        BR110.status=NACH_LINKS1
-        ICE.status=NACH_RECHTS4
-        start_new_thread(BR110.von3nachLinks1,(pause+1,))
-        start_new_thread(ICE.von1nachRechts4,(pause+20,))
-    
-    elif ((BR110.status==EINFAHRT_LINKS1 )&(ICE.status==BEREIT_RECHTS4)):
-        pass
-
-    elif ((BR110.status==EINFAHRT_LINKS1 )&(ICE.status==EINFAHRT_RECHTS4)):
-        pass
-
-    elif ((BR110.status==EINFAHRT_LINKS1 )&(ICE.status==NACH_RECHTS4)):
-        pass
-
-    elif ((BR110.status== EINGEFAHREN_LINKS1 ) & (ICE.status==BEREIT_RECHTS3)):
         
-        BR110.status=KOPFMACHEN_LINKS
-        start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
-    
-    elif ((BR110.status== EINGEFAHREN_LINKS1 ) & (ICE.status==BEREIT_RECHTS4)):
-        
-        BR110.status=KOPFMACHEN_LINKS
-        start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
+    elif ( BR110.status == BEREIT_LINKS1 ):
+        if (ICE.status==BEREIT_RECHTS3):
+            BR110.status=NACH_RECHTS3
+            ICE.status=NACH_LINKS1
+            start_new_thread(BR110.von1nachRechts3,(pause+5,))
+            start_new_thread(ICE.von3nachLinks1,(pause+22,))
 
-    elif ((BR110.status== EINGEFAHREN_RECHTS3 ) & (ICE.status==BEREIT_LINKS1)):
-        
-        BR110.status=KOPFMACHEN_RECHTS3
-        start_new_thread(BR110.startEntkuppelnRechts,(pause+5,))
+        elif (ICE.status==BEREIT_RECHTS4):
+            BR110.status=NACH_RECHTS3
+            ICE.status=NACH_LINKS1
+            start_new_thread(BR110.von1nachRechts3,(pause+5,))
+            start_new_thread(ICE.von4nachLinks1,(pause+22,))
     
-    elif ((BR110.status== KOPFMACHEN_LINKS )&(ICE.status==BEREIT_RECHTS3)):
-        pass
+    elif (BR110.status== BEREIT_RECHTS3 ):
+        if (ICE.status==BEREIT_LINKS1):        
+            BR110.status=NACH_LINKS1
+            ICE.status=NACH_RECHTS4
+            start_new_thread(BR110.von3nachLinks1,(pause+1,))
+            start_new_thread(ICE.von1nachRechts4,(pause+20,))
     
-    elif ((BR110.status== KOPFMACHEN_LINKS )&(ICE.status==BEREIT_RECHTS4)):
-        pass
+    elif ( BR110.status == EINFAHRT_LINKS1 ):
+        if (ICE.status==BEREIT_RECHTS4):
+            pass
+        elif (ICE.status==EINFAHRT_RECHTS4):
+            pass
+        elif ( ICE.status==NACH_RECHTS4):
+            pass
 
-    elif ((BR110.status== KOPFMACHEN_RECHTS3 )&(ICE.status==BEREIT_LINKS1)):
-        pass
-
-    elif ((BR110.status== NACH_LINKS1 )&(ICE.status==EINFAHRT_RECHTS4)):
-        pass
-
-    elif ((BR110.status== NACH_LINKS1 )&(ICE.status==NACH_RECHTS3)):
-        pass
+    elif (BR110.status== EINGEFAHREN_LINKS1 ):
+        if (ICE.status==BEREIT_RECHTS3):
+            BR110.status=KOPFMACHEN_LINKS
+            start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
+        elif (ICE.status==BEREIT_RECHTS4):
+            BR110.status=KOPFMACHEN_LINKS
+            start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
     
-    elif ((BR110.status== NACH_LINKS1 )&(ICE.status==NACH_RECHTS4)):
-        pass
+    elif (BR110.status== EINGEFAHREN_RECHTS3 ):
+        if (ICE.status==BEREIT_LINKS1):
+            BR110.status=KOPFMACHEN_RECHTS3
+            start_new_thread(BR110.startEntkuppelnRechts,(pause+5,))
     
-    elif ((BR110.status== NACH_RECHTS3 )&(ICE.status==BEREIT_LINKS1)):
-        pass
+    elif (BR110.status== KOPFMACHEN_LINKS ):
+        if (ICE.status==BEREIT_RECHTS3):
+            pass    
+        elif (ICE.status==BEREIT_RECHTS4):
+            pass
 
-    elif ((BR110.status== NACH_RECHTS3 )&(ICE.status==EINFAHRT_LINKS1)):
-        pass
+    elif (BR110.status== KOPFMACHEN_RECHTS3 ):
+        if (ICE.status==BEREIT_LINKS1):
+            pass
 
-    elif ((BR110.status== NACH_RECHTS3 )&(ICE.status==NACH_LINKS1)):
-        pass
+    elif (BR110.status== NACH_LINKS1 ):
+        if (ICE.status==EINFAHRT_RECHTS4):
+            pass
+        elif (ICE.status==NACH_RECHTS3):
+            pass
+        elif (ICE.status==NACH_RECHTS4):
+            pass
     
-    else:
+    elif (BR110.status== NACH_RECHTS3 ):
+        if  (ICE.status==BEREIT_LINKS1):
+            pass
+        elif (ICE.status==EINFAHRT_LINKS1):
+            pass
+        elif (ICE.status==NACH_LINKS1):
+            pass
+    
+    else:        
         print "BR110 =", BR110.status
         print "ICE =", ICE.status
+        print "BR86 =", BR86.status
         print "(Status nicht definiert)"
         
         ICE.stop()
