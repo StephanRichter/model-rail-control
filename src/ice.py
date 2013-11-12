@@ -5,7 +5,7 @@ import time
 
 class ICE(Lok):
     
-    def einfahrtLinks(self):
+    def einfahrtLinks1(self):
         print "ICE: Einfahrt links"
         self.speed(50)
         time.sleep(3)
@@ -16,6 +16,17 @@ class ICE(Lok):
         time.sleep(15)
         self.lichtAus()
             
+    def einfahrtLinks2(self):
+        print "ICE: Einfahrt links"
+        self.speed(50)
+        time.sleep(3)
+        self.speed(30)
+        time.sleep(2)
+        self.stop()
+        self.status=BEREIT_LINKS2
+        time.sleep(15)
+        self.lichtAus()
+
     def einfahrt3(self):
         print "ICE: Einfahrt rechts (Gleis 3)"
         self.status=EINFAHRT_RECHTS3
@@ -125,8 +136,8 @@ class ICE(Lok):
             time.sleep(7)
             einfahrt4() # Weichenstraße
         elif (self.status==EINFAHRT_LINKS1):
-            self.einfahrtLinks()
+            self.einfahrtLinks1()
         elif (self.status==EINFAHRT_LINKS2):
-            self.einfahrtLinks()
+            self.einfahrtLinks2()
 
 

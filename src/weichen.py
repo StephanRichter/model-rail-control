@@ -12,6 +12,8 @@ weiche34=srcp.GA(1,8)
 weiche34.init("N")
 weiche4=srcp.GA(1,4)
 weiche4.init("N")
+weiche5=srcp.GA(1,5)
+weiche5.init("N")
 weiche9=srcp.GA(1,9)
 weiche9.init("N")
 weiche10=srcp.GA(1,10)
@@ -35,6 +37,15 @@ def ausfahrt4():
     weiche1.actuate(0, 1)
     time.sleep(1)
     weiche3.actuate(1, 1)
+
+def einfahrt2():
+    weiche4.actuate(0, 1)
+    time.sleep(1)
+    weiche1.actuate(1, 1)
+    time.sleep(1)
+    weiche4.actuate(1, 1)            
+    time.sleep(1)
+    weiche5.actuate(0, 1)            
 
 def einfahrt3():
     weiche3.actuate(0, 1)
@@ -61,13 +72,13 @@ def bahnhofLinksAbzweig():
     weiche10.actuate(0, 1)
 
 def bahnhofLinksGerade():
-    time.sleep(2)
-    weiche9.actuate(1, 1)
     time.sleep(1)
     weiche9.actuate(1, 1)
     time.sleep(1)
     weiche9.actuate(1, 1)
-    time.sleep(2)
+    time.sleep(1)
+    weiche9.actuate(1, 1)
+    time.sleep(1)
     weiche10.actuate(1, 1)
-    time.sleep(2)
+    time.sleep(1)
 

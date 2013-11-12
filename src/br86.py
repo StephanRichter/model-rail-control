@@ -163,6 +163,16 @@ class BR86(Lok):
         bahnhofLinksGerade()
         self.status=EINFAHRT_LINKS1
 
+    def von1nachRechts2(self,delay):
+        print "BR 86 startet nach rechts 2 in",delay,"sekunden"
+        time.sleep(delay)
+        bahnhofLinksGerade()        
+        self.direction(1)
+        time.sleep(3)
+        self.speed(128)
+        time.sleep(28)
+        einfahrt2()
+
     def von1nachRechts3(self,delay):
         print "BR110 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)

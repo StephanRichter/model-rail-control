@@ -4,12 +4,12 @@ import time,os,srcp
 from weichen import ausfahrt3, weiche10, entkupplenLinks,\
     bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
 
-class BR110(Lok):
+class BR118(Lok):
     
     wendezug = True
         
     def ankuppeln1(self):
-        print "BR 110 Ankuppeln auf Gleis 1 (links)"
+        print "BR 118 Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        
         self.direction(LINKS)
         time.sleep(1)
@@ -23,7 +23,7 @@ class BR110(Lok):
         self.status=BEREIT_LINKS1
         
     def ankuppeln3(self):
-        print "BR 110 Ankuppeln auf Gleis 3 (rechts)"
+        print "BR 118 Ankuppeln auf Gleis 3 (rechts)"
         time.sleep(1)
         einfahrt3()
         time.sleep(2)
@@ -39,7 +39,7 @@ class BR110(Lok):
         self.status=BEREIT_RECHTS3
         
     def einfahrtLinks(self):
-        print "BR 110 fährt auf Gleis 1 (links) ein"
+        print "BR 118 fährt auf Gleis 1 (links) ein"
         self.speed(100)
         time.sleep(4)
         self.speed(80)
@@ -57,7 +57,7 @@ class BR110(Lok):
             self.status=EINGEFAHREN_LINKS1
 
     def einfahrtRechts3(self):
-        print "BR 110 fährt auf Gleis 3 (rechts) ein"
+        print "BR 118 fährt auf Gleis 3 (rechts) ein"
         if (self.wendezug):
             pass
         else:
@@ -84,7 +84,7 @@ class BR110(Lok):
         # überfahren lassen
         time.sleep(2.5)
         self.stop()
-        print "BR 110 Abkuppeln auf Gleis 3 (rechts)"
+        print "BR 118 Abkuppeln auf Gleis 3 (rechts)"
         # anrücken
         time.sleep(1)
         self.direction(0)
@@ -137,7 +137,7 @@ class BR110(Lok):
     def kopfmachenLinks(self):
         time.sleep(1.4)
         self.stop()
-        print "BR 110 Abkuppeln auf Gleis 1 (links)"
+        print "BR 118 Abkuppeln auf Gleis 1 (links)"
 
         #anrücken:
         time.sleep(1)
@@ -164,7 +164,7 @@ class BR110(Lok):
         self.speed(60)
 
     def von1nachRechts3(self,delay):
-        print "BR 110 startet nach rechts 3 in",delay,"sekunden"
+        print "BR 118 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
         bahnhofLinksGerade()        
         self.direction(1)
@@ -174,7 +174,7 @@ class BR110(Lok):
         einfahrt3()
         
     def von3nachLinks1(self,delay=1):
-        print "BR 110 nach links in",delay,"sekunden"
+        print "BR 118 nach links in",delay,"sekunden"
         time.sleep(delay)
         ausfahrt3()
         self.direction(0)
@@ -187,7 +187,7 @@ class BR110(Lok):
         self.status=EINFAHRT_LINKS1
         
     def startEntkuppelnLinks(self,delay=1):
-        print "BR 110 Abkuppeln links"
+        print "BR 118 Abkuppeln links"
         time.sleep(delay)
         weiche10.actuate(1, 1)
         time.sleep(1)
@@ -197,7 +197,7 @@ class BR110(Lok):
         self.speed(41)
 
     def startEntkuppelnRechts(self,delay):
-        print "BR 110 Abkuppeln rechts"
+        print "BR 118 Abkuppeln rechts"
         time.sleep(delay)
         self.status=KOPFMACHEN_RECHTS3  
         self.direction(1)
