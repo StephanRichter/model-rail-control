@@ -4,7 +4,7 @@ import time,os,srcp
 from weichen import *
 
 class BR86(Lok):
-    
+    name = "BR 86"
     def ankuppeln1(self):
         print "Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        
@@ -36,11 +36,11 @@ class BR86(Lok):
     def einfahrtLinks(self):
         print "BR fährt auf Gleis 1 (links) ein"
         self.speed(100)
-        time.sleep(4)
+        time.sleep(3)
         self.speed(80)
         time.sleep(2)
         self.speed(60)
-        time.sleep(3)
+        time.sleep(2)
         self.speed(40)
         time.sleep(4)
         self.speed(20)
@@ -120,7 +120,7 @@ class BR86(Lok):
         self.speed(50)
             
     def kopfmachenLinks(self):
-        time.sleep(3)
+        time.sleep(2.5)
         self.stop()
         print "Abkuppeln auf Gleis 1 (links)"
 
@@ -166,6 +166,8 @@ class BR86(Lok):
     def von1nachRechts2(self,delay):
         print "BR 86 startet nach rechts 2 in",delay,"sekunden"
         time.sleep(delay)
+        self.lichtAn()
+        time.sleep(1)        
         bahnhofLinksGerade()        
         self.direction(1)
         time.sleep(3)
@@ -176,6 +178,8 @@ class BR86(Lok):
     def von1nachRechts3(self,delay):
         print "BR110 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
+        self.lichtAn()
+        time.sleep(1)        
         bahnhofLinksGerade()        
         self.direction(1)
         time.sleep(3)
@@ -186,6 +190,8 @@ class BR86(Lok):
     def von3nachLinks1(self,delay=1):
         print "BR 86 nach links in",delay,"sekunden"
         time.sleep(delay)
+        self.lichtAn()
+        time.sleep(1)        
         ausfahrt3()
         self.direction(0)
         time.sleep(1)

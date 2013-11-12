@@ -7,7 +7,7 @@ from weichen import ausfahrt3, weiche10, entkupplenLinks,\
 class BR110(Lok):
     
     wendezug = True
-        
+    name = "BR 110"   
     def ankuppeln1(self):
         print "BR 110 Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        

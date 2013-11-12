@@ -24,6 +24,11 @@ def ausfahrt1():
     time.sleep(1)
     weiche2.actuate(0, 1)      
 
+def ausfahrt2():
+    weiche4.actuate(1, 1)
+    time.sleep(1)
+    weiche2.actuate(0, 1)
+
 def ausfahrt3():
     weiche2.actuate(0, 1)
     time.sleep(1)

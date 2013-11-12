@@ -4,7 +4,7 @@ from weichen import *
 import time
 
 class ICE(Lok):
-    
+    name = "ICE"
     def einfahrtLinks1(self):
         print "ICE: Einfahrt links"
         self.speed(50)

@@ -25,11 +25,14 @@ NACH_RECHTS4=16
 EINFAHRT_LINKS2=17
 BEREIT_LINKS2=18
 NACH_RECHTS2=19
+BEREIT_RECHTS2=20
     
 RECHTS=1
 LINKS=0
 
-class Lok:    
+class Lok:
+    
+    name = "unbekannte Lok"    
     status=0    
     
     def __init__(self,lok):
@@ -176,5 +179,51 @@ class Lok:
         time.sleep(0.1)
         self.lok.setSpeed(0)
         self.lok.send()
-        
-        
+
+    def state(self):
+        if (self.status == UNDEFINED):
+            print self.name,": UNDEFINED"
+        elif (self.status == ANKUPPELN):
+            print self.name,": ANKUPPELN"
+        elif (self.status == BEREIT_LINKS1):
+            print self.name,": BEREIT_LINKS1"
+        elif (self.status == BEREIT_RECHTS1):
+            print self.name,": BEREIT_RECHTS1"
+        elif (self.status == BEREIT_RECHTS3):
+            print self.name,": BEREIT_RECHTS3"
+        elif (self.status == BEREIT_RECHTS4):
+            print self.name,": BEREIT_RECHTS4"
+        elif (self.status == EINFAHRT_LINKS1):
+            print self.name,": EINFAHRT_LINKS1"
+        elif (self.status == EINFAHRT_RECHTS3):
+            print self.name,": EINFAHRT_RECHTS3"
+        elif (self.status == EINFAHRT_RECHTS4):
+            print self.name,": EINFAHRT_RECHTS4"
+        elif (self.status == EINGEFAHREN_LINKS1):
+            print self.name,": EINGEFAHREN_LINKS1"
+        elif (self.status == EINGEFAHREN_RECHTS3):
+            print self.name,": EINGEFAHREN_RECHTS3"
+        elif (self.status == KOPFMACHEN_LINKS):
+            print self.name,": KOPFMACHEN_LINKS"
+        elif (self.status == KOPFMACHEN_RECHTS3):
+            print self.name,": KOPFMACHEN_RECHTS3"
+        elif (self.status == KRITISCHE_PHASE):
+            print self.name,": KRITISCHE_PHASE"
+        elif (self.status == NACH_RECHTS3):
+            print self.name,": NACH_RECHTS3"
+        elif (self.status == NACH_LINKS1):
+            print self.name,": NACH_LINKS1"
+        elif (self.status == NACH_LINKS2):
+            print self.name,": NACH_LINKS2"
+        elif (self.status == NACH_RECHTS4):
+            print self.name,": NACH_RECHTS4"
+        elif (self.status == EINFAHRT_LINKS2):
+            print self.name,": EINFAHRT_LINKS2"
+        elif (self.status == BEREIT_LINKS2):
+            print self.name,": BEREIT_LINKS2"
+        elif (self.status == NACH_RECHTS2):
+            print self.name,": NACH_RECHTS2"
+        elif (self.status == BEREIT_RECHTS2):
+            print self.name,": BEREIT_RECHTS2"
+        else:
+            print self.name,": unknown:",self.status

@@ -1,11 +1,11 @@
 # coding=utf8
 from lok import *
 import time,os,srcp
-from weichen import ausfahrt3, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
+from weichen import *
 
 class BR118(Lok):
     
+    name = "BR 118"
     wendezug = True
         
     def ankuppeln1(self):
@@ -166,18 +166,37 @@ class BR118(Lok):
     def von1nachRechts3(self,delay):
         print "BR 118 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
-        bahnhofLinksGerade()        
         self.direction(1)
+        self.lichtAn()
+        time.sleep(1)
+        bahnhofLinksGerade()        
         time.sleep(3)
         self.speed(128)
         time.sleep(28)
         einfahrt3()
         
+    def von2nachLinks1(self,delay=1):
+        print "BR 118 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        self.direction(0)
+        self.lichtAn()
+        time.sleep(1)
+        ausfahrt2()
+        time.sleep(1)
+        self.speed(70)
+        time.sleep(16)
+        self.speed(128)
+        time.sleep(6)
+        bahnhofLinksGerade()
+        self.status=EINFAHRT_LINKS1
+
     def von3nachLinks1(self,delay=1):
         print "BR 118 nach links in",delay,"sekunden"
         time.sleep(delay)
-        ausfahrt3()
         self.direction(0)
+        self.lichtAn()
+        time.sleep(1)
+        ausfahrt3()
         time.sleep(1)
         self.speed(70)
         time.sleep(16)
