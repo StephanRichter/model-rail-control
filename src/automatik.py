@@ -48,80 +48,98 @@ while True:
             start_new_thread(lok.action, (val,))    
     
     # folgende Zeilen sind zur Ablaufsteuerung
-    if   ( BR110.status == ANKUPPELN ):
-        if ( ICE.status == BEREIT_RECHTS3 ):
-            pass
-        elif  (ICE.status == BEREIT_RECHTS4):
-            pass
+    if   (( BR110.status == ANKUPPELN )
+         &( ICE.status   == BEREIT_RECHTS3)):
+        pass
+    
+    elif (( BR110.status == ANKUPPELN )
+         &( ICE.status   ==BEREIT_RECHTS4)):
+        pass
         
-        
-        
-        
-    elif ( BR110.status == BEREIT_LINKS1 ):
-        if (ICE.status==BEREIT_RECHTS3):
+    elif (( BR110.status == BEREIT_LINKS1 )
+         &( ICE.status   ==BEREIT_RECHTS3)):        
             BR110.status=NACH_RECHTS3
             ICE.status=NACH_LINKS1
             start_new_thread(BR110.von1nachRechts3,(pause+5,))
             start_new_thread(ICE.von3nachLinks1,(pause+22,))
 
-        elif (ICE.status==BEREIT_RECHTS4):
+    elif (( BR110.status == BEREIT_LINKS1 )
+         &( ICE.status   == BEREIT_RECHTS4)):
+        
             BR110.status=NACH_RECHTS3
             ICE.status=NACH_LINKS1
             start_new_thread(BR110.von1nachRechts3,(pause+5,))
             start_new_thread(ICE.von4nachLinks1,(pause+22,))
     
-    elif (BR110.status== BEREIT_RECHTS3 ):
-        if (ICE.status==BEREIT_LINKS1):        
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS1)
+         &( BR86.status  == BEREIT_RECHTS1)):
             BR110.status=NACH_LINKS1
             ICE.status=NACH_RECHTS4
             start_new_thread(BR110.von3nachLinks1,(pause+1,))
             start_new_thread(ICE.von1nachRechts4,(pause+20,))
     
-    elif ( BR110.status == EINFAHRT_LINKS1 ):
-        if (ICE.status==BEREIT_RECHTS4):
-            pass
-        elif (ICE.status==EINFAHRT_RECHTS4):
-            pass
-        elif ( ICE.status==NACH_RECHTS4):
+    elif (( BR110.status == EINFAHRT_LINKS1 )
+         &( ICE.status   == BEREIT_RECHTS4)):
             pass
 
-    elif (BR110.status== EINGEFAHREN_LINKS1 ):
-        if (ICE.status==BEREIT_RECHTS3):
-            BR110.status=KOPFMACHEN_LINKS
-            start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
-        elif (ICE.status==BEREIT_RECHTS4):
+    elif (( BR110.status == EINFAHRT_LINKS1 )
+         &( ICE.status   == EINFAHRT_RECHTS4)):
+            pass
+
+    elif (( BR110.status == EINFAHRT_LINKS1 )
+         &( ICE.status   == NACH_RECHTS4)):
+            pass
+
+    elif (( BR110.status == EINGEFAHREN_LINKS1 )
+         &( ICE.status   == BEREIT_RECHTS3)):
             BR110.status=KOPFMACHEN_LINKS
             start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
     
-    elif (BR110.status== EINGEFAHREN_RECHTS3 ):
-        if (ICE.status==BEREIT_LINKS1):
+    elif (( BR110.status == EINGEFAHREN_LINKS1 )
+         &( ICE.status   == BEREIT_RECHTS4)):
+            BR110.status=KOPFMACHEN_LINKS
+            start_new_thread(BR110.startEntkuppelnLinks,(pause+5,))
+    
+    elif (( BR110.status == EINGEFAHREN_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS1)):
             BR110.status=KOPFMACHEN_RECHTS3
             start_new_thread(BR110.startEntkuppelnRechts,(pause+5,))
     
-    elif (BR110.status== KOPFMACHEN_LINKS ):
-        if (ICE.status==BEREIT_RECHTS3):
+    elif (( BR110.status == KOPFMACHEN_LINKS )
+         &( ICE.status   == BEREIT_RECHTS3)):
             pass    
-        elif (ICE.status==BEREIT_RECHTS4):
+    
+    elif (( BR110.status == KOPFMACHEN_LINKS )
+         &( ICE.status   == BEREIT_RECHTS4)):
             pass
 
-    elif (BR110.status== KOPFMACHEN_RECHTS3 ):
-        if (ICE.status==BEREIT_LINKS1):
+    elif (( BR110.status == KOPFMACHEN_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS1)):
             pass
 
-    elif (BR110.status== NACH_LINKS1 ):
-        if (ICE.status==EINFAHRT_RECHTS4):
+    elif (( BR110.status == NACH_LINKS1 )
+         &( ICE.status   == EINFAHRT_RECHTS4)):
             pass
-        elif (ICE.status==NACH_RECHTS3):
-            pass
-        elif (ICE.status==NACH_RECHTS4):
+
+    elif (( BR110.status == NACH_LINKS1 )
+         &( ICE.status   == NACH_RECHTS3)):
             pass
     
-    elif (BR110.status== NACH_RECHTS3 ):
-        if  (ICE.status==BEREIT_LINKS1):
+    elif (( BR110.status == NACH_LINKS1 )
+         &( ICE.status   == NACH_RECHTS4)):
             pass
-        elif (ICE.status==EINFAHRT_LINKS1):
+    
+    elif (( BR110.status == NACH_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS1)):
             pass
-        elif (ICE.status==NACH_LINKS1):
+
+    elif (( BR110.status == NACH_RECHTS3 )
+         &( ICE.status   == EINFAHRT_LINKS1)):
+            pass
+
+    elif (( BR110.status == NACH_RECHTS3 )
+         &( ICE.status   == NACH_LINKS1)):
             pass
     
     else:        
