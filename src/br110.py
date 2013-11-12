@@ -28,11 +28,11 @@ class BR110(Lok):
         self.direction(1)
         time.sleep(2)
         self.speed(60)
-        time.sleep(12)
+        time.sleep(11)
         self.speed(20)
         time.sleep(2)
         self.speed(5)
-        time.sleep(4)
+        time.sleep(5)
         self.stop()
         self.status=BEREIT_RECHTS3
         
@@ -45,7 +45,7 @@ class BR110(Lok):
         self.speed(60)
         time.sleep(2)
         self.speed(40)
-        time.sleep(4)
+        time.sleep(2)
         self.speed(20)
         time.sleep(2)
         self.stop()
@@ -61,7 +61,7 @@ class BR110(Lok):
         self.speed(60)
         time.sleep(2)
         self.speed(40)
-        time.sleep(10)
+        time.sleep(7)
         self.speed(20)
         time.sleep(2)
         self.stop()
@@ -123,7 +123,7 @@ class BR110(Lok):
         self.speed(50)
             
     def kopfmachenLinks(self):
-        time.sleep(1.5)
+        time.sleep(1.4)
         self.stop()
         print "Abkuppeln auf Gleis 1 (links)"
 

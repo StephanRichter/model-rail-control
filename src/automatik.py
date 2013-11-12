@@ -26,15 +26,15 @@ BR110 = BR110(srcp.GL(SRCP_BUS,2))
 loks = [ ICE, BR110 ]
 
 #BR110.status=BEREIT_LINKS1
-#BR110.status=BEREIT_RECHTS3
+BR110.status=BEREIT_RECHTS3
 #BR110.status=EINFAHRT_LINKS1
-BR110.status=EINGEFAHREN_LINKS1
+#BR110.status=EINGEFAHREN_LINKS1
 #BR110.status=EINGEFAHREN_RECHTS3
 
 
-#ICE.status=BEREIT_LINKS1
+ICE.status=BEREIT_LINKS1
 #ICE.status=BEREIT_RECHTS3
-ICE.status=BEREIT_RECHTS4
+#ICE.status=BEREIT_RECHTS4
     
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
@@ -102,6 +102,9 @@ while True:
         pass
 
     elif ((BR110.status== KOPFMACHEN_RECHTS3 )&(ICE.status==BEREIT_LINKS1)):
+        pass
+
+    elif ((BR110.status== NACH_LINKS1 )&(ICE.status==EINFAHRT_RECHTS4)):
         pass
 
     elif ((BR110.status== NACH_LINKS1 )&(ICE.status==NACH_RECHTS3)):
