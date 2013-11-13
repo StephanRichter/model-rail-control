@@ -13,7 +13,7 @@ class BR86(Lok):
         bahnhofLinksGerade()
         time.sleep(1)
         self.speed(20)
-        time.sleep(17)
+        time.sleep(19)
         self.stop()
         self.status=BEREIT_LINKS1
         
@@ -44,7 +44,7 @@ class BR86(Lok):
         self.speed(40)
         time.sleep(4)
         self.speed(20)
-        time.sleep(4)
+        time.sleep(5)
         self.stop()
         self.status=EINGEFAHREN_LINKS1
 
@@ -129,7 +129,7 @@ class BR86(Lok):
         self.direction(RECHTS)
         time.sleep(1)        
         self.speed(40)
-        time.sleep(0.5)        
+        time.sleep(0.4)        
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
@@ -174,7 +174,6 @@ class BR86(Lok):
         time.sleep(1)
         self.speed(128)
         time.sleep(20)
-        self.stop()
         einfahrt2()
 
     def von1nachRechts3(self,delay):

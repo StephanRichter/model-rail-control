@@ -210,11 +210,15 @@ class BR110(Lok):
         print "Entkupplerkontakt links"
         if (self.status==KOPFMACHEN_LINKS):
             self.kopfmachenLinks()  
+        else:
+            time.sleep(1)
     
     def entkupplerRechts3Event(self):
         print "Entkupplerkontakt rechts (3)"
         if (self.status==KOPFMACHEN_RECHTS3):
             self.kopfmachenRechts3()     
+        else:
+            time.sleep(1)
             
     def einfahrtLinksEvent(self):
         print "Einfahrtkontakt links"
@@ -224,6 +228,8 @@ class BR110(Lok):
             self.stop()
             time.sleep(1)
             self.ankuppeln1()
+        else:
+            time.sleep(1)
 
     def einfahrtRechtsEvent(self):
         print "Einfahrtkontakt rechts"
@@ -234,3 +240,5 @@ class BR110(Lok):
             self.ankuppeln3()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()
+        else:
+            time.sleep(1)

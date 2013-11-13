@@ -1,3 +1,4 @@
+# coding=utf8
 from thread import start_new_thread
 from lok import *
 from ice import ICE
@@ -30,8 +31,8 @@ BR118 = BR118(srcp.GL(SRCP_BUS,4))
 
 loks = [ ICE, BR110, BR86, BR118 ]
 
-BR86.status=BEREIT_LINKS1
-#BR86.status=BEREIT_RECHTS1
+#BR86.status=BEREIT_LINKS1
+BR86.status=BEREIT_RECHTS1
 #BR86.status=EINGEFAHREN_LINKS1
 
 #BR110.status=BEREIT_LINKS1
@@ -42,9 +43,9 @@ BR110.status=BEREIT_RECHTS3
 
 BR118.status=BEREIT_RECHTS2
 
-ICE.status=BEREIT_LINKS2
+#ICE.status=BEREIT_LINKS2
 #ICE.status=BEREIT_RECHTS3
-#ICE.status=BEREIT_RECHTS4
+ICE.status=BEREIT_RECHTS4
 
     
 while True:    

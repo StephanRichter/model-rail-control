@@ -39,24 +39,21 @@ class BR118(Lok):
         
     def einfahrtLinks(self):
         print "BR 118 fährt auf Gleis 1 (links) ein"
-        #self.speed(100)
-        #time.sleep(4)
-        #self.speed(80)
-        #time.sleep(2)
-        #self.speed(60)
-        #time.sleep(2)
-        #self.speed(40)
-        #time.sleep(4)
-        #self.speed(20)
-        #time.sleep(4)
+        self.speed(100)
+        time.sleep(1)
+        self.speed(80)
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(4)
+        self.speed(20)
+        time.sleep(5)
         self.stop()
         self.status=EINGEFAHREN_LINKS1
             
     def einfahrtRechts2(self):
         print "BR 118 fährt auf Gleis 2 (rechts) ein"
-        time.sleep(2)          
-        self.speed(100)            
-        time.sleep(3)
         self.speed(80)            
         time.sleep(2)
         self.speed(60)
