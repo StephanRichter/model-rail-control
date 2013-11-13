@@ -2,6 +2,10 @@ import time,srcp
 
 entkuppler3=srcp.GA(1,7)
 entkuppler3.init("N")
+entkuppler2=srcp.GA(1,6)
+entkuppler2.init("N")
+weiche12=srcp.GA(1,5)
+weiche12.init("N")
 weiche1=srcp.GA(1,1)
 weiche1.init("N")
 weiche2=srcp.GA(1,2)

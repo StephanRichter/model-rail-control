@@ -32,7 +32,7 @@ BR118 = BR118(srcp.GL(SRCP_BUS,4))
 loks = [ ICE, BR110, BR86, BR118 ]
 
 #BR86.status=BEREIT_LINKS1
-BR86.status=BEREIT_RECHTS1
+BR86.status=EINGEFAHREN_RECHTS2
 #BR86.status=EINGEFAHREN_LINKS1
 
 #BR110.status=BEREIT_LINKS1
@@ -41,11 +41,11 @@ BR110.status=BEREIT_RECHTS3
 #BR110.status=EINGEFAHREN_LINKS1
 #BR110.status=EINGEFAHREN_RECHTS3
 
-BR118.status=BEREIT_RECHTS2
+BR118.status=EINGEFAHREN_LINKS1
 
 #ICE.status=BEREIT_LINKS2
 #ICE.status=BEREIT_RECHTS3
-ICE.status=BEREIT_RECHTS4
+ICE.status=BEREIT_LINKS2
 
     
 while True:    
@@ -103,8 +103,21 @@ while True:
         
         BR86.status=NACH_RECHTS2
         BR118.status=NACH_LINKS1
-        start_new_thread(BR86.von1nachRechts2,(pause,)) # hier gehts weiter, sobald der Einfahrtkontakt links
-        start_new_thread(BR118.von2nachLinks1,(pause+8,)) # auch von der BR 118 ausgelöst wird
+        start_new_thread(BR86.von1nachRechts2,(pause,))
+        start_new_thread(BR118.von2nachLinks1,(pause+8,))
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):
+        BR86.status=KOPFMACHEN_RECHTS2
+        start_new_thread(BR86.startEntkuppelnRechts2,(pause+1,))
+    
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == KOPFMACHEN_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):
+        pass
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)

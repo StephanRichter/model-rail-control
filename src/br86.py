@@ -65,6 +65,62 @@ class BR86(Lok):
         time.sleep(1)
         self.status=EINGEFAHREN_RECHTS3
         
+    def kopfmachenRechts2(self):
+        # überfahren lassen
+#        time.sleep(2.5)
+        self.stop()
+        print "Abkuppeln auf Gleis 2 (rechts)"
+        # anrücken
+        time.sleep(1)
+        self.direction(LINKS)
+        self.speed(20)
+        time.sleep(1)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.direction(RECHTS)
+        entkuppler2.actuate(0, 1,0)
+        time.sleep(1)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.2)        
+        self.speed(40)
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)        
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)
+        entkuppler2.actuate(0, 1, 0)
+        time.sleep(0.1)
+        time.sleep(3)  
+        self.stop()
+        self.status=0
+        return
+        time.sleep(2)      
+        weiche34.actuate(1, 1)
+        time.sleep(1)
+        einfahrt2()
+        time.sleep(2)
+        self.direction(0)
+        self.speed(50)
+            
     def kopfmachenRechts3(self):
         # überfahren lassen
         time.sleep(2.5)
@@ -72,7 +128,7 @@ class BR86(Lok):
         print "Abkuppeln auf Gleis 3 (rechts)"
         # anrücken
         time.sleep(1)
-        self.direction(0)
+        self.direction(LINKS)
         self.speed(1)
         time.sleep(1)        
         entkuppler3.actuate(0, 1, 0)
@@ -112,7 +168,7 @@ class BR86(Lok):
         time.sleep(3)  
         self.stop()
         time.sleep(2)      
-        weiche34.actuate(1, 1)
+        weiche12.actuate(1, 1)
         time.sleep(1)
         einfahrt4()
         time.sleep(2)
@@ -213,8 +269,16 @@ class BR86(Lok):
         self.status=KOPFMACHEN_LINKS
         self.speed(41)
 
-    def startEntkuppelnRechts(self,delay):
-        print "Abkuppeln rechts"
+    def startEntkuppelnRechts2(self,delay):
+        print "BR 86 Abkuppeln rechts Gleis (2)"
+        time.sleep(delay)
+        self.status=KOPFMACHEN_RECHTS2  
+        self.direction(1)
+        time.sleep(0.5)        
+        self.speed(20)
+
+    def startEntkuppelnRechts3(self,delay):
+        print "BR 86 Abkuppeln rechts Gleis (2)"
         time.sleep(delay)
         self.status=KOPFMACHEN_RECHTS3  
         self.direction(1)
@@ -227,6 +291,10 @@ class BR86(Lok):
         if (self.status==KOPFMACHEN_LINKS):
             self.kopfmachenLinks()  
     
+    def entkupplerRechts2Event(self):
+        if (self.status==KOPFMACHEN_RECHTS2):
+            self.kopfmachenRechts2()     
+
     def entkupplerRechts3Event(self):
         if (self.status==KOPFMACHEN_RECHTS3):
             self.kopfmachenRechts3()     
@@ -238,6 +306,8 @@ class BR86(Lok):
             self.stop()
             time.sleep(1)
             self.ankuppeln1()
+        elif (self.status==KOPFMACHEN_RECHTS2):
+            self.notbremse()
 
     def einfahrtRechtsEvent(self):
         if (self.status==KOPFMACHEN_RECHTS3):
