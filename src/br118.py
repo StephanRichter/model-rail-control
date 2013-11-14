@@ -14,8 +14,8 @@ class BR118(Lok):
         time.sleep(1)
         bahnhofLinksGerade()
         time.sleep(1)
-        self.speed(60)
-        time.sleep(8)
+        self.speed(40)
+        time.sleep(4)
         self.speed(20)
         time.sleep(11)
         self.stop()
@@ -48,9 +48,8 @@ class BR118(Lok):
         self.speed(40)
         time.sleep(4)
         self.speed(20)
-        time.sleep(5)
-        self.stop()
-        self.status=EINGEFAHREN_LINKS1
+        time.sleep(2)
+        self.speed(10)
             
     def einfahrtRechts2(self):
         print "BR 118 fährt auf Gleis 2 (rechts) ein"
@@ -91,7 +90,7 @@ class BR118(Lok):
         print "BR 118 Abkuppeln auf Gleis 3 (rechts)"
         # anrücken
         time.sleep(1)
-        self.direction(0)
+        self.direction(LINKS)
         self.speed(1)
         time.sleep(1)        
         entkuppler3.actuate(0, 1, 0)
@@ -106,7 +105,7 @@ class BR118(Lok):
         time.sleep(0.2)        
         entkuppler3.actuate(0, 1, 0)
         time.sleep(0.2)        
-        self.direction(1)
+        self.direction(RECHTS)
         entkuppler3.actuate(0, 1,0)
         time.sleep(1)        
         entkuppler3.actuate(0, 1, 0)
@@ -135,11 +134,11 @@ class BR118(Lok):
         time.sleep(1)
         einfahrt4()
         time.sleep(2)
-        self.direction(0)
+        self.direction(LINKS)
         self.speed(50)
             
     def kopfmachenLinks(self):
-        time.sleep(1.4)
+        time.sleep(2.15)
         self.stop()
         print "BR 118 Abkuppeln auf Gleis 1 (links)"
 
@@ -152,7 +151,7 @@ class BR118(Lok):
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
-        self.direction(0)
+        self.direction(LINKS)
         entkupplenLinks(2)        
         self.speed(40)
         entkupplenLinks(2)
@@ -163,7 +162,7 @@ class BR118(Lok):
         time.sleep(1)        
         weiche10.actuate(0, 1)
         time.sleep(1)        
-        self.direction(1)
+        self.direction(RECHTS)
         time.sleep(1)
         self.speed(60)
 
@@ -216,6 +215,7 @@ class BR118(Lok):
         time.sleep(1)        
         self.status=KOPFMACHEN_LINKS
         self.speed(41)
+        self.kopfmachenLinks()
 
     def startEntkuppelnRechts(self,delay):
         print "BR 118 Abkuppeln rechts"
@@ -228,8 +228,9 @@ class BR118(Lok):
 # EVENTS
         
     def entkupplerLinksEvent(self):
-        if (self.status==KOPFMACHEN_LINKS):
-            self.kopfmachenLinks()  
+        if (self.status==EINFAHRT_LINKS1):
+            self.stop()
+            self.status=EINGEFAHREN_LINKS1
     
     def entkupplerRechts3Event(self):
         if (self.status==KOPFMACHEN_RECHTS3):
