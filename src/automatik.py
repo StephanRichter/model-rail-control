@@ -21,7 +21,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=10
+pause=6
 
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
@@ -29,6 +29,11 @@ BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR118 = BR118(srcp.GL(SRCP_BUS,4))
 
 loks = [ ICE, BR110, BR86, BR118 ]
+
+for lok in loks:
+    lok.direction(LINKS)
+    lok.lichtAn()
+    time.sleep(1)
 
 #BR110.status=BEREIT_LINKS1
 #BR110.status=BEREIT_LINKS2
@@ -172,6 +177,12 @@ while True:
         states()
         ICE.status=NACH_RECHTS1
         start_new_thread(ICE.von2nachRechts1,(pause,))
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == EINFAHRT_LINKS1)):
+        pass
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)

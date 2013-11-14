@@ -63,6 +63,19 @@ class BR86(Lok):
         time.sleep(6)
         self.stop()
         self.status=EINGEFAHREN_LINKS1
+        
+    def einfahrtRechts2(self):
+        print "BR 86 fährt auf Gleis 2 (rechts) ein"
+        self.speed(80)            
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(4)
+        self.speed(40)
+        time.sleep(10)
+        self.speed(20)
+        time.sleep(1)
+        self.stop()
+        self.status=EINGEFAHREN_RECHTS2
 
     def einfahrtRechts3(self):
         print "BR 86 fährt auf Gleis 3 (rechts) ein"
@@ -81,6 +94,35 @@ class BR86(Lok):
         time.sleep(1)
         self.status=EINGEFAHREN_RECHTS3
         
+    def kopfmachenLinks(self):
+        time.sleep(2.5)
+        self.stop()
+        print "Abkuppeln auf Gleis 1 (links)"
+
+        #anrücken:
+        time.sleep(1)
+        self.direction(RECHTS)
+        time.sleep(1)        
+        self.speed(40)
+        time.sleep(0.4)        
+        entkupplenLinks(2)
+        self.stop()
+        time.sleep(0.5)
+        self.direction(0)
+        entkupplenLinks(2)        
+        self.speed(40)
+        entkupplenLinks(2)
+        time.sleep(4)
+        self.stop()
+        time.sleep(1)        
+        weiche10.actuate(0, 1)
+        time.sleep(1)        
+        weiche10.actuate(0, 1)
+        time.sleep(1)        
+        self.direction(1)
+        time.sleep(1)
+        self.speed(60)
+
     def kopfmachenRechts2(self):
         # überfahren lassen
 #        time.sleep(2.5)
@@ -184,35 +226,6 @@ class BR86(Lok):
         self.direction(0)
         self.speed(50)
             
-    def kopfmachenLinks(self):
-        time.sleep(2.5)
-        self.stop()
-        print "Abkuppeln auf Gleis 1 (links)"
-
-        #anrücken:
-        time.sleep(1)
-        self.direction(RECHTS)
-        time.sleep(1)        
-        self.speed(40)
-        time.sleep(0.4)        
-        entkupplenLinks(2)
-        self.stop()
-        time.sleep(0.5)
-        self.direction(0)
-        entkupplenLinks(2)        
-        self.speed(40)
-        entkupplenLinks(2)
-        time.sleep(4)
-        self.stop()
-        time.sleep(1)        
-        weiche10.actuate(0, 1)
-        time.sleep(1)        
-        weiche10.actuate(0, 1)
-        time.sleep(1)        
-        self.direction(1)
-        time.sleep(1)
-        self.speed(60)
-
     def von1nachLinks1(self,delay=1):
         print "BR 86 nach links in",delay,"sekunden"
         time.sleep(delay)
@@ -231,7 +244,7 @@ class BR86(Lok):
     def von1nachRechts2(self,delay):
         print "BR 86 startet nach rechts 2 in",delay,"sekunden"
         time.sleep(delay)
-        self.direction(1)
+        self.direction(RECHTS)
         time.sleep(0.5)
         self.lichtAn()
         time.sleep(0.5)        
