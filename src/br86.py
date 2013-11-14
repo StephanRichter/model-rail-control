@@ -253,6 +253,21 @@ class BR86(Lok):
         time.sleep(28)
         einfahrt3()
         
+    def von2nachLinks1(self,delay=1):
+        print "BR 86 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        self.lichtAn()
+        time.sleep(1)        
+        ausfahrt2()
+        self.direction(0)
+        time.sleep(1)
+        self.speed(70)
+        time.sleep(16)
+        self.speed(128)
+        time.sleep(6)
+        bahnhofLinksGerade()
+        self.status=EINFAHRT_LINKS1        
+        
     def von3nachLinks1(self,delay=1):
         print "BR 86 nach links in",delay,"sekunden"
         time.sleep(delay)

@@ -165,8 +165,21 @@ class BR118(Lok):
         self.direction(RECHTS)
         time.sleep(1)
         self.speed(60)
+        
+    def von1nachRechts2(self,delay=1):
+        print "BR 118 startet nach rechts 2 in",delay,"sekunden"
+        time.sleep(delay)
+        self.direction(1)
+        self.lichtAn()
+        time.sleep(1)
+        bahnhofLinksGerade()        
+        time.sleep(3)
+        self.speed(128)
+        time.sleep(10)
+        einfahrt2()
+        
 
-    def von1nachRechts3(self,delay):
+    def von1nachRechts3(self,delay=1):
         print "BR 118 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
         self.direction(1)

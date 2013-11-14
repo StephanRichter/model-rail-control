@@ -9,7 +9,6 @@ from mcp23s17 import *
 from kontakte import *
 import time,os
 
-
 try:
     import srcp
 except:
@@ -90,6 +89,27 @@ while True:
             start_new_thread(BR110.von1nachRechts3,(pause+5,))
             start_new_thread(ICE.von4nachLinks1,(pause+22,))
     
+    elif (( BR110.status == BEREIT_LINKS2 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        BR86.status=NACH_LINKS1
+        BR118.status=NACH_RECHTS2
+        start_new_thread(BR86.von2nachLinks1, (pause,))     # hier gehts weiter
+        start_new_thread(BR118.von1nachRechts2, (pause,))   # hier gehts weiter
+        
+    elif (( BR110.status == BEREIT_LINKS2 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == EINFAHRT_LINKS1)
+         &( BR118.status == NACH_RECHTS2)):
+        pass
+
+    elif (( BR110.status == BEREIT_LINKS2 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == NACH_LINKS1)
+         &( BR118.status == NACH_RECHTS2)):
+        pass
+
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS1)
          &( BR86.status  == BEREIT_RECHTS1)
@@ -165,7 +185,7 @@ while True:
          &( BR86.status  == BEREIT_RECHTS2)
          &( BR118.status == EINGEFAHREN_LINKS1)):
         BR118.status=KOPFMACHEN_LINKS
-        start_new_thread(BR118.startEntkuppelnLinks,(pause,)) #hier gehts weiter
+        start_new_thread(BR118.startEntkuppelnLinks,(pause,))
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_RECHTS1)
