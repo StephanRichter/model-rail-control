@@ -62,11 +62,17 @@ def einfahrt1():
 def einfahrt2():
     print "Einfahrt 2"
     weiche4.actuate(0, 1)
-    time.sleep(0.5)
+    time.sleep(1)
+    weiche4.actuate(0, 1)
+    time.sleep(1)
+    weiche4.actuate(0, 1)
+    time.sleep(1)
+    weiche4.actuate(0, 1)
+    time.sleep(1)
     weiche1.actuate(1, 1)
-    time.sleep(0.5)
+    time.sleep(1)
     weiche4.actuate(1, 1)            
-    time.sleep(0.5)
+    time.sleep(1)
     weiche5.actuate(0, 1)            
 
 def einfahrt3():

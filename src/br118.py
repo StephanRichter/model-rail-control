@@ -56,15 +56,10 @@ class BR118(Lok):
         self.speed(80)            
         time.sleep(2)
         self.speed(60)
-        time.sleep(2)
+        time.sleep(4)
         self.speed(40)
         time.sleep(7)
         self.speed(20)
-        time.sleep(2)
-        self.stop()
-        time.sleep(1)
-        self.status=EINGEFAHREN_RECHTS2
-
 
     def einfahrtRechts3(self):
         print "BR 118 fährt auf Gleis 3 (rechts) ein"
@@ -244,6 +239,13 @@ class BR118(Lok):
         if (self.status==EINFAHRT_LINKS1):
             self.stop()
             self.status=EINGEFAHREN_LINKS1
+
+    def entkupplerRechts2Event(self):
+        if (self.status==NACH_RECHTS2):
+            time.sleep(2)
+            self.stop()
+            time.sleep(1)
+            self.status=EINGEFAHREN_RECHTS2
     
     def entkupplerRechts3Event(self):
         if (self.status==KOPFMACHEN_RECHTS3):

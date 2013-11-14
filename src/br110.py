@@ -182,11 +182,19 @@ class BR110(Lok):
         time.sleep(1)
         self.speed(60)
 
+    def von2nachRechts3(self,delay):
+        print "BR 110 startet nach rechts 3 in",delay,"sekunden"
+        time.sleep(delay)
+        bahnhofLinksAbzweig()        
+        self.direction(RECHTS)
+        time.sleep(3)
+        self.speed(50)
+
     def von1nachRechts3(self,delay):
         print "BR 110 startet nach rechts 3 in",delay,"sekunden"
         time.sleep(delay)
         bahnhofLinksGerade()        
-        self.direction(1)
+        self.direction(RECHTS)
         time.sleep(3)
         self.speed(128)
         time.sleep(28)
@@ -262,6 +270,11 @@ class BR110(Lok):
             self.stop()
             time.sleep(1)
             self.ankuppeln1()
+        elif (self.status==NACH_RECHTS3):
+            self.speed(128)
+            time.sleep(5)
+            einfahrt3()
+            self.status=EINFAHRT_RECHTS3
         else:
             time.sleep(1)
 

@@ -6,7 +6,7 @@ from weichen import *
 class BR86(Lok):
     name = "BR 86 "
     def ankuppeln1(self):
-        print "Ankuppeln auf Gleis 1 (links)"
+        print "BR 86 Ankuppeln auf Gleis 1 (links)"
         self.status=ANKUPPELN        
         self.direction(LINKS)
         time.sleep(1)
@@ -18,7 +18,7 @@ class BR86(Lok):
         self.status=BEREIT_LINKS1
         
     def ankuppeln2(self):
-        print "Ankuppeln auf Gleis 2 (rechts)"
+        print "BR 86 Ankuppeln auf Gleis 2 (rechts)"
         time.sleep(1)
         einfahrt2()
         time.sleep(2)
@@ -34,7 +34,7 @@ class BR86(Lok):
         self.status=BEREIT_RECHTS2
         
     def ankuppeln3(self):
-        print "Ankuppeln auf Gleis 3 (rechts)"
+        print "BR 86 Ankuppeln auf Gleis 3 (rechts)"
         time.sleep(1)
         einfahrt3()
         time.sleep(2)
@@ -50,7 +50,7 @@ class BR86(Lok):
         self.status=BEREIT_RECHTS3
 
     def einfahrtLinks(self):
-        print "BR fährt auf Gleis 1 (links) ein"
+        print "BR 86 fährt auf Gleis 1 (links) ein"
         self.speed(100)
         time.sleep(3)
         self.speed(80)
@@ -58,14 +58,14 @@ class BR86(Lok):
         self.speed(60)
         time.sleep(2)
         self.speed(40)
-        time.sleep(4)
+        time.sleep(6)
         self.speed(20)
-        time.sleep(5)
+        time.sleep(6)
         self.stop()
         self.status=EINGEFAHREN_LINKS1
 
     def einfahrtRechts3(self):
-        print "BR fährt auf Gleis 3 (rechts) ein"
+        print "BR 86 fährt auf Gleis 3 (rechts) ein"
         time.sleep(2)          
         self.speed(100)            
         time.sleep(3)
