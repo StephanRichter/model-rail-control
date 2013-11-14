@@ -17,6 +17,22 @@ class BR86(Lok):
         self.stop()
         self.status=BEREIT_LINKS1
         
+    def ankuppeln2(self):
+        print "Ankuppeln auf Gleis 2 (rechts)"
+        time.sleep(1)
+        einfahrt2()
+        time.sleep(2)
+        self.direction(RECHTS)
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(5)
+        self.speed(20)
+        time.sleep(2)
+        self.speed(5)
+        time.sleep(20)
+        self.stop()
+        self.status=BEREIT_RECHTS2
+        
     def ankuppeln3(self):
         print "Ankuppeln auf Gleis 3 (rechts)"
         time.sleep(1)
@@ -32,7 +48,7 @@ class BR86(Lok):
         time.sleep(5)
         self.stop()
         self.status=BEREIT_RECHTS3
-        
+
     def einfahrtLinks(self):
         print "BR fährt auf Gleis 1 (links) ein"
         self.speed(100)
@@ -73,53 +89,46 @@ class BR86(Lok):
         # anrücken
         time.sleep(1)
         self.direction(LINKS)
-        self.speed(20)
-        time.sleep(1)        
-        entkuppler2.actuate(0, 1, 0)
+        self.speed(10)
+        time.sleep(0.5)        
+        entkuppler2.actuate(1, 1, 0)
         time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
+        entkuppler2.actuate(1, 1, 0)
         time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
+        entkuppler2.actuate(1, 1, 0)
         time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
+        entkuppler2.actuate(1, 1, 0)
         time.sleep(0.2)        
         self.direction(RECHTS)
-        entkuppler2.actuate(0, 1,0)
-        time.sleep(1)        
-        entkuppler2.actuate(0, 1, 0)
+        entkuppler2.actuate(1, 1,0)
         time.sleep(0.2)        
-        entkuppler2.actuate(0, 1, 0)
+        entkuppler2.actuate(1, 1,0)
         time.sleep(0.2)        
-        self.speed(40)
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)        
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)        
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)        
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)
-        entkuppler2.actuate(0, 1, 0)
-        time.sleep(0.1)
-        time.sleep(3)  
+        entkuppler2.actuate(1, 1,0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)        
+        self.speed(20)
+        entkuppler2.actuate(1, 1,0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1,0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(4)
         self.stop()
-        self.status=0
-        return
-        time.sleep(2)      
-        weiche34.actuate(1, 1)
+        time.sleep(1)      
+        einfahrt1()
         time.sleep(1)
-        einfahrt2()
-        time.sleep(2)
-        self.direction(0)
-        self.speed(50)
+        weiche12.actuate(1, 1)
+        time.sleep(1)
+        self.direction(LINKS)
+        self.speed(70)
             
     def kopfmachenRechts3(self):
         # überfahren lassen
@@ -272,7 +281,9 @@ class BR86(Lok):
     def startEntkuppelnRechts2(self,delay):
         print "BR 86 Abkuppeln rechts Gleis (2)"
         time.sleep(delay)
-        self.status=KOPFMACHEN_RECHTS2  
+        self.status=KOPFMACHEN_RECHTS2
+        weiche12.actuate(0, 1)
+        time.sleep(0.5)  
         self.direction(1)
         time.sleep(0.5)        
         self.speed(20)
@@ -310,7 +321,10 @@ class BR86(Lok):
             self.notbremse()
 
     def einfahrtRechtsEvent(self):
-        if (self.status==KOPFMACHEN_RECHTS3):
+        if (self.status==KOPFMACHEN_RECHTS2):
+            self.stop()
+            self.ankuppeln2()
+        elif (self.status==KOPFMACHEN_RECHTS3):
             self.stop()
             time.sleep(2)
             weiche34.actuate(0, 1)

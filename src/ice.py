@@ -122,13 +122,6 @@ class ICE(Lok):
             self.einfahrt3() # Abbremsen
         elif (self.status==NACH_RECHTS4):
             self.einfahrt4() # Abbremsen
-        elif (self.status==BEREIT_LINKS1):
-            pass
-        else:
-            self.stop()
-            print "KOntakt ausgelöst, aber keine Ereignis definiert!"
-            print "status: ", self.status
-            self.notbremse()
             
     def einfahrtLinksEvent(self):
         if (self.status==NACH_RECHTS4):
