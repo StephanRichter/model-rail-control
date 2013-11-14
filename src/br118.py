@@ -38,7 +38,7 @@ class BR118(Lok):
         self.status=BEREIT_RECHTS3
         
     def einfahrtLinks(self):
-        print "BR 118 fährt auf Gleis 1 (links) ein"
+        print "BR 118 fährt auf Gleis 1 (links) ein. Das muss so geändert werden, dass die letzte Achse der Lok über dem Reedkontakt zum stehen kommt"
         self.speed(100)
         time.sleep(1)
         self.speed(80)

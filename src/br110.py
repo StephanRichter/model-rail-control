@@ -2,7 +2,8 @@
 from lok import *
 import time,os,srcp
 from weichen import ausfahrt3, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4
+    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4,\
+    bahnhofLinksAbzweig
 
 class BR110(Lok):
     
@@ -39,7 +40,7 @@ class BR110(Lok):
         self.status=BEREIT_RECHTS3
         
     def einfahrtLinks(self):
-        print "BR 110 fährt auf Gleis 1 (links) ein - Das muss hier so geändert werden, dass der letzte Waggon von der Weiche weg ist"
+        print "BR 110 fährt auf Gleis 1 (links) ein"
         self.speed(100)
         time.sleep(4)
         self.speed(80)
@@ -55,6 +56,24 @@ class BR110(Lok):
             self.status=BEREIT_LINKS1
         else:
             self.status=EINGEFAHREN_LINKS1
+
+    def einfahrtLinks2(self):
+        print "BR 110 fährt auf Gleis 2 (links) ein"
+        self.speed(100)
+        time.sleep(4)
+        self.speed(80)
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(4)
+        self.speed(20)
+        time.sleep(4)
+        self.stop()
+        if (self.wendezug):
+            self.status=BEREIT_LINKS2
+        else:
+            self.status=EINGEFAHREN_LINKS2
 
     def einfahrtRechts3(self):
         print "BR 110 fährt auf Gleis 3 (rechts) ein"
@@ -186,6 +205,19 @@ class BR110(Lok):
         bahnhofLinksGerade()
         self.status=EINFAHRT_LINKS1
         
+    def von3nachLinks2(self,delay=1):
+        print "BR 110 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        ausfahrt3()
+        self.direction(0)
+        time.sleep(1)
+        self.speed(70)
+        time.sleep(16)
+        self.speed(128)
+        time.sleep(6)
+        bahnhofLinksAbzweig()
+        self.status=EINFAHRT_LINKS2
+    
     def startEntkuppelnLinks(self,delay=1):
         print "BR 110 Abkuppeln links"
         time.sleep(delay)
@@ -224,6 +256,8 @@ class BR110(Lok):
         print "Einfahrtkontakt links"
         if (self.status==EINFAHRT_LINKS1):
             self.einfahrtLinks()
+        elif (self.status==EINFAHRT_LINKS2):
+            self.einfahrtLinks2()
         elif (self.status==KOPFMACHEN_LINKS):
             self.stop()
             time.sleep(1)

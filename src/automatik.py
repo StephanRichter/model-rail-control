@@ -37,12 +37,12 @@ BR86.status=BEREIT_RECHTS2
 #BR86.status=EINGEFAHREN_LINKS1
 
 #BR110.status=BEREIT_LINKS1
-BR110.status=BEREIT_RECHTS3
+BR110.status=BEREIT_LINKS2
 #BR110.status=EINFAHRT_LINKS1
 #BR110.status=EINGEFAHREN_LINKS1
 #BR110.status=EINGEFAHREN_RECHTS3
 
-BR118.status=EINGEFAHREN_LINKS1
+BR118.status=BEREIT_LINKS1
 
 #ICE.status=BEREIT_LINKS2
 ICE.status=BEREIT_RECHTS1
@@ -151,6 +151,14 @@ while True:
          &( BR86.status  == BEREIT_RECHTS2)
          &( BR118.status == ANKUPPELN)):
         pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        BR110.status=NACH_LINKS2
+        start_new_thread(BR110.von3nachLinks2,(pause,))
+
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_RECHTS1)
@@ -267,6 +275,12 @@ while True:
          &( BR118.status == BEREIT_RECHTS2)):
             pass
 
+    elif (( BR110.status == EINFAHRT_LINKS2 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+            pass
+
     elif (( BR110.status == EINGEFAHREN_LINKS1 )
          &( ICE.status   == BEREIT_RECHTS3)
          &( BR86.status  == BEREIT_RECHTS1)
@@ -327,6 +341,12 @@ while True:
          &( BR118.status == BEREIT_RECHTS2)):
             pass
     
+    elif (( BR110.status == NACH_LINKS2 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        pass
+
     elif (( BR110.status == NACH_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS1)
          &( BR86.status  == BEREIT_RECHTS1)
