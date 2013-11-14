@@ -112,7 +112,7 @@ while True:
          &( BR86.status  == BEREIT_RECHTS2)
          &( BR118.status == EINGEFAHREN_LINKS1)):
         ICE.status=NACH_RECHTS1
-        start_new_thread(ICE.von2nachRechts1,(pause,)) # hier gehts weiter
+        start_new_thread(ICE.von2nachRechts1,(pause,))
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)

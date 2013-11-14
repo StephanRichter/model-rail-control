@@ -36,8 +36,6 @@ class ICE(Lok):
         time.sleep(1)
         self.speed(20)
         time.sleep(1)
-        self.speed(10)
-        time.sleep(1)
         self.stop()
         self.status=BEREIT_RECHTS1
         time.sleep(15)
