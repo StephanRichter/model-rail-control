@@ -28,6 +28,8 @@ NACH_RECHTS2=19
 BEREIT_RECHTS2=20
 EINGEFAHREN_RECHTS2=21
 KOPFMACHEN_RECHTS2=22
+NACH_RECHTS1=23
+EINFAHRT_RECHTS1=24
     
 RECHTS=1
 LINKS=0
@@ -232,5 +234,9 @@ class Lok:
             print self.name,": EINGEFAHREN_RECHTS2"
         elif (self.status == KOPFMACHEN_RECHTS2):
             print self.name,": KOPFMACHEN_RECHTS2"
+        elif (self.status == NACH_RECHTS1):
+            print self.name,": NACH_RECHTS1"
+        elif (self.status == EINFAHRT_RECHTS1):
+            print self.name,": EINFAHRT_RECHTS1"
         else:
             print self.name,": unknown:",self.status

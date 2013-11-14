@@ -32,7 +32,8 @@ BR118 = BR118(srcp.GL(SRCP_BUS,4))
 loks = [ ICE, BR110, BR86, BR118 ]
 
 #BR86.status=BEREIT_LINKS1
-BR86.status=EINGEFAHREN_RECHTS2
+BR86.status=BEREIT_RECHTS2
+#BR86.status=EINGEFAHREN_RECHTS2
 #BR86.status=EINGEFAHREN_LINKS1
 
 #BR110.status=BEREIT_LINKS1
@@ -105,6 +106,13 @@ while True:
         BR118.status=NACH_LINKS1
         start_new_thread(BR86.von1nachRechts2,(pause,))
         start_new_thread(BR118.von2nachLinks1,(pause+8,))
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):
+        ICE.status=NACH_RECHTS1
+        start_new_thread(ICE.von2nachRechts1,(pause,)) # hier gehts weiter
 
     elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == BEREIT_LINKS2)
@@ -192,6 +200,12 @@ while True:
         pass
 
     elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == EINFAHRT_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
          &( ICE.status   == EINFAHRT_RECHTS4)
          &( BR86.status  == BEREIT_RECHTS1)
          &( BR118.status == BEREIT_RECHTS2)):
@@ -201,6 +215,12 @@ while True:
          &( ICE.status   == NACH_LINKS2)
          &( BR86.status  == BEREIT_LINKS1)
          &( BR118.status == BEREIT_RECHTS2)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS3 )
+         &( ICE.status   == NACH_RECHTS1)
+         &( BR86.status  == BEREIT_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):
         pass
 
     elif (( BR110.status == BEREIT_RECHTS3 )

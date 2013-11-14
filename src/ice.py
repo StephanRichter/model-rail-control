@@ -27,6 +27,22 @@ class ICE(Lok):
         time.sleep(15)
         self.lichtAus()
 
+    def einfahrt1(self):
+        print "ICE: Einfahrt rechts (Gleis 1)"
+        self.status=EINFAHRT_RECHTS1
+        self.speed(60)
+        time.sleep(3)
+        self.speed(40)
+        time.sleep(1)
+        self.speed(20)
+        time.sleep(1)
+        self.speed(10)
+        time.sleep(1)
+        self.stop()
+        self.status=BEREIT_RECHTS1
+        time.sleep(15)
+        self.lichtAus()
+
     def einfahrt3(self):
         print "ICE: Einfahrt rechts (Gleis 3)"
         self.status=EINFAHRT_RECHTS3
@@ -96,6 +112,17 @@ class ICE(Lok):
         time.sleep(8)
         bahnhofLinksAbzweig()
         self.status=EINFAHRT_LINKS2
+        
+    def von2nachRechts1(self,delay=1):
+        print "ICE startet nach rechts 1 in",delay,"sekunden"
+        self.direction(RECHTS)
+        time.sleep(1)
+        self.lichtAn()
+        time.sleep(1)
+        time.sleep(delay)
+        bahnhofLinksAbzweig()
+        time.sleep(2)
+        self.speed(50)
 
     def von1nachRechts3(self,delay=1):
         print "ICE startet nach rechts 3 in",delay,"sekunden"
@@ -118,16 +145,23 @@ class ICE(Lok):
         self.speed(50)
    
     def einfahrtRechtsEvent(self):
+        if (self.status==NACH_RECHTS1):
+            self.einfahrt1() # Abbremsen
         if (self.status==NACH_RECHTS3):
             self.einfahrt3() # Abbremsen
         elif (self.status==NACH_RECHTS4):
             self.einfahrt4() # Abbremsen
             
     def einfahrtLinksEvent(self):
-        if (self.status==NACH_RECHTS4):
+        if (self.status==NACH_RECHTS1):
+            self.speed(128)            
+            time.sleep(7)
+            einfahrt1() # Weichenstraße
+        elif (self.status==NACH_RECHTS4):
             self.speed(128)            
             time.sleep(7)
             einfahrt4() # Weichenstraße
+
         elif (self.status==EINFAHRT_LINKS1):
             self.einfahrtLinks1()
         elif (self.status==EINFAHRT_LINKS2):

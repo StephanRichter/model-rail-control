@@ -39,7 +39,7 @@ class BR110(Lok):
         self.status=BEREIT_RECHTS3
         
     def einfahrtLinks(self):
-        print "BR 110 fährt auf Gleis 1 (links) ein"
+        print "BR 110 fährt auf Gleis 1 (links) ein - Das muss hier so geändert werden, dass der letzte Waggon von der Weiche weg ist"
         self.speed(100)
         time.sleep(4)
         self.speed(80)
