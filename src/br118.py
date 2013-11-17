@@ -21,21 +21,21 @@ class BR118(Lok):
         self.stop()
         self.status=BEREIT_LINKS1
         
-    def ankuppeln3(self):
-        print "BR 118 Ankuppeln auf Gleis 3 (rechts)"
+    def ankuppeln2(self):
+        print "BR 118 Ankuppeln auf Gleis 2 (rechts)"
         time.sleep(1)
-        einfahrt3()
+        einfahrt2()
         time.sleep(2)
-        self.direction(1)
+        self.direction(RECHTS)
         time.sleep(2)
         self.speed(60)
-        time.sleep(11)
+        time.sleep(5)
         self.speed(20)
         time.sleep(2)
         self.speed(5)
-        time.sleep(5)
+        time.sleep(15)
         self.stop()
-        self.status=BEREIT_RECHTS3
+        self.status=BEREIT_RECHTS2
         
     def einfahrtLinks(self):
         print "BR 118 fährt auf Gleis 1 (links) ein. Das muss so geändert werden, dass die letzte Achse der Lok über dem Reedkontakt zum stehen kommt"
@@ -228,11 +228,40 @@ class BR118(Lok):
     def startEntkuppelnRechts(self,delay):
         print "BR 118 Abkuppeln rechts"
         time.sleep(delay)
-        self.status=KOPFMACHEN_RECHTS3  
-        self.direction(1)
-        time.sleep(0.5)        
-        self.speed(30)
-        
+        self.status=KOPFMACHEN_RECHTS2  
+        self.direction(LINKS)
+        time.sleep(1)        
+        self.speed(10)
+        time.sleep(0.6)        
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.1)
+        self.direction(RECHTS)
+        time.sleep(0.1)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(0.2)
+        entkuppler2.actuate(1, 1, 0)
+        time.sleep(7)
+        self.stop()
+        time.sleep(1)
+        self.lichtAus()
+        self.direction(LINKS)
+        time.sleep(1)
+        einfahrt1()
+        time.sleep(1)
+        weiche12.actuate(1, 1);
+        time.sleep(1);
+        self.lichtAn()
+        time.sleep(1)
+        self.speed(40)
+
 # EVENTS
         
     def entkupplerLinksEvent(self):
@@ -261,7 +290,12 @@ class BR118(Lok):
             self.ankuppeln1()
 
     def einfahrtRechtsEvent(self):
-        if (self.status==KOPFMACHEN_RECHTS3):
+        if (self.status==KOPFMACHEN_RECHTS2):
+            self.stop()
+            time.sleep(2)
+            weiche12.actuate(0, 1)
+            self.ankuppeln2()
+        elif (self.status==KOPFMACHEN_RECHTS3):
             self.stop()
             time.sleep(2)
             weiche34.actuate(0, 1)

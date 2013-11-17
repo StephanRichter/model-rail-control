@@ -52,7 +52,7 @@ def ausfahrt4():
     weiche3.actuate(1, 1)
 
 def einfahrt1():
-    print "Einfahrt 2"
+    print "Einfahrt 1"
     weiche4.actuate(0, 1)
     time.sleep(0.5)
     weiche1.actuate(1, 1)
