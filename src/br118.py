@@ -266,7 +266,7 @@ class BR118(Lok):
         
     def entkupplerLinksEvent(self):
         if (self.status==EINFAHRT_LINKS1):
-            time.sleep(0.5)
+            time.sleep(1.2)
             self.stop()
             self.status=EINGEFAHREN_LINKS1
 

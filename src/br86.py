@@ -66,16 +66,14 @@ class BR86(Lok):
         
     def einfahrtRechts2(self):
         print "BR 86 fährt auf Gleis 2 (rechts) ein"
+        self.status=EINFAHRT_RECHTS2
         self.speed(80)            
         time.sleep(2)
         self.speed(60)
         time.sleep(4)
         self.speed(40)
-        time.sleep(10)
+        time.sleep(5)
         self.speed(20)
-        time.sleep(1)
-        self.stop()
-        self.status=EINGEFAHREN_RECHTS2
 
     def einfahrtRechts3(self):
         print "BR 86 fährt auf Gleis 3 (rechts) ein"
@@ -108,18 +106,18 @@ class BR86(Lok):
         entkupplenLinks(2)
         self.stop()
         time.sleep(0.5)
-        self.direction(0)
+        self.direction(LINKS)
         entkupplenLinks(2)        
         self.speed(40)
         entkupplenLinks(2)
-        time.sleep(4)
+        time.sleep(3.5)
         self.stop()
         time.sleep(1)        
         weiche10.actuate(0, 1)
         time.sleep(1)        
         weiche10.actuate(0, 1)
         time.sleep(1)        
-        self.direction(1)
+        self.direction(RECHTS)
         time.sleep(1)
         self.speed(60)
 
@@ -332,7 +330,10 @@ class BR86(Lok):
     
     def entkupplerRechts2Event(self):
         if (self.status==KOPFMACHEN_RECHTS2):
-            self.kopfmachenRechts2()     
+            self.kopfmachenRechts2()
+        elif (self.status==EINFAHRT_RECHTS2):
+            self.stop()
+            self.status=EINGEFAHREN_RECHTS2          
 
     def entkupplerRechts3Event(self):
         if (self.status==KOPFMACHEN_RECHTS3):
