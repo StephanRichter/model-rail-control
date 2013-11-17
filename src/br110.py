@@ -99,6 +99,19 @@ class BR110(Lok):
         else:
             self.status=EINGEFAHREN_RECHTS3
         
+    def einfahrtRechts4(self):
+        print "BR 110 fährt auf Gleis 4 (rechts) ein"
+        time.sleep(2)
+        self.speed(60)
+        time.sleep(2)
+        self.speed(40)
+        time.sleep(7)
+        self.speed(20)
+        time.sleep(2)
+        self.stop()
+        time.sleep(1)
+        self.status=BEREIT_RECHTS4
+        
     def kopfmachenRechts3(self):
         # überfahren lassen
         time.sleep(2.5)
@@ -200,6 +213,16 @@ class BR110(Lok):
         time.sleep(28)
         einfahrt3()
         
+    def von1nachRechts4(self,delay):
+        print "BR 110 startet nach rechts 4 in",delay,"sekunden"
+        time.sleep(delay)
+        bahnhofLinksGerade()        
+        self.direction(RECHTS)
+        time.sleep(3)
+        self.speed(128)
+        time.sleep(28)
+        einfahrt4()
+
     def von3nachLinks1(self,delay=1):
         print "BR 110 nach links in",delay,"sekunden"
         time.sleep(delay)
@@ -289,5 +312,7 @@ class BR110(Lok):
             self.einfahrtRechts3()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()
+        elif (self.status==NACH_RECHTS4):
+            self.einfahrtRechts4()
         else:
             time.sleep(1)

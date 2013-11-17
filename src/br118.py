@@ -150,7 +150,7 @@ class BR118(Lok):
         entkupplenLinks(2)        
         self.speed(40)
         entkupplenLinks(2)
-        time.sleep(4)
+        time.sleep(3.5)
         self.stop()
         time.sleep(1)        
         weiche10.actuate(0, 1)
