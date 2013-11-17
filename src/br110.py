@@ -187,7 +187,7 @@ class BR110(Lok):
         time.sleep(delay)
         bahnhofLinksAbzweig()        
         self.direction(RECHTS)
-        time.sleep(3)
+        time.sleep(1)
         self.speed(50)
 
     def von1nachRechts3(self,delay):
@@ -285,6 +285,8 @@ class BR110(Lok):
             time.sleep(2)
             weiche34.actuate(0, 1)
             self.ankuppeln3()
+        elif (self.status==EINFAHRT_RECHTS3):
+            self.einfahrtRechts3()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()
         else:

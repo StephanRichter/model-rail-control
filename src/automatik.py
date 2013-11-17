@@ -37,8 +37,9 @@ for lok in loks:
 
 #BR110.status=BEREIT_LINKS1
 #BR110.status=BEREIT_LINKS2
-BR110.status=BEREIT_RECHTS3
+#BR110.status=BEREIT_RECHTS3
 #BR110.status=EINFAHRT_LINKS1
+BR110.status=EINFAHRT_RECHTS3
 #BR110.status=EINGEFAHREN_LINKS1
 #BR110.status=EINGEFAHREN_RECHTS3
 
@@ -51,13 +52,13 @@ ICE.status=BEREIT_LINKS2
 #BR86.status=BEREIT_LINKS1
 #BR86.status=BEREIT_RECHTS1
 #BR86.status=BEREIT_RECHTS2
-BR86.status=EINGEFAHREN_RECHTS2
-#BR86.status=EINGEFAHREN_LINKS1
+#BR86.status=EINGEFAHREN_RECHTS2
+BR86.status=EINGEFAHREN_LINKS1
 
 #BR118.status=BEREIT_LINKS1
 #BR118.status=BEREIT_RECHTS2
-BR118.status=EINGEFAHREN_LINKS1
-#BR118.status=EINGEFAHREN_RECHTS2
+#BR118.status=EINGEFAHREN_LINKS1
+BR118.status=EINGEFAHREN_RECHTS2
 
 def states():
     print        
@@ -358,6 +359,24 @@ while True:
          &( ICE.status   == BEREIT_RECHTS1)
          &( BR86.status  == BEREIT_RECHTS2)
          &( BR118.status == BEREIT_LINKS1)):
+            pass
+        
+    elif (( BR110.status == EINFAHRT_RECHTS3 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_LINKS1)
+         &( BR118.status == EINGEFAHREN_RECHTS2)):
+            pass
+
+    elif (( BR110.status == EINFAHRT_RECHTS3 )
+         &( ICE.status   == EINFAHRT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_LINKS1)
+         &( BR118.status == EINGEFAHREN_RECHTS2)):
+            pass
+
+    elif (( BR110.status == EINFAHRT_RECHTS3 )
+         &( ICE.status   == NACH_LINKS2)
+         &( BR86.status  == EINGEFAHREN_LINKS1)
+         &( BR118.status == EINGEFAHREN_RECHTS2)):
             pass
 
     elif (( BR110.status == EINGEFAHREN_LINKS1 )
