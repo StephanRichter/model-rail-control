@@ -44,7 +44,7 @@ class BR118(Lok):
         self.speed(80)
         time.sleep(2)
         self.speed(60)
-        time.sleep(3)
+        time.sleep(4)
         self.speed(40)
         time.sleep(4)
         self.speed(20)
@@ -243,7 +243,7 @@ class BR118(Lok):
 
     def entkupplerRechts2Event(self):
         if (self.status==NACH_RECHTS2):
-            time.sleep(2)
+            time.sleep(4)
             self.stop()
             time.sleep(1)
             self.status=EINGEFAHREN_RECHTS2
