@@ -95,7 +95,7 @@ class BR86(Lok):
         self.status=EINGEFAHREN_RECHTS3
         
     def kopfmachenLinks(self):
-        time.sleep(2.5)
+        time.sleep(3)
         self.stop()
         print "Abkuppeln auf Gleis 1 (links)"
 
