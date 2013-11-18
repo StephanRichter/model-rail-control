@@ -32,6 +32,8 @@ NACH_RECHTS1=23
 EINFAHRT_RECHTS1=24
 EINGEFAHREN_LINKS2=25
 EINFAHRT_RECHTS2=26
+WECHSEL_2_NACH_3=27
+WECHSEL_NACH_3=28
     
 RECHTS=1
 LINKS=0
@@ -242,5 +244,7 @@ class Lok:
             print self.name,": EINFAHRT_RECHTS1"
         elif (self.status == EINFAHRT_RECHTS2):
             print self.name,": EINFAHRT_RECHTS2"
+        elif (self.status == WECHSEL_2_NACH_3):
+            print self.name,": WECHSEL_2_NACH_3"
         else:
             print self.name,": unknown:",self.status
