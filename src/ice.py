@@ -10,7 +10,7 @@ class ICE(Lok):
         self.speed(50)
         time.sleep(3)
         self.speed(30)
-        time.sleep(2)
+        time.sleep(3)
         self.stop()
         self.status=BEREIT_LINKS1
         time.sleep(15)
@@ -97,6 +97,23 @@ class ICE(Lok):
         time.sleep(8)
         self.status=EINFAHRT_LINKS1
         
+    def von1nachLinks(self,delay=1):        
+        print "ICE startet von Gleis 1 nach links in",delay,"sekunden"
+        self.direction(LINKS)
+        time.sleep(1)
+        self.lichtAn()
+        time.sleep(delay)
+        ausfahrt1()
+        time.sleep(3)
+        self.speed(128)
+        time.sleep(8)
+        if (self.status==NACH_LINKS1):
+            bahnhofLinksGerade()
+            self.status=EINFAHRT_LINKS1
+        elif (self.status==NACH_LINKS2):
+            bahnhofLinksAbzweig()
+            self.status=EINFAHRT_LINKS2
+
     def von1nachLinks2(self,delay=1):        
         print "ICE startet nach links 2 in",delay,"sekunden"
         self.direction(0)

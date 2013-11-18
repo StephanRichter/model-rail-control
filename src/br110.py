@@ -1,9 +1,7 @@
 # coding=utf8
 from lok import *
 import time,os,srcp
-from weichen import ausfahrt3, weiche10, entkupplenLinks,\
-    bahnhofLinksGerade, einfahrt3, entkuppler3, weiche34, einfahrt4,\
-    bahnhofLinksAbzweig
+from weichen import *
 
 class BR110(Lok):
     
@@ -248,6 +246,25 @@ class BR110(Lok):
         time.sleep(6)
         bahnhofLinksAbzweig()
         self.status=EINFAHRT_LINKS2
+
+    def von4nachLinks(self,delay=1,gleis2=False):
+        print "BR 110 nach links in",delay,"sekunden"
+        time.sleep(delay)
+        if gleis2:
+            time.sleep(2)
+            einfahrt4()
+        else:
+            ausfahrt4()
+        self.direction(0)
+        time.sleep(1)
+        self.speed(70)
+        time.sleep(16)
+        self.speed(128)
+        time.sleep(10)
+        bahnhofLinksAbzweig()
+        if (self.status==NACH_LINKS2):
+            self.status=EINFAHRT_LINKS2
+
     
     def startEntkuppelnLinks(self,delay=1):
         print "BR 110 Abkuppeln links"
