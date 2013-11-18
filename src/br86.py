@@ -321,6 +321,26 @@ class BR86(Lok):
         time.sleep(1)
         self.speed(40)
         
+    def startWechsel3(self,delay):
+        print "BR 86 wechselt von Gleis 3 in",delay,"sekunden"
+        time.sleep(delay)
+        self.direction(LINKS)
+        einfahrt3()
+        self.lichtAn()
+        time.sleep(1)
+        self.speed(40)
+
+    def wechselNach1(self):
+        time.sleep(15)
+        self.stop()
+        self.status=WECHSEL_NACH_1
+        time.sleep(2)
+        einfahrt1()
+        time.sleep(1)
+        self.direction(RECHTS)
+        time.sleep(1)
+        self.speed(40)
+        
     def wechselNach3(self):
         time.sleep(15)
         self.stop()
@@ -372,9 +392,15 @@ class BR86(Lok):
             self.einfahrtRechts2()
         elif (self.status==NACH_RECHTS3):
             self.einfahrtRechts3()
+        elif (self.status==WECHSEL_NACH_1):
+            time.sleep(10)
+            self.stop()
+            self.status=BEREIT_RECHTS1
         elif (self.status==WECHSEL_NACH_3):
             time.sleep(11)
             self.stop()
             self.status=BEREIT_RECHTS3
         elif (self.status==WECHSEL_2_NACH_3):
             self.wechselNach3()
+        elif (self.status==WECHSEL_3_NACH_1):
+            self.wechselNach1()

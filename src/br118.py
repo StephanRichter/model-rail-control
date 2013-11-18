@@ -20,6 +20,8 @@ class BR118(Lok):
         time.sleep(11)
         self.stop()
         self.status=BEREIT_LINKS1
+        time.sleep(3)
+        self.lichtAus()
         
     def ankuppeln2(self):
         print "BR 118 Ankuppeln auf Gleis 2 (rechts)"
