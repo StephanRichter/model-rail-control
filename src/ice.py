@@ -125,7 +125,7 @@ class ICE(Lok):
         bahnhofLinksAbzweig()
         self.status=EINFAHRT_LINKS2
         
-    def von2nachRechts1(self,delay=1):
+    def von2nachRechts(self,delay=1):
         print "ICE startet nach rechts 1 in",delay,"sekunden"
         self.direction(RECHTS)
         time.sleep(1)
@@ -136,24 +136,13 @@ class ICE(Lok):
         time.sleep(2)
         self.speed(50)
 
-    def von1nachRechts3(self,delay=1):
-        print "ICE startet nach rechts 3 in",delay,"sekunden"
-        self.status=EINFAHRT_RECHTS3
-        self.direction(1)
+    def von1nachRechts(self,delay=1):
+        print "ICE startet nach rechts in",delay,"sekunden"
+        self.direction(RECHTS)
         time.sleep(1)
         self.lichtAn()
         time.sleep(1)
         time.sleep(delay)
-        self.speed(50)
-
-    def von1nachRechts4(self,delay=1):
-        print "ICE startet nach rechts 4 in",delay,"sekunden"
-        self.direction(1)
-        time.sleep(1)
-        self.lichtAn()
-        time.sleep(1)
-        time.sleep(delay)
-        time.sleep(1)
         self.speed(50)
    
     def einfahrtRechtsEvent(self):
