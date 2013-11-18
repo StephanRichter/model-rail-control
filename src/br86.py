@@ -122,17 +122,7 @@ class BR86(Lok):
         self.speed(60)
 
     def kopfmachenRechts2(self):
-        # überfahren lassen
-#        time.sleep(2.5)
-        self.stop()
-        print "Abkuppeln auf Gleis 2 (rechts)"
         # anrücken
-        time.sleep(1)
-        self.direction(LINKS)
-        self.speed(10)
-        time.sleep(0.5)        
-        entkuppler2.actuate(1, 1, 0)
-        time.sleep(0.2)        
         entkuppler2.actuate(1, 1, 0)
         time.sleep(0.2)        
         entkuppler2.actuate(1, 1, 0)
@@ -310,7 +300,7 @@ class BR86(Lok):
         self.status=KOPFMACHEN_RECHTS2
         weiche12.actuate(0, 1)
         time.sleep(0.5)  
-        self.direction(1)
+        self.direction(LINKS)
         time.sleep(0.5)        
         self.speed(20)
 

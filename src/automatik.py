@@ -46,11 +46,11 @@ BR110.status=BEREIT_RECHTS4
 #BR110.status=EINGEFAHREN_LINKS1
 #BR110.status=EINGEFAHREN_RECHTS3
 
-ICE.status=BEREIT_RECHTS1
+#ICE.status=BEREIT_RECHTS1
 #ICE.status=BEREIT_RECHTS1
 #ICE.status=BEREIT_RECHTS3
 #ICE.status=BEREIT_RECHTS4
-#ICE.status=BEREIT_LINKS2
+ICE.status=BEREIT_LINKS2
 
 #BR86.status=BEREIT_LINKS1
 #BR86.status=BEREIT_RECHTS1
@@ -58,9 +58,9 @@ ICE.status=BEREIT_RECHTS1
 BR86.status=EINGEFAHREN_RECHTS2
 #BR86.status=EINGEFAHREN_LINKS1
 
-#BR118.status=BEREIT_LINKS1
+BR118.status=BEREIT_LINKS1
 #BR118.status=BEREIT_RECHTS2
-BR118.status=EINGEFAHREN_LINKS1
+#BR118.status=EINGEFAHREN_LINKS1
 #BR118.status=BEREIT_RECHTS2
 
 def states():
@@ -164,10 +164,8 @@ while True:
          &( ICE.status   == BEREIT_RECHTS1)
          &( BR86.status  == EINGEFAHREN_LINKS1)
          &( BR118.status == EINGEFAHREN_RECHTS2)):
-        states()
         ICE.status=NACH_LINKS2
         BR110.status=NACH_RECHTS3
-        states()
         start_new_thread(BR110.von2nachRechts3, (pause,))
         start_new_thread(ICE.von1nachLinks2, (pause+23,))
 
@@ -259,9 +257,7 @@ while True:
          &( ICE.status   == BEREIT_LINKS2)
          &( BR86.status  == EINGEFAHREN_RECHTS2)
          &( BR118.status == EINGEFAHREN_LINKS1)):
-        states()
         BR86.status=KOPFMACHEN_RECHTS2
-        states()
         start_new_thread(BR86.startEntkuppelnRechts2,(pause+1,))
     
     elif (( BR110.status == BEREIT_RECHTS3 )
@@ -437,6 +433,19 @@ while True:
          &( BR86.status  == BEREIT_RECHTS1)
          &( BR118.status == BEREIT_RECHTS2)):
         pass
+    
+    elif (( BR110.status == BEREIT_RECHTS4 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)): # hier
+        BR86.status=KOPFMACHEN_RECHTS2
+        start_new_thread(BR86.startEntkuppelnRechts2,(pause+1,))
+
+    elif (( BR110.status == BEREIT_RECHTS4 )
+         &( ICE.status   == BEREIT_LINKS2)
+         &( BR86.status  == KOPFMACHEN_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        pass
 
     elif (( BR110.status == BEREIT_RECHTS4 )
          &( ICE.status   == BEREIT_RECHTS1)
@@ -447,7 +456,14 @@ while True:
     elif (( BR110.status == BEREIT_RECHTS4 )
          &( ICE.status   == BEREIT_RECHTS1)
          &( BR86.status  == EINGEFAHREN_RECHTS2)
-         &( BR118.status == EINGEFAHREN_LINKS1)): # hier        
+         &( BR118.status == BEREIT_LINKS1)):
+        ICE.status=NACH_LINKS2
+        start_new_thread(ICE.von1nachLinks2, (pause,))
+
+    elif (( BR110.status == BEREIT_RECHTS4 )
+         &( ICE.status   == BEREIT_RECHTS1)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == EINGEFAHREN_LINKS1)):        
         BR118.status=KOPFMACHEN_LINKS
         start_new_thread(BR118.startEntkuppelnLinks,(pause,))
 
@@ -457,6 +473,17 @@ while True:
          &( BR118.status == KOPFMACHEN_LINKS)):
         pass        
 
+    elif (( BR110.status == BEREIT_RECHTS4 )
+         &( ICE.status   == EINFAHRT_LINKS2)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        pass
+
+    elif (( BR110.status == BEREIT_RECHTS4 )
+         &( ICE.status   == NACH_LINKS2)
+         &( BR86.status  == EINGEFAHREN_RECHTS2)
+         &( BR118.status == BEREIT_LINKS1)):
+        pass
 
     elif (( BR110.status == EINFAHRT_LINKS1 )
          &( ICE.status   == BEREIT_RECHTS4)
