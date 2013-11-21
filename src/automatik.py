@@ -22,18 +22,18 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=6
+pause=0
 
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
 BR118 = BR118(srcp.GL(SRCP_BUS,4))
-BR130 = BR130(srcp.GL(SRCP_BUS,8))
+BR130 = BR130(srcp.GL(SRCP_BUS,5))
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 
 loks = [ BR110, BR86, BR118, BR130, ICE ]
 
 for lok in loks:
-    lok.direction(LINKS)
+    lok.nachLinks()
     lok.lichtAn()
     time.sleep(1)
     
@@ -67,8 +67,11 @@ while True:
     
     if (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(EINGEFAHREN,LINKS,1) & ICE.stat(PARKED)):
         BR130.status=ABKUPPELN
-        start_new_thread(BR130., args)
+        start_new_thread(BR130.abkuppeln, (pause,))
     
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ABKUPPELN,LINKS,1) & ICE.stat(PARKED)):
+        pass
+
     else:
         states()
         print "(Status nicht definiert)"

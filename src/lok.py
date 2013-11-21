@@ -26,6 +26,8 @@ PARKED=12
 LINKS=10
 RECHTS=11
 
+WENDEZEIT=1
+
 class Lok:
     
     name = "unbekannte Lok"    
@@ -38,7 +40,7 @@ class Lok:
     
     def __init__(self,lok):
         self.lok=lok
-        lok.init('N', '1', 128, 4)
+        lok.init('N', '1', 128, 4) # Protokoll, Version, Fahrstufen, Funktionen
         
 # <===== Events / Kontakte ===================
 
@@ -165,8 +167,12 @@ class Lok:
         self.lok.setF(0,0)
         self.lok.send()
         
-    def direction(self,dir):
-        self.lok.setDirection(dir)        
+    def nachLinks(self):
+        self.lok.setDirection(0)
+        self.lok.send()
+        
+    def nachRechts(self):
+        self.lok.setDirection(1)
         self.lok.send()
         
     def speed(self,speed):
@@ -193,7 +199,7 @@ class Lok:
             return
         print self.name," fährt aus Bahnhof links aus in",delay,"sekunden"
         self.status=NACH_RECHTS
-        self.direction(NACH_RECHTS)
+        self.nachRechts()
         self.lichtAn()
         time.sleep(delay)
         if (self.vonGleis==1):
@@ -211,7 +217,7 @@ class Lok:
             return
         print self.name," fährt aus Bahnhof rechts aus in",delay,"sekunden"
         self.status=NACH_LINKS
-        self.direction(NACH_LINKS)
+        self.nachLinks()
         self.lichtAn()
         time.sleep(delay)
         if (self.vonGleis==1):
@@ -226,6 +232,15 @@ class Lok:
             print "rechts gibt es kein Gleis",self.vonGleis
             return
         self.speed(50)
+        
+    def abkuppeln(self,delay):
+        if (self.bahnhof==LINKS):
+            self.abkuppelnLinks(delay)
+        else:
+            print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
+            
+    def abkuppelnLinks(self,delay):
+        print "abkuppelnLinks nicht implementiert für",self.name
         
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
         return (status==self.status) & (bahnhof==self.bahnhof) & (vonGleis==self.vonGleis)        

@@ -4,6 +4,7 @@ from ice import ICE
 from br110 import BR110
 from br86 import BR86
 from br118 import BR118
+from br130 import BR130
 from mcp23s17 import *
 from kontakte import *
 import time,os
@@ -25,12 +26,14 @@ ICE = ICE(srcp.GL(SRCP_BUS, 1))
 BR110 = BR110(srcp.GL(SRCP_BUS,2))
 BR86 = BR86(srcp.GL(SRCP_BUS, 3))
 BR118 = BR118(srcp.GL(SRCP_BUS,4))
+BR130 = BR130(srcp.GL(SRCP_BUS,5))
   
 BR118.stop()
 ICE.stop()
 BR110.stop()
 BR86.stop()
 BR118.stop()
+BR130.stop()
 commandbus.powerOff()
 time.sleep(4)        
 os._exit(0)
