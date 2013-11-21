@@ -3,24 +3,28 @@ from thread import allocate_lock
 import time
 import srcp
 from kontakte import *
+from weichen import *
 
-UNDEFINED=0
+UNDEFINED=-1
 
 # status:
-ABKUPPELN=1
-ANKUPPELN=2
-AUSFAHRT=3
-BEREIT=4
-EINFAHRT=5
-EINGEFAHREN=6
-NACH_LINKS=7
-NACH_RECHTS=8
-UMFAHREN=9
-GLEISWECHSEL=10
+NACH_LINKS=0
+NACH_RECHTS=1
+
+ABKUPPELN=2
+ANKUPPELN=3
+AUSFAHRT=4
+BEREIT=5
+EINFAHRT=6
+EINGEFAHREN=7
+UMFAHREN=8
+GLEISWECHSEL=9
+
+PARKED=12
 
 # Bahnhof
-LINKS=11
-RECHTS=12
+LINKS=10
+RECHTS=11
 
 class Lok:
     
@@ -28,7 +32,9 @@ class Lok:
     status=UNDEFINED
     vonGleis=UNDEFINED
     nachGleis=UNDEFINED
-    bahnhof=UNDEFINED    
+    bahnhof=UNDEFINED
+    wendezug=False
+    zuglaenge=40    
     
     def __init__(self,lok):
         self.lok=lok
@@ -149,7 +155,8 @@ class Lok:
         self.entkupplerRechts3Lock.release();
         
 # =========== Events / Kontakte ===========>     
-        
+
+# <========== Aktionen =====================        
     def lichtAn(self):
         self.lok.setF(0,1)
         self.lok.send()
@@ -178,7 +185,52 @@ class Lok:
                
     def notbremse(self):
         self.stop()
-        self.status=0               
+        self.status=0
+        
+    def ausfahrtLinks(self,delay):        
+        if (self.bahnhof!=LINKS):
+            print self.name," ist nicht links, kann auch dort nicht ausfahren"
+            return
+        print self.name," fährt aus Bahnhof links aus in",delay,"sekunden"
+        self.status=NACH_RECHTS
+        self.direction(NACH_RECHTS)
+        self.lichtAn()
+        time.sleep(delay)
+        if (self.vonGleis==1):
+            bahnhofLinksAbzweig()
+        elif (self.vonGleis==2):
+            bahnhofLinksGerade()
+        else:
+            print "links gibt es kein Gleis",self.vonGleis
+            return
+        self.speed(50)
+        
+    def ausfahrtRechts(self,delay):
+        if (self.bahnhof!=RECHTS):
+            print self.name," ist nicht rechts, kann auch dort nicht ausfahren"
+            return
+        print self.name," fährt aus Bahnhof rechts aus in",delay,"sekunden"
+        self.status=NACH_LINKS
+        self.direction(NACH_LINKS)
+        self.lichtAn()
+        time.sleep(delay)
+        if (self.vonGleis==1):
+            ausfahrt1()
+        elif (self.vonGleis==2):
+            ausfahrt2()
+        elif (self.vonGleis==3):
+            ausfahrt3()
+        elif (self.vonGleis==4):
+            ausfahrt4()
+        else:
+            print "rechts gibt es kein Gleis",self.vonGleis
+            return
+        self.speed(50)
+        
+    def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
+        return (status==self.status) & (bahnhof==self.bahnhof) & (vonGleis==self.vonGleis)        
+        
+# ============= Aktionen =================>               
 
     def state(self):
         print self.name,":"
