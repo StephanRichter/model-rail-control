@@ -15,8 +15,18 @@ class BR130(Lok):
         time.sleep(1)
         self.speed(20)
         
+    def ankuppelnLinks(self, delay=3):
+        Lok.ankuppelnLinks(self, delay)
+        if (self.zuglaenge==82):
+            time.sleep(13)
+        self.stop()
+        time.sleep(3)
+        self.lichtAus()
+        self.status=BEREIT
+        
+# ========== events ===========>
+    
     def entkupplerLinksEvent(self):
-        print "Kontakt!"
         if (self.status!=ABKUPPELN):
             self.stop()
             self.status=UNDEFINED
@@ -27,7 +37,7 @@ class BR130(Lok):
         
         self.nachRechts() # Anrücken
         self.speed(10)
-        time.sleep(0.8)
+        time.sleep(0.6)
         entkupplenLinks(3)
         self.stop()        
         time.sleep(0.1)
@@ -38,5 +48,11 @@ class BR130(Lok):
         time.sleep(3.5)        
         self.stop()
         time.sleep(1)
-        self.status=UMFAHREN
+        self.status=ABGEKUPPELT
         
+    def einfahrtLinksEvent(self):
+        if (self.status==UMFAHREN):
+            self.stop()
+            self.status=ANKUPPELN
+            time.sleep(WENDEZEIT)
+            self.ankuppelnLinks()

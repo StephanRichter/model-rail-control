@@ -11,6 +11,7 @@ UNDEFINED=-1
 NACH_LINKS=0
 NACH_RECHTS=1
 
+ABGEKUPPELT=13
 ABKUPPELN=2
 ANKUPPELN=3
 AUSFAHRT=4
@@ -158,7 +159,7 @@ class Lok:
         
 # =========== Events / Kontakte ===========>     
 
-# <========== Aktionen =====================        
+# <========== Aktionen =====================
     def lichtAn(self):
         self.lok.setF(0,1)
         self.lok.send()
@@ -193,7 +194,32 @@ class Lok:
         self.stop()
         self.status=0
         
-    def ausfahrtLinks(self,delay):        
+    def abkuppeln(self,delay=3):
+        if (self.bahnhof==LINKS):
+            self.abkuppelnLinks(delay)
+        else:
+            print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
+            
+    def abkuppelnLinks(self,delay=3):
+        self.notImplemented("abkuppelnLinks")
+
+    def ankuppeln(self,delay=3):
+        if (self.bahnhof==LINKS):
+            self.ankuppelnLinks(delay)
+        else:
+            print "kann nicht ankuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
+        
+    def ankuppelnLinks(self,delay=3):
+        print self.name,"kuppelt in",delay,"Sekunden an"
+        self.nachLinks()
+        self.lichtAn()
+        time.sleep(delay)
+        bahnhofLinksGerade()
+        time.sleep(0.1)
+        self.speed(30)
+        
+        
+    def ausfahrtLinks(self,delay=3):        
         if (self.bahnhof!=LINKS):
             print self.name," ist nicht links, kann auch dort nicht ausfahren"
             return
@@ -202,7 +228,7 @@ class Lok:
         self.nachRechts()
         self.lichtAn()
         time.sleep(delay)
-        if (self.vonGleis==1):
+        if (self.vonGle6is==1):
             bahnhofLinksAbzweig()
         elif (self.vonGleis==2):
             bahnhofLinksGerade()
@@ -211,7 +237,7 @@ class Lok:
             return
         self.speed(50)
         
-    def ausfahrtRechts(self,delay):
+    def ausfahrtRechts(self,delay=3):
         if (self.bahnhof!=RECHTS):
             print self.name," ist nicht rechts, kann auch dort nicht ausfahren"
             return
@@ -233,17 +259,26 @@ class Lok:
             return
         self.speed(50)
         
-    def abkuppeln(self,delay):
-        if (self.bahnhof==LINKS):
-            self.abkuppelnLinks(delay)
-        else:
-            print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
-            
-    def abkuppelnLinks(self,delay):
-        print "abkuppelnLinks nicht implementiert für",self.name
+        
+    def notImplemented(self,name):
+        print name," nicht implementiert für",self.name
         
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
-        return (status==self.status) & (bahnhof==self.bahnhof) & (vonGleis==self.vonGleis)        
+        return (status==self.status) & (bahnhof==self.bahnhof) & (vonGleis==self.vonGleis)
+    
+    def umfahren(self,delay=3):
+        if (self.bahnhof==LINKS):
+            self.umfahrenLinks(delay)
+        else:
+            print "kann nicht umfahren, da nicht bekannt ist, wo sich",self.name,"befindet"
+            
+    def umfahrenLinks(self,delay=3):
+        print self.name,"umfährt in",delay,"Sekunden"
+        self.nachRechts()
+        self.lichtAn()
+        time.sleep(delay)
+        bahnhofLinksAbzweig()
+        self.speed(40)
         
 # ============= Aktionen =================>               
 
@@ -276,6 +311,10 @@ class Lok:
             print "UMFAHREN"
         elif (self.status == GLEISWECHSEL):
             print "GLEISWECHSEL"
+        elif (self.status == PARKED):
+            print "PARKED"
+        elif (self.status == ABGEKUPPELT):
+            print "ABGEKUPPELT"
         else:
             print "unknown:",self.status
             
