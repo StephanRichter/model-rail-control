@@ -5,49 +5,36 @@ import srcp
 from kontakte import *
 
 UNDEFINED=0
-ANKUPPELN=1
-BEREIT_LINKS1=2
-BEREIT_RECHTS1=3
-BEREIT_RECHTS3=4
-BEREIT_RECHTS4=5
-EINFAHRT_LINKS1=6
-EINFAHRT_RECHTS3=7
-EINFAHRT_RECHTS4=8
-EINGEFAHREN_LINKS1=9
-EINGEFAHREN_RECHTS3=10
-KOPFMACHEN_LINKS=11
-KOPFMACHEN_RECHTS3=12
-KRITISCHE_PHASE=666
-NACH_RECHTS3=13
-NACH_LINKS1=14
-NACH_LINKS2=15
-NACH_RECHTS4=16
-EINFAHRT_LINKS2=17
-BEREIT_LINKS2=18
-NACH_RECHTS2=19
-BEREIT_RECHTS2=20
-EINGEFAHREN_RECHTS2=21
-KOPFMACHEN_RECHTS2=22
-NACH_RECHTS1=23
-EINFAHRT_RECHTS1=24
-EINGEFAHREN_LINKS2=25
-EINFAHRT_RECHTS2=26
-WECHSEL_2_NACH_3=27
-WECHSEL_NACH_3=28
-WECHSEL_3_NACH_1=29
-WECHSEL_NACH_1=30
-    
-RECHTS=1
-LINKS=0
+
+# status:
+ABKUPPELN=1
+ANKUPPELN=2
+AUSFAHRT=3
+BEREIT=4
+EINFAHRT=5
+EINGEFAHREN=6
+NACH_LINKS=7
+NACH_RECHTS=8
+UMFAHREN=9
+GLEISWECHSEL=10
+
+# Bahnhof
+LINKS=11
+RECHTS=12
 
 class Lok:
     
     name = "unbekannte Lok"    
-    status=0    
+    status=UNDEFINED
+    vonGleis=UNDEFINED
+    nachGleis=UNDEFINED
+    bahnhof=UNDEFINED    
     
     def __init__(self,lok):
         self.lok=lok
         lok.init('N', '1', 128, 4)
+        
+# <===== Events / Kontakte ===================
 
     def action(self,contact):
         if (contact == KONTAKT_EINFAHRT_RECHTS):
@@ -66,10 +53,6 @@ class Lok:
     einfahrtRechtsLock = allocate_lock()
     einfahrtRechtsActive = False
     
-    def notbremse(self):
-        self.stop()
-        self.status=0               
-            
     def einfahrtRechtsEvent(self):
         print "Einfahrtkontakt rechts ausgelöst"
         time.sleep(5)
@@ -163,7 +146,9 @@ class Lok:
         self.entkupplerRechts3Event()
         self.entkupplerRechts3Lock.acquire()
         self.entkupplerRechts3Active = False
-        self.entkupplerRechts3Lock.release();     
+        self.entkupplerRechts3Lock.release();
+        
+# =========== Events / Kontakte ===========>     
         
     def lichtAn(self):
         self.lok.setF(0,1)
@@ -190,69 +175,41 @@ class Lok:
         time.sleep(0.1)
         self.lok.setSpeed(0)
         self.lok.send()
+               
+    def notbremse(self):
+        self.stop()
+        self.status=0               
 
     def state(self):
+        print self.name,":"
+        if (self.bahnhof == LINKS):
+            print " Bahnhof LINKS, "
+        if (self.bahnhof == RECHTS):
+            print " Bahnhof RECHTS, "
+
         if (self.status == UNDEFINED):
-            print self.name,": UNDEFINED"
+            print "UNDEFINED"
+        elif (self.status == ABKUPPELN):
+            print "ABKUPPELN"
         elif (self.status == ANKUPPELN):
-            print self.name,": ANKUPPELN"
-        elif (self.status == BEREIT_LINKS1):
-            print self.name,": BEREIT_LINKS1"
-        elif (self.status == BEREIT_RECHTS1):
-            print self.name,": BEREIT_RECHTS1"
-        elif (self.status == BEREIT_RECHTS3):
-            print self.name,": BEREIT_RECHTS3"
-        elif (self.status == BEREIT_RECHTS4):
-            print self.name,": BEREIT_RECHTS4"
-        elif (self.status == EINFAHRT_LINKS1):
-            print self.name,": EINFAHRT_LINKS1"
-        elif (self.status == EINFAHRT_RECHTS3):
-            print self.name,": EINFAHRT_RECHTS3"
-        elif (self.status == EINFAHRT_RECHTS4):
-            print self.name,": EINFAHRT_RECHTS4"
-        elif (self.status == EINGEFAHREN_LINKS1):
-            print self.name,": EINGEFAHREN_LINKS1"
-        elif (self.status == EINGEFAHREN_RECHTS3):
-            print self.name,": EINGEFAHREN_RECHTS3"
-        elif (self.status == KOPFMACHEN_LINKS):
-            print self.name,": KOPFMACHEN_LINKS"
-        elif (self.status == KOPFMACHEN_RECHTS3):
-            print self.name,": KOPFMACHEN_RECHTS3"
-        elif (self.status == KRITISCHE_PHASE):
-            print self.name,": KRITISCHE_PHASE"
-        elif (self.status == NACH_RECHTS3):
-            print self.name,": NACH_RECHTS3"
-        elif (self.status == NACH_LINKS1):
-            print self.name,": NACH_LINKS1"
-        elif (self.status == NACH_LINKS2):
-            print self.name,": NACH_LINKS2"
-        elif (self.status == NACH_RECHTS4):
-            print self.name,": NACH_RECHTS4"
-        elif (self.status == EINFAHRT_LINKS2):
-            print self.name,": EINFAHRT_LINKS2"
-        elif (self.status == BEREIT_LINKS2):
-            print self.name,": BEREIT_LINKS2"
-        elif (self.status == NACH_RECHTS2):
-            print self.name,": NACH_RECHTS2"
-        elif (self.status == BEREIT_RECHTS2):
-            print self.name,": BEREIT_RECHTS2"
-        elif (self.status == EINGEFAHREN_RECHTS2):
-            print self.name,": EINGEFAHREN_RECHTS2"
-        elif (self.status == KOPFMACHEN_RECHTS2):
-            print self.name,": KOPFMACHEN_RECHTS2"
-        elif (self.status == NACH_RECHTS1):
-            print self.name,": NACH_RECHTS1"
-        elif (self.status == EINFAHRT_RECHTS1):
-            print self.name,": EINFAHRT_RECHTS1"
-        elif (self.status == EINFAHRT_RECHTS2):
-            print self.name,": EINFAHRT_RECHTS2"
-        elif (self.status == WECHSEL_2_NACH_3):
-            print self.name,": WECHSEL_2_NACH_3"
-        elif (self.status == WECHSEL_NACH_3):
-            print self.name,": WECHSEL_NACH_3"
-        elif (self.status == WECHSEL_3_NACH_1):
-            print self.name,": WECHSEL_3_NACH_1"
-        elif (self.status == WECHSEL_NACH_1):
-            print self.name,": WECHSEL_NACH_1"
+            print "ANKUPPELN"
+        elif (self.status == AUSFAHRT):
+            print "AUSFAHRT"
+        elif (self.status == BEREIT):
+            print "BEREIT"
+        elif (self.status == EINFAHRT):
+            print "EINFAHRT"
+        elif (self.status == EINGEFAHREN):
+            print "EINGEFAHREN"
+        elif (self.status == NACH_LINKS):
+            print "NACH_LINKS"
+        elif (self.status == NACH_RECHTS):
+            print "NACH_RECHTS"
+        elif (self.status == UMFAHREN):
+            print "UMFAHREN"
+        elif (self.status == GLEISWECHSEL):
+            print "GLEISWECHSEL"
         else:
-            print self.name,": unknown:",self.status
+            print "unknown:",self.status
+            
+        print self.vonGleis,"=>",self.nachGleis
