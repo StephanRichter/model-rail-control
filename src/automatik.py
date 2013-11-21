@@ -66,8 +66,8 @@ while True:
     # folgende Zeilen sind zur Ablaufsteuerung
     
     if (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(EINGEFAHREN,LINKS,1) & ICE.stat(PARKED)):
-        print "start!"
-        break
+        BR130.status=ABKUPPELN
+        start_new_thread(BR130., args)
     
     else:
         states()
