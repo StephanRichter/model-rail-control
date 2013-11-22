@@ -197,11 +197,24 @@ class Lok:
     def abkuppeln(self,delay=3):
         if (self.bahnhof==LINKS):
             self.abkuppelnLinks(delay)
+        elif (self.bahnhof==LINKS):
+            self.abkuppelnRechts(delay)
+
         else:
             print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
             
     def abkuppelnLinks(self,delay=3):
         self.notImplemented("abkuppelnLinks")
+
+    def abkuppelnRechts(self,delay=3):
+        if (self.vonGleis==3):
+            self.abkuppelnRechts3(self,delay)
+        else:
+            print "rechts gibt es kein Gleis",self.vonGleis
+            
+    def abkuppelnRechts3(self,delay=3):
+        self.notImplemented("abkuppelnRechts3")
+
 
     def ankuppeln(self,delay=3):
         if (self.bahnhof==LINKS):
@@ -281,6 +294,14 @@ class Lok:
             print "rechts gibt es kein Gleis",self.nachGleis
             return
         self.status=EINFAHRT
+        
+    def eingefahren(self):
+            self.stop()
+            time.sleep(3)
+            self.lichtAus()
+            self.vonGleis=self.nachGleis
+            self.nachGleis=UNDEFINED
+            self.status=EINGEFAHREN
         
     def notImplemented(self,name):
         print name," nicht implementiert für",self.name

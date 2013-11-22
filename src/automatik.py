@@ -72,6 +72,9 @@ while True:
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ABKUPPELN,LINKS,1) & ICE.stat(PARKED)):
         pass
 
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ABKUPPELN,RECHTS,1) & ICE.stat(PARKED)):
+        pass
+
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ANKUPPELN,LINKS,1) & ICE.stat(PARKED)):
         pass
 
@@ -90,6 +93,10 @@ while True:
         BR130.status=ABKUPPELN
         start_new_thread(BR130.abkuppeln, (pause,))
     
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(EINGEFAHREN,RECHTS,3) & ICE.stat(PARKED)):
+        BR130.status=ABKUPPELN
+        start_new_thread(BR130.abkuppeln, (pause,))
+
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(NACH_RECHTS,LINKS,1) & ICE.stat(PARKED)):
         pass
 
