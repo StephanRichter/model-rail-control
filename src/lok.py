@@ -218,20 +218,21 @@ class Lok:
         time.sleep(0.1)
         self.speed(30)
         
+    def ausfahrt(self,delay=3):
+        if (self.bahnhof==LINKS):
+            self.ausfahrtLinks(delay)
+        else:
+            print "kann nicht ausfahren, da nicht bekannt ist, wo sich",self.name," befindet"
         
     def ausfahrtLinks(self,delay=3):        
-        if (self.bahnhof!=LINKS):
-            print self.name," ist nicht links, kann auch dort nicht ausfahren"
-            return
         print self.name," fährt aus Bahnhof links aus in",delay,"sekunden"
-        self.status=NACH_RECHTS
         self.nachRechts()
         self.lichtAn()
         time.sleep(delay)
-        if (self.vonGle6is==1):
-            bahnhofLinksAbzweig()
-        elif (self.vonGleis==2):
+        if (self.vonGleis==1):
             bahnhofLinksGerade()
+        elif (self.vonGleis==2):
+            bahnhofLinksAbzweig()
         else:
             print "links gibt es kein Gleis",self.vonGleis
             return
@@ -259,6 +260,27 @@ class Lok:
             return
         self.speed(50)
         
+    def einfahrt(self,delay=3):
+        if (self.status==NACH_RECHTS):
+            self.einfahrtRechts(delay)
+            self.bahnhof=RECHTS
+        else:
+            print "kann nicht einfahren, da nicht bekannt ist, wo",self.name,"hinfährt"
+            
+    def einfahrtRechts(self,delay=3):
+        if (self.nachGleis==1):
+            einfahrt1()
+        elif (self.nachGleis==2):
+            einfahrt2()
+        elif (self.nachGleis==3):
+            einfahrt3()
+        elif (self.nachGleis==4):
+            einfahrt4()
+        else:
+            self.stop()
+            print "rechts gibt es kein Gleis",self.nachGleis
+            return
+        self.status=EINFAHRT
         
     def notImplemented(self,name):
         print name," nicht implementiert für",self.name

@@ -23,7 +23,7 @@ class BR130(Lok):
         time.sleep(3)
         self.lichtAus()
         self.status=BEREIT
-        
+                
 # ========== events ===========>
     
     def entkupplerLinksEvent(self):
@@ -56,3 +56,36 @@ class BR130(Lok):
             self.status=ANKUPPELN
             time.sleep(WENDEZEIT)
             self.ankuppelnLinks()
+        elif (self.status==AUSFAHRT):
+            self.speed(128)
+            self.status=NACH_RECHTS
+            time.sleep(12)            
+            self.einfahrt(0)
+            
+    def einfahrtRechtsEvent(self):
+        if (self.status==EINFAHRT):
+            self.speed(60)
+            if (self.nachGleis==3):
+                if (self.zuglaenge==82):
+                    time.sleep(9)
+                    self.speed(20)
+                    return # Dieser Zug ist zu lang und muss über den Reedkontakt beim Entkuppler hinausfahren
+            time.sleep(1)
+            self.stop()
+            time.sleep(3)
+            self.lichtAus()
+            self.status=EINGEFAHREN
+        else:
+            self.stop()
+            self.status=UNDEFINED
+            
+    def entkupplerRechts3Event(self):
+        if (self.status==EINFAHRT):
+            time.sleep(3)
+            self.stop()
+            time.sleep(3)
+            self.lichtAus()
+            self.status=EINGEFAHREN
+        else:
+            self.stop()
+            self.status=UNDEFINED
