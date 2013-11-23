@@ -16,6 +16,7 @@ class BR130(Lok):
         self.speed(20)
         
     def ankuppelnLinks(self, delay=3):
+        print "BR130 startet ankuppeln links in",delay,"Sekunden"
         Lok.ankuppelnLinks(self, delay)
         if (self.zuglaenge==82):
             time.sleep(13)
@@ -23,6 +24,33 @@ class BR130(Lok):
         time.sleep(3)
         self.lichtAus()
         self.status=BEREIT
+        
+    def abkuppelnRechts3(self,delay=3):
+        print "BR130 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
+        time.sleep(delay)
+        if (self.zuglaenge==82):
+            self.nachLinks()
+            time.sleep(1)
+            self.speed(10)
+            time.sleep(1)
+            entkuppeln3()
+            entkuppeln3()
+            entkuppeln3()
+            entkuppeln3()
+            self.stop()
+            time.sleep(0.1)
+            self.nachRechts()
+            time.sleep(0.1)
+            self.speed(20)
+            entkuppeln3()
+            entkuppeln3()
+            entkuppeln3()
+            self.sleep(3.6)
+            self.stop()
+            self.status=ABGEKUPPELT           
+            
+            
+
                 
 # ========== events ===========>
     

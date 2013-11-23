@@ -157,7 +157,10 @@ class Lok:
         self.entkupplerRechts3Active = False
         self.entkupplerRechts3Lock.release();
         
-# =========== Events / Kontakte ===========>     
+# =========== Events / Kontakte ===========>
+
+    def sleep(self,secs):
+        time.sleep(secs)
 
 # <========== Aktionen =====================
     def lichtAn(self):
@@ -197,7 +200,7 @@ class Lok:
     def abkuppeln(self,delay=3):
         if (self.bahnhof==LINKS):
             self.abkuppelnLinks(delay)
-        elif (self.bahnhof==LINKS):
+        elif (self.bahnhof==RECHTS):
             self.abkuppelnRechts(delay)
 
         else:
@@ -208,7 +211,7 @@ class Lok:
 
     def abkuppelnRechts(self,delay=3):
         if (self.vonGleis==3):
-            self.abkuppelnRechts3(self,delay)
+            self.abkuppelnRechts3(delay)
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
             
