@@ -234,6 +234,15 @@ class Lok:
         time.sleep(0.1)
         self.speed(30)
         
+    def ankuppelnRechts(self,delay=3):
+        print self.name,"kuppelt in",delay,"Sekunden an"
+        self.nachRechts()
+        self.lichtAn()
+        time.sleep(delay)
+        self.einfahrWeichenRechts()        
+        time.sleep(0.1)
+        self.speed(30)
+
     def ausfahrt(self,delay=3):
         if (self.bahnhof==LINKS):
             self.ausfahrtLinks(delay)
@@ -283,7 +292,7 @@ class Lok:
         else:
             print "kann nicht einfahren, da nicht bekannt ist, wo",self.name,"hinfährt"
             
-    def einfahrtRechts(self,delay=3):
+    def einfahrWeichenRechts(self):       
         if (self.nachGleis==1):
             einfahrt1()
         elif (self.nachGleis==2):
@@ -296,6 +305,9 @@ class Lok:
             self.stop()
             print "rechts gibt es kein Gleis",self.nachGleis
             return
+            
+    def einfahrtRechts(self):
+        self.einfahrWeichenRechts()
         self.status=EINFAHRT
         
     def eingefahren(self):
@@ -315,7 +327,9 @@ class Lok:
     def umfahren(self,delay=3):
         if (self.bahnhof==LINKS):
             self.umfahrenLinks(delay)
-        else:
+        elif (self.bahnhof==RECHTS):
+            self.umfahrenRechts(delay)
+        else:            
             print "kann nicht umfahren, da nicht bekannt ist, wo sich",self.name,"befindet"
             
     def umfahrenLinks(self,delay=3):
@@ -326,6 +340,24 @@ class Lok:
         bahnhofLinksAbzweig()
         self.speed(40)
         
+    def umfahrenRechts(self,delay=3):
+        print self.name,"umfährt in",delay,"Sekunden"
+        self.nachLinks()
+        self.lichtAn()
+        time.sleep(delay)
+        if (self.vonGleis==3):
+            self.vonGleis=4
+            self.nachGleis=4 # für self.einfahrtRechts
+            self.einfahrWeichenRechts()
+            self.nachGleis=3
+            weiche34.actuate(1, 1)
+            time.sleep(1)
+        else:
+            print "keine Aktion definiert für Lok auf Gleis",self.vonGleis
+            self.status=UNDEFINED
+            self.sleep(10)
+        self.speed(40)
+
 # ============= Aktionen =================>               
 
     def state(self):

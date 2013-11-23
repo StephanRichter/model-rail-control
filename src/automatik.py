@@ -82,6 +82,9 @@ while True:
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ANKUPPELN,LINKS,1) & ICE.stat(PARKED)):
         pass
 
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ANKUPPELN,RECHTS,4) & ICE.stat(PARKED)):
+        pass
+
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(AUSFAHRT,LINKS,1) & ICE.stat(PARKED)):
         pass
 
@@ -105,6 +108,12 @@ while True:
         pass
 
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(UMFAHREN,LINKS,1) & ICE.stat(PARKED)):
+        pass
+
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(UMFAHREN,RECHTS,3) & ICE.stat(PARKED)):
+        pass
+    
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(UMFAHREN,RECHTS,4) & ICE.stat(PARKED)):
         pass
 
     else:

@@ -25,6 +25,17 @@ class BR130(Lok):
         self.lichtAus()
         self.status=BEREIT
         
+    def ankuppelnRechts(self, delay=3):
+        print "BR130 startet ankuppeln rechts in",delay,"Sekunden"
+        Lok.ankuppelnRechts(self, delay)
+        if (self.zuglaenge==82):
+            time.sleep(17)
+        self.stop()
+        time.sleep(3)
+        self.lichtAus()
+        self.status=BEREIT
+
+        
     def abkuppelnRechts3(self,delay=3):
         print "BR130 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
         time.sleep(delay)
@@ -100,6 +111,11 @@ class BR130(Lok):
                     return # Dieser Zug ist zu lang und muss über den Reedkontakt beim Entkuppler hinausfahren
             time.sleep(1)
             self.eingefahren()
+        elif (self.status==UMFAHREN):
+            self.stop()
+            self.status=ANKUPPELN
+            time.sleep(WENDEZEIT)
+            self.ankuppelnRechts()
         else:
             self.stop()
             self.status=UNDEFINED
