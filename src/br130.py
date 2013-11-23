@@ -117,7 +117,7 @@ class BR130(Lok):
             pass
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==3 | self.nachGleis==2):
+            if (self.nachGleis==3 or self.nachGleis==2):
                 if (self.zuglaenge==82):
                     time.sleep(9)
                     self.speed(20)
