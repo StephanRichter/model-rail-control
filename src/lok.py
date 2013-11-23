@@ -222,8 +222,8 @@ class Lok:
     def ankuppeln(self,delay=3):
         if (self.bahnhof==LINKS):
             self.ankuppelnLinks(delay)
-        else:
-            print "kann nicht ankuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
+        elif (self.bahnhof==RECHTS):
+            self.ankuppelnRechts(delay)
         
     def ankuppelnLinks(self,delay=3):
         print self.name,"kuppelt in",delay,"Sekunden an"
@@ -246,6 +246,8 @@ class Lok:
     def ausfahrt(self,delay=3):
         if (self.bahnhof==LINKS):
             self.ausfahrtLinks(delay)
+        elif (self.bahnhof==RECHTS):
+            self.ausfahrtRechts(delay)                    
         else:
             print "kann nicht ausfahren, da nicht bekannt ist, wo sich",self.name," befindet"
         
@@ -285,13 +287,35 @@ class Lok:
             return
         self.speed(50)
         
-    def einfahrt(self,delay=3):
+    def einfahrt(self):
         if (self.status==NACH_RECHTS):
-            self.einfahrtRechts(delay)
+            self.einfahrtRechts()
             self.bahnhof=RECHTS
+        elif (self.status==NACH_LINKS):
+            self.einfahrtLinks()
+            self.bahnhof=LINKS
         else:
             print "kann nicht einfahren, da nicht bekannt ist, wo",self.name,"hinfährt"
             
+            
+    def einfahrtRechts(self):
+        self.einfahrWeichenRechts()
+        self.status=EINFAHRT
+        
+    def einfahrtLinks(self):
+        self.einfahrWeichenLinks()
+        self.status=EINFAHRT
+
+    def einfahrWeichenLinks(self):
+        if (self.nachGleis==1):
+            bahnhofLinksGerade()
+        elif (self.nachGleis==2):
+            bahnhofLinksAbzweig()
+        else:
+            self.stop()
+            print "rechts gibt es kein Gleis",self.nachGleis
+            return
+        
     def einfahrWeichenRechts(self):       
         if (self.nachGleis==1):
             einfahrt1()
@@ -305,11 +329,7 @@ class Lok:
             self.stop()
             print "rechts gibt es kein Gleis",self.nachGleis
             return
-            
-    def einfahrtRechts(self):
-        self.einfahrWeichenRechts()
-        self.status=EINFAHRT
-        
+
     def eingefahren(self):
             self.stop()
             time.sleep(3)

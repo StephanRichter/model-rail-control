@@ -33,6 +33,7 @@ class BR130(Lok):
         self.stop()
         time.sleep(3)
         self.lichtAus()
+        self.vonGleis=self.nachGleis
         self.status=BEREIT
 
         
@@ -60,8 +61,12 @@ class BR130(Lok):
             self.stop()
             self.status=ABGEKUPPELT           
             
-            
-
+    def ausfahrtRechts(self, delay=3):
+        Lok.ausfahrtRechts(self, delay=delay)
+        self.sleep(13)
+        self.speed(128)
+        self.sleep(12)
+        self.einfahrt()
                 
 # ========== events ===========>
     
@@ -90,19 +95,32 @@ class BR130(Lok):
         self.status=ABGEKUPPELT
         
     def einfahrtLinksEvent(self):
-        if (self.status==UMFAHREN):
-            self.stop()
-            self.status=ANKUPPELN
-            time.sleep(WENDEZEIT)
-            self.ankuppelnLinks()
-        elif (self.status==AUSFAHRT):
+        if (self.status==AUSFAHRT):
             self.speed(128)
             self.status=NACH_RECHTS
             time.sleep(12)            
             self.einfahrt(0)
+        elif (self.status==EINFAHRT):
+            self.speed(60)
+            if (self.nachGleis==1):
+                if (self.zuglaenge==82):
+                    time.sleep(9)
+                    self.speed(20)
+                    return # Dieser Zug ist zu lang und muss über den Reedkontakt beim Entkuppler hinausfahren
+            time.sleep(1)
+            self.eingefahren()
+        elif (self.status==NACH_LINKS):
+            pass
+        elif (self.status==UMFAHREN):
+            self.stop()
+            self.status=ANKUPPELN
+            time.sleep(WENDEZEIT)
+            self.ankuppelnLinks()
             
     def einfahrtRechtsEvent(self):
-        if (self.status==EINFAHRT):
+        if (self.status==NACH_LINKS):
+            pass
+        elif (self.status==EINFAHRT):
             self.speed(60)
             if (self.nachGleis==3):
                 if (self.zuglaenge==82):
@@ -115,7 +133,7 @@ class BR130(Lok):
             self.stop()
             self.status=ANKUPPELN
             time.sleep(WENDEZEIT)
-            self.ankuppelnRechts()
+            self.ankuppeln()
         else:
             self.stop()
             self.status=UNDEFINED

@@ -43,8 +43,8 @@ BR118.status=PARKED
 ICE.status=PARKED
 
 BR130.status=EINGEFAHREN
-BR130.bahnhof=RECHTS
-BR130.vonGleis=3
+BR130.bahnhof=LINKS
+BR130.vonGleis=1
 BR130.zuglaenge=82
 
 def states():
@@ -68,6 +68,7 @@ while True:
         
     if (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ABGEKUPPELT,LINKS,1) & ICE.stat(PARKED)):
         BR130.status=UMFAHREN
+        start_new_thread(BR130.umfahren, (pause,))
     
     if (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(ABGEKUPPELT,RECHTS,3) & ICE.stat(PARKED)):
         BR130.status=UMFAHREN
@@ -87,10 +88,17 @@ while True:
 
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(AUSFAHRT,LINKS,1) & ICE.stat(PARKED)):
         pass
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(AUSFAHRT,RECHTS,3) & ICE.stat(PARKED)):
+        pass
 
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(BEREIT,LINKS,1) & ICE.stat(PARKED)):
         BR130.status=AUSFAHRT
         BR130.nachGleis=3
+        start_new_thread(BR130.ausfahrt, (pause,))                
+
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(BEREIT,RECHTS,3) & ICE.stat(PARKED)):
+        BR130.status=AUSFAHRT
+        BR130.nachGleis=1
         start_new_thread(BR130.ausfahrt, (pause,))                
 
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(EINFAHRT,RECHTS,1) & ICE.stat(PARKED)):
@@ -104,6 +112,8 @@ while True:
         BR130.status=ABKUPPELN
         start_new_thread(BR130.abkuppeln, (pause,))
 
+    elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(NACH_LINKS,RECHTS,3) & ICE.stat(PARKED)):
+        pass
     elif (BR86.stat(PARKED) & BR110.stat(PARKED) & BR118.stat(PARKED) & BR130.stat(NACH_RECHTS,LINKS,1) & ICE.stat(PARKED)):
         pass
 
