@@ -105,6 +105,10 @@ def entkupplenLinks(count=1):
         weiche9.actuate(0, 1,1000)
         time.sleep(0.2*i)
 
+def entkuppeln2():
+    entkuppler2.actuate(1, 1)
+    time.sleep(0.2)
+
 def entkuppeln3():
     entkuppler3.actuate(0, 1)
     time.sleep(0.2)

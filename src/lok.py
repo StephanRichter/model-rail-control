@@ -11,23 +11,23 @@ UNDEFINED=-1
 NACH_LINKS=0
 NACH_RECHTS=1
 
-ABGEKUPPELT=13
-ABKUPPELN=2
-ANKUPPELN=3
-AUSFAHRT=4
-BEREIT=5
-EINFAHRT=6
-EINGEFAHREN=7
-UMFAHREN=8
-GLEISWECHSEL=9
+ABGEKUPPELT=2
+ABKUPPELN=3
+ANKUPPELN=4
+AUSFAHRT=5
+BEREIT=6
+EINFAHRT=7
+EINGEFAHREN=8
+UMFAHREN=9
+GLEISWECHSEL=10
 
-PARKED=12
+PARKED=11
 
 # Bahnhof
 LINKS=10
 RECHTS=11
 
-WENDEZEIT=1
+WENDEZEIT=3
 
 class Lok:
     
@@ -75,7 +75,6 @@ class Lok:
         self.einfahrtRechtsActive = True
         self.einfahrtRechtsLock.release();
         self.einfahrtRechtsEvent()
-        print "Einfahrtkontakt rechts"
         self.einfahrtRechtsLock.acquire()
         self.einfahrtRechtsActive = False
         self.einfahrtRechtsLock.release();
@@ -210,11 +209,16 @@ class Lok:
         self.notImplemented("abkuppelnLinks")
 
     def abkuppelnRechts(self,delay=3):
+        if (self.vonGleis==2):
+            self.abkuppelnRechts2(delay)
         if (self.vonGleis==3):
             self.abkuppelnRechts3(delay)
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
             
+    def abkuppelnRechts2(self,delay=3):
+        self.notImplemented("abkuppelnRechts2")
+
     def abkuppelnRechts3(self,delay=3):
         self.notImplemented("abkuppelnRechts3")
 
@@ -237,6 +241,7 @@ class Lok:
     def ankuppelnRechts(self,delay=3):
         print self.name,"kuppelt in",delay,"Sekunden an"
         self.nachRechts()
+        time.sleep(1)
         self.lichtAn()
         time.sleep(delay)
         self.einfahrWeichenRechts()        
@@ -290,10 +295,8 @@ class Lok:
     def einfahrt(self):
         if (self.status==NACH_RECHTS):
             self.einfahrtRechts()
-            self.bahnhof=RECHTS
         elif (self.status==NACH_LINKS):
             self.einfahrtLinks()
-            self.bahnhof=LINKS
         else:
             print "kann nicht einfahren, da nicht bekannt ist, wo",self.name,"hinfährt"
             
@@ -301,10 +304,12 @@ class Lok:
     def einfahrtRechts(self):
         self.einfahrWeichenRechts()
         self.status=EINFAHRT
+        self.bahnhof=RECHTS
         
     def einfahrtLinks(self):
         self.einfahrWeichenLinks()
         self.status=EINFAHRT
+        self.bahnhof=LINKS
 
     def einfahrWeichenLinks(self):
         if (self.nachGleis==1):
@@ -382,13 +387,10 @@ class Lok:
 
     def state(self):
         print self.name,":"
-        if (self.bahnhof == LINKS):
-            print " Bahnhof LINKS, "
-        if (self.bahnhof == RECHTS):
-            print " Bahnhof RECHTS, "
-
         if (self.status == UNDEFINED):
             print "UNDEFINED"
+        elif (self.status == ABGEKUPPELT):
+            print "ABGEKUPPELT"
         elif (self.status == ABKUPPELN):
             print "ABKUPPELN"
         elif (self.status == ANKUPPELN):
@@ -411,9 +413,13 @@ class Lok:
             print "GLEISWECHSEL"
         elif (self.status == PARKED):
             print "PARKED"
-        elif (self.status == ABGEKUPPELT):
-            print "ABGEKUPPELT"
         else:
-            print "unknown:",self.status
-            
+            print "unknown:",self.status            
+
+        if (self.bahnhof == LINKS):
+            print "LINKS"
+        if (self.bahnhof == RECHTS):
+            print "RECHTS"
+
         print self.vonGleis,"=>",self.nachGleis
+        print
