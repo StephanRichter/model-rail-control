@@ -73,7 +73,10 @@ class BR86(Lok):
             self.einfahrWeichenRechts()
             time.sleep(WENDEZEIT)
             self.speed(20)
-            time.sleep(38)
+            if (self.nachGleis==1 or self.nachGleis==2):
+                time.sleep(38)
+            else:
+                time.sleep(42)
             self.stop()   
             self.vonGleis=self.nachGleis
             self.status=BEREIT         
