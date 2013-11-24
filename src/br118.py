@@ -95,6 +95,26 @@ class BR118(Lok):
                     time.sleep(4)
             time.sleep(1)
             self.eingefahren()
+        elif (self.status==GLEISWECHSEL):
+            if (self.zuglaenge==100):
+                time.sleep(23) # hier anpassen
+            self.stop()
+            time.sleep(1)
+            self.nachLinks()            
+            if (self.nachGleis==1):
+                bahnhofLinksGerade()
+            elif (self.nachGleis==2):
+                bahnhofLinksAbzweig()
+            else:
+                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
+                return
+            time.sleep(WENDEZEIT)
+            self.speed(20)
+            time.sleep(45) # hier anpassen
+            self.stop()
+            self.sleep(1)   
+            self.vonGleis=self.nachGleis
+            self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
@@ -127,7 +147,7 @@ class BR118(Lok):
             self.speed(20)
             if (self.nachGleis==1 or self.nachGleis==2):
                 if (self.zuglaenge==100):
-                    time.sleep(50) # hier anpassen
+                    time.sleep(48) # hier anpassen
                 else:
                     print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
                     self.status=UNDEFINED
