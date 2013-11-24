@@ -147,7 +147,7 @@ class BR118(Lok):
             self.speed(20)
             if (self.nachGleis==1 or self.nachGleis==2):
                 if (self.zuglaenge==100):
-                    time.sleep(48) # hier anpassen
+                    time.sleep(49) # hier anpassen
                 else:
                     print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
                     self.status=UNDEFINED
