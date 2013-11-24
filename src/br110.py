@@ -21,7 +21,7 @@ class BR110(Lok):
         if (self.status==AUSFAHRT):
             self.speed(128)
             self.status=NACH_RECHTS
-            time.sleep(12)            
+            time.sleep(15)            
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
@@ -56,12 +56,13 @@ class BR110(Lok):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==3 or self.nachGleis==2):
-                if (self.zuglaenge==55):
-                    time.sleep(9)
-                    self.speed(20)
+            if (self.zuglaenge==82):
+                time.sleep(9)
+                self.speed(20)
             time.sleep(10)
             self.eingefahren()
+            if (self.wendezug):
+                self.status=BEREIT
         elif (self.status==GLEISWECHSEL):
             time.sleep(13) # hier anpassen
             self.stop()
