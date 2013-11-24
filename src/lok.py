@@ -370,7 +370,14 @@ class Lok:
         self.nachLinks()
         self.lichtAn()
         time.sleep(delay)
-        if (self.vonGleis==3):
+        if (self.vonGleis==2):
+            self.vonGleis=1
+            self.nachGleis=1 # für self.einfahrtRechts
+            self.einfahrWeichenRechts()
+            self.nachGleis=2
+            weiche12.actuate(1, 1)
+            time.sleep(1)
+        elif (self.vonGleis==3):
             self.vonGleis=4
             self.nachGleis=4 # für self.einfahrtRechts
             self.einfahrWeichenRechts()

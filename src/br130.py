@@ -22,16 +22,24 @@ class BR130(Lok):
             self.nachLinks()
             time.sleep(1)
             self.speed(10)
-            time.sleep(1)
+            time.sleep(0.5)
+            entkuppeln2()
             entkuppeln2()
             entkuppeln2()
             entkuppeln2()
             entkuppeln2()
             self.stop()
             time.sleep(0.1)
+            entkuppeln2()
+            time.sleep(0.1)
             self.nachRechts()
             time.sleep(0.1)
+            entkuppeln2()
             self.speed(20)
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
             entkuppeln2()
             entkuppeln2()
             entkuppeln2()
@@ -75,8 +83,12 @@ class BR130(Lok):
     def ankuppelnRechts(self, delay=3):
         print "BR130 startet ankuppeln rechts in",delay,"Sekunden"
         Lok.ankuppelnRechts(self, delay)
-        if (self.zuglaenge==82):
-            time.sleep(17)
+        if (self.nachGleis==2):
+            if (self.zuglaenge==82):
+                time.sleep(15)
+        elif (self.nachGleis==3):        
+            if (self.zuglaenge==82):
+                time.sleep(17)
         self.stop()
         time.sleep(3)
         self.lichtAus()
@@ -108,7 +120,8 @@ class BR130(Lok):
             time.sleep(1)
             self.eingefahren()
         elif (self.status==UMFAHREN):
-            self.stop()
+            self.stop()          
+            self.sleep(1)  
             self.status=ANKUPPELN
             self.ankuppelnLinks(WENDEZEIT)
             
@@ -127,8 +140,7 @@ class BR130(Lok):
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
-            time.sleep(WENDEZEIT)
-            self.ankuppeln()
+            self.ankuppeln(WENDEZEIT)
         else:
             self.stop()
             self.status=UNDEFINED
@@ -157,7 +169,13 @@ class BR130(Lok):
         time.sleep(1)
         self.status=ABGEKUPPELT
         
-
+    def entkupplerRechts2Event(self):
+        if (self.status==EINFAHRT):
+            time.sleep(3.2)
+            self.eingefahren()
+        else:
+            self.stop()
+            self.status=UNDEFINED
             
     def entkupplerRechts3Event(self):
         if (self.status==EINFAHRT):

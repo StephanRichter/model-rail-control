@@ -68,13 +68,11 @@ def einfahrt2():
     print "Weichenstraße Einfahrt 2"
     weiche4.actuate(0, 1)
     time.sleep(1)
-    weiche4.actuate(0, 1)
-    time.sleep(1)
-    weiche4.actuate(0, 1)
-    time.sleep(1)
-    weiche4.actuate(0, 1)
+    weiche1.actuate(1, 1)
     time.sleep(1)
     weiche1.actuate(1, 1)
+    time.sleep(1)
+    weiche4.actuate(1, 1)
     time.sleep(1)
     weiche4.actuate(1, 1)            
     time.sleep(1)
@@ -107,7 +105,7 @@ def entkupplenLinks(count=1):
 
 def entkuppeln2():
     entkuppler2.actuate(1, 1)
-    time.sleep(0.2)
+    time.sleep(0.15)
 
 def entkuppeln3():
     entkuppler3.actuate(0, 1)
