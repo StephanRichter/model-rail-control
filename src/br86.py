@@ -79,8 +79,7 @@ class BR86(Lok):
                 time.sleep(42)
             self.stop()   
             self.vonGleis=self.nachGleis
-            self.status=BEREIT         
-            
+            self.status=BEREIT
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
