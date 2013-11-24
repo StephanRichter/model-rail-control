@@ -65,6 +65,19 @@ class BR86(Lok):
                     self.speed(20)
             time.sleep(10)
             self.eingefahren()
+        elif (self.status==GLEISWECHSEL):
+            time.sleep(18)
+            self.stop()
+            time.sleep(1)
+            self.nachRechts()            
+            self.einfahrWeichenRechts()
+            time.sleep(WENDEZEIT)
+            self.speed(20)
+            time.sleep(38)
+            self.stop()   
+            self.vonGleis=self.nachGleis
+            self.status=BEREIT         
+            
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN

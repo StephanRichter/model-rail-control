@@ -349,6 +349,23 @@ class Lok:
             self.vonGleis=self.nachGleis
             self.nachGleis=UNDEFINED
             self.status=EINGEFAHREN
+            
+    def gleiswechsel(self,delay=3):
+        if (self.bahnhof==RECHTS):
+            self.gleiswechselRechts(delay)
+        else:
+            print "Gleiswechsel links nicht definiert"
+            
+    def gleiswechselRechts(self,delay=3):
+        print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
+        self.nachLinks()
+        time.sleep(0.1)
+        dummy=self.nachGleis
+        self.nachGleis=self.vonGleis
+        self.einfahrWeichenRechts()
+        self.nachGleis=dummy
+        time.sleep(delay)
+        self.speed(25)
         
     def notImplemented(self,name):
         print name,"nicht implementiert für",self.name
