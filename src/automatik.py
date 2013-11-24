@@ -48,10 +48,10 @@ BR118.status=PARKED
 BR130.status=PARKED
 ICE.status=PARKED
 
-BR86.status=EINGEFAHREN
-BR86.bahnhof=RECHTS
-BR86.vonGleis=2
-BR118.nachGleis=UNDEFINED
+BR130.status=BEREIT
+BR130.bahnhof=LINKS
+BR130.vonGleis=1
+
 
 
 def states():
@@ -264,14 +264,30 @@ while True:
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,LINKS,1) and ICE.stat(PARKED)):
         reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,LINKS,2) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,RECHTS,1) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,RECHTS,2) and ICE.stat(PARKED)):
+        reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,RECHTS,3) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(AUSFAHRT,RECHTS,4) and ICE.stat(PARKED)):
         reset()
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(BEREIT,LINKS,1) and ICE.stat(PARKED)):
+        BR130.status=GLEISWECHSEL
+        BR130.nachGleis=2
+        start_new_thread(BR130.gleiswechsel, (pause,))                
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(BEREIT,LINKS,2) and ICE.stat(PARKED)):
         BR130.status=AUSFAHRT
         BR130.nachGleis=3
         start_new_thread(BR130.ausfahrt, (pause,))                
 
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(BEREIT,RECHTS,1) and ICE.stat(PARKED)):
+        BR130.status=AUSFAHRT
+        BR130.nachGleis=1
+        start_new_thread(BR130.ausfahrt, (pause,))                
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(BEREIT,RECHTS,2) and ICE.stat(PARKED)):
         BR130.status=AUSFAHRT
         BR130.nachGleis=1
@@ -283,9 +299,13 @@ while True:
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINFAHRT,RECHTS,1) and ICE.stat(PARKED)):
         reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINFAHRT,LINKS,1) and ICE.stat(PARKED)):
+        reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINFAHRT,LINKS,2) and ICE.stat(PARKED)):
         reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINFAHRT,LINKS,3) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINFAHRT,LINKS,4) and ICE.stat(PARKED)):
         reset()
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(PARKED)):
@@ -299,11 +319,21 @@ while True:
         BR130.status=ABKUPPELN
         start_new_thread(BR130.abkuppeln, (pause,))
 
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(GLEISWECHSEL,LINKS,1) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(GLEISWECHSEL,LINKS,2) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_LINKS,RECHTS,1) and ICE.stat(PARKED)):
+        reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_LINKS,RECHTS,2) and ICE.stat(PARKED)):
         reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_LINKS,RECHTS,3) and ICE.stat(PARKED)):
         reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_LINKS,RECHTS,4) and ICE.stat(PARKED)):
+        reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_RECHTS,LINKS,1) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(NACH_RECHTS,LINKS,2) and ICE.stat(PARKED)):
         reset()
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(UMFAHREN,LINKS,1) and ICE.stat(PARKED)):

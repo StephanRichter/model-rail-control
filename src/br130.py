@@ -123,6 +123,26 @@ class BR130(Lok):
                     time.sleep(4)
             time.sleep(1)
             self.eingefahren()
+        elif (self.status==GLEISWECHSEL):
+            if (self.zuglaenge==82):
+                time.sleep(16) # hier anpassen
+            self.stop()
+            time.sleep(1)
+            self.nachLinks()            
+            if (self.nachGleis==1):
+                bahnhofLinksGerade()
+            elif (self.nachGleis==2):
+                bahnhofLinksAbzweig()
+            else:
+                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
+                return
+            time.sleep(WENDEZEIT)
+            self.speed(20)
+            time.sleep(31) # hier anpassen
+            self.stop()
+            self.sleep(1)   
+            self.vonGleis=self.nachGleis
+            self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
