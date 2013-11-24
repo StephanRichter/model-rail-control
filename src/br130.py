@@ -126,9 +126,7 @@ class BR130(Lok):
             self.ankuppelnLinks(WENDEZEIT)
             
     def einfahrtRechtsEvent(self):
-        if (self.status==NACH_LINKS):
-            pass
-        elif (self.status==EINFAHRT):
+        if (self.status==EINFAHRT):
             self.speed(60)
             if (self.nachGleis==3 or self.nachGleis==2):
                 if (self.zuglaenge==82):
@@ -141,9 +139,6 @@ class BR130(Lok):
             self.stop()
             self.status=ANKUPPELN
             self.ankuppeln(WENDEZEIT)
-        else:
-            self.stop()
-            self.status=UNDEFINED
 
     def entkupplerLinksEvent(self):
         if (self.status!=ABKUPPELN):
@@ -173,14 +168,8 @@ class BR130(Lok):
         if (self.status==EINFAHRT):
             time.sleep(3.2)
             self.eingefahren()
-        else:
-            self.stop()
-            self.status=UNDEFINED
             
     def entkupplerRechts3Event(self):
         if (self.status==EINFAHRT):
             time.sleep(3.2)
             self.eingefahren()
-        else:
-            self.stop()
-            self.status=UNDEFINED
