@@ -165,6 +165,7 @@ class Lok:
     def lichtAn(self):
         self.lok.setF(0,1)
         self.lok.send()
+        self.sleep(0.01)
         
     def lichtAus(self):
         self.lok.setF(0,0)
@@ -172,13 +173,13 @@ class Lok:
         
     def nachLinks(self):
         self.lok.setDirection(0)
-        self.sleep(0.1)
         self.lok.send()
+        self.sleep(0.01)
         
     def nachRechts(self):
         self.lok.setDirection(1)
-        self.sleep(0.1)
         self.lok.send()
+        self.sleep(0.01)
         
     def speed(self,speed):
         self.lok.setSpeed(speed)
