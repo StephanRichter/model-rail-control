@@ -214,7 +214,7 @@ class Lok:
     def abkuppelnRechts(self,delay=3):
         if (self.vonGleis==2):
             self.abkuppelnRechts2(delay)
-        if (self.vonGleis==3):
+        elif (self.vonGleis==3):
             self.abkuppelnRechts3(delay)
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
@@ -353,9 +353,22 @@ class Lok:
     def gleiswechsel(self,delay=3):
         if (self.bahnhof==RECHTS):
             self.gleiswechselRechts(delay)
+        elif (self.bahnhof==LINKS):
+            self.gleiswechselLinks(delay)
         else:
             print "Gleiswechsel links nicht definiert"
             
+    def gleiswechselLinks(self,delay=3):
+        print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
+        self.nachRechts()
+        time.sleep(0.1)
+        if (self.vonGleis==1):
+            bahnhofLinksGerade()
+        else:
+            bahnhofLinksAbzweig()
+        time.sleep(delay)
+        self.speed(25)
+        
     def gleiswechselRechts(self,delay=3):
         print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
         self.nachLinks()
