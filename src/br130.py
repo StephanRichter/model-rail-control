@@ -45,7 +45,10 @@ class BR130(Lok):
             entkuppeln2()
             self.sleep(3.6)
             self.stop()
-            self.status=ABGEKUPPELT           
+            self.status=ABGEKUPPELT   
+        else:
+            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+        
 
     def abkuppelnRechts3(self,delay=3):
         print "BR130 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
@@ -70,6 +73,8 @@ class BR130(Lok):
             self.sleep(3.6)
             self.stop()
             self.status=ABGEKUPPELT           
+        else:
+            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnLinks(self, delay)

@@ -14,11 +14,45 @@ class BR118(Lok):
         bahnhofLinksGerade()
         time.sleep(1)
         self.speed(20)
+    
+    def abkuppelnRechts2(self,delay=3):
+        print "BR 118 startet abkuppeln auf Gleis 2, rechts, in",delay,"Sekunden"
+        time.sleep(delay)
+        if (self.zuglaenge==100):
+            self.nachLinks()
+            time.sleep(1)
+            self.speed(10)
+            time.sleep(1.5)
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            self.stop()
+            time.sleep(0.1)
+            entkuppeln2()
+            time.sleep(0.1)
+            self.nachRechts()
+            time.sleep(0.1)
+            entkuppeln2()
+            self.speed(20)
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            entkuppeln2()
+            self.sleep(3.6)
+            self.stop()
+            self.status=ABGEKUPPELT
+        else:
+            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
         
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnLinks(self, delay)
         if (self.zuglaenge==100):
-            time.sleep(11)
+            time.sleep(12)
         self.stop()
         time.sleep(3)
         self.lichtAus()
@@ -82,9 +116,8 @@ class BR118(Lok):
             self.stop()
             self.status=ANKUPPELN
             self.ankuppeln(WENDEZEIT)
-        else:
-            self.stop()
-            self.status=UNDEFINED
+        elif (self.status==NACH_RECHTS):
+            pass
             
     def entkupplerLinksEvent(self):
         if (self.status==ABKUPPELN):
@@ -109,6 +142,6 @@ class BR118(Lok):
             
     def entkupplerRechts2Event(self):
         if (self.status==EINFAHRT):
-            time.sleep(3.2)
+            time.sleep(3.3)
             self.eingefahren()
 

@@ -47,9 +47,9 @@ BR130.status=PARKED
 ICE.status=PARKED
 
 BR118.status=BEREIT
-BR118.bahnhof=LINKS
-BR118.vonGleis=1
-BR118.nachGleis=1
+BR118.bahnhof=RECHTS
+BR118.vonGleis=2
+BR118.nachGleis=-1
 
 def states():
     print        
@@ -86,6 +86,8 @@ while True:
         
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(ABKUPPELN,LINKS,1) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(ABKUPPELN,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+        reset()
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(ANKUPPELN,LINKS,1) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
         
@@ -112,6 +114,10 @@ while True:
         reset()
         
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+        BR118.status=ABKUPPELN
+        start_new_thread(BR118.abkuppeln, (pause,))
+
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(EINGEFAHREN,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         BR118.status=ABKUPPELN
         start_new_thread(BR118.abkuppeln, (pause,))
 

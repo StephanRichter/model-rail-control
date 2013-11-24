@@ -172,10 +172,12 @@ class Lok:
         
     def nachLinks(self):
         self.lok.setDirection(0)
+        self.sleep(0.1)
         self.lok.send()
         
     def nachRechts(self):
         self.lok.setDirection(1)
+        self.sleep(0.1)
         self.lok.send()
         
     def speed(self,speed):
