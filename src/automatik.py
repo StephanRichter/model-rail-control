@@ -48,9 +48,9 @@ BR118.status=PARKED
 BR130.status=PARKED
 ICE.status=PARKED
 
-BR130.status=BEREIT
-BR130.bahnhof=RECHTS
-BR130.vonGleis=1
+BR118.status=BEREIT
+BR118.bahnhof=RECHTS
+BR118.vonGleis=2
 
 
 
@@ -208,10 +208,14 @@ while True:
         start_new_thread(BR118.ausfahrt, (pause,))                
 
         
-    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(BEREIT,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         BR118.status=AUSFAHRT
         BR118.nachGleis=1
         start_new_thread(BR118.ausfahrt, (pause,))                
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(BEREIT,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+        BR118.status=GLEISWECHSEL
+        BR118.nachGleis=1
+        start_new_thread(BR118.gleiswechsel, (pause,))                
     
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(EINFAHRT,LINKS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
@@ -225,6 +229,11 @@ while True:
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(EINGEFAHREN,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         BR118.status=ABKUPPELN
         start_new_thread(BR118.abkuppeln, (pause,))
+
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(GLEISWECHSEL,RECHTS,1) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+        reset()
+    elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(GLEISWECHSEL,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
+        reset()
 
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(NACH_LINKS,RECHTS,2) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
