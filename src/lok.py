@@ -274,21 +274,25 @@ class Lok:
         
     def ausfahrtRechts(self,delay=3):
         if (self.bahnhof!=RECHTS):
-            print self.name," ist nicht rechts, kann auch dort nicht ausfahren"
+            print self.name,"ist nicht rechts, kann auch dort nicht ausfahren"
             return
-        print self.name," fährt aus Bahnhof rechts aus in",delay,"sekunden"
+        print self.name,"fährt aus Bahnhof rechts aus in",delay,"sekunden"
         self.status=NACH_LINKS
         self.nachLinks()
         self.lichtAn()
         time.sleep(delay)
         if (self.vonGleis==1):
-            ausfahrt1()
+            einfahrt1()
+            #ausfahrt1()
         elif (self.vonGleis==2):
-            ausfahrt2()
+            einfahrt2()
+            #ausfahrt2()
         elif (self.vonGleis==3):
-            ausfahrt3()
+            einfahrt3()
+            #ausfahrt3()
         elif (self.vonGleis==4):
-            ausfahrt4()
+            einfahrt4()
+            #ausfahrt4()
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
             return
