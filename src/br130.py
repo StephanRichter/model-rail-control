@@ -154,11 +154,41 @@ class BR130(Lok):
             self.speed(60)
             if (self.nachGleis==3 or self.nachGleis==2):
                 if (self.zuglaenge==82):
-                    time.sleep(9)
+                    time.sleep(7)
                     self.speed(20)
                     return # Dieser Zug ist zu lang und muss über den Reedkontakt beim Entkuppler hinausfahren
             time.sleep(1)
             self.eingefahren()
+        elif (self.status==GLEISWECHSEL):
+            if (self.zuglaenge==82):
+                time.sleep(16) # hier anpassen
+            else:
+                print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                self.status=UNDEFINED
+                return
+            self.stop()
+            time.sleep(1)
+            self.nachRechts()            
+            self.einfahrWeichenRechts()
+            time.sleep(WENDEZEIT)
+            self.speed(20)
+            if (self.nachGleis==1 or self.nachGleis==2):
+                if (self.zuglaenge==82):
+                    time.sleep(39) # hier anpassen
+                else:
+                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                    self.status=UNDEFINED
+                    return
+            elif (self.nachGleis==3 or self.nachGleis==4):
+                if (self.zuglaenge==82):
+                    time.sleep(42) # hier anpassen
+                else:
+                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                    self.status=UNDEFINED
+                    return
+            self.stop()   
+            self.vonGleis=self.nachGleis
+            self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
