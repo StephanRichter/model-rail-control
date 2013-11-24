@@ -74,7 +74,7 @@ class BR86(Lok):
         if (self.status==AUSFAHRT):
             self.speed(128)
             self.status=NACH_RECHTS
-            time.sleep(14)            
+            time.sleep(17)            
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
