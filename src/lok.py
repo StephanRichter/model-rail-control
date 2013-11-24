@@ -344,10 +344,10 @@ class Lok:
             self.status=EINGEFAHREN
         
     def notImplemented(self,name):
-        print name," nicht implementiert für",self.name
+        print name,"nicht implementiert für",self.name
         
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
-        return (status==self.status) & (bahnhof==self.bahnhof) & (vonGleis==self.vonGleis)
+        return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
     
     def umfahren(self,delay=3):
         if (self.bahnhof==LINKS):

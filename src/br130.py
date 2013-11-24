@@ -71,7 +71,7 @@ class BR130(Lok):
             self.stop()
             self.status=ABGEKUPPELT           
 
-    def ankuppelnLinks(self, delay=3):
+    def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnLinks(self, delay)
         if (self.zuglaenge==82):
             time.sleep(13)
@@ -80,8 +80,7 @@ class BR130(Lok):
         self.lichtAus()
         self.status=BEREIT
         
-    def ankuppelnRechts(self, delay=3):
-        print "BR130 startet ankuppeln rechts in",delay,"Sekunden"
+    def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnRechts(self, delay)
         if (self.nachGleis==2):
             if (self.zuglaenge==82):
@@ -141,28 +140,25 @@ class BR130(Lok):
             self.ankuppeln(WENDEZEIT)
 
     def entkupplerLinksEvent(self):
-        if (self.status!=ABKUPPELN):
+        if (self.status==ABKUPPELN):
+            time.sleep(2) # Überfahren
             self.stop()
-            self.status=UNDEFINED
-            return        
-        time.sleep(2) # Überfahren
-        self.stop()
-        time.sleep(WENDEZEIT)
+            time.sleep(WENDEZEIT)
         
-        self.nachRechts() # Anrücken
-        self.speed(10)
-        time.sleep(0.6)
-        entkupplenLinks(3)
-        self.stop()        
-        time.sleep(0.1)
-        self.nachLinks()
-        time.sleep(0.1)
-        self.speed(25)
-        entkupplenLinks(3)
-        time.sleep(3.5)        
-        self.stop()
-        time.sleep(1)
-        self.status=ABGEKUPPELT
+            self.nachRechts() # Anrücken
+            self.speed(10)
+            time.sleep(0.6)
+            entkupplenLinks(3)
+            self.stop()        
+            time.sleep(0.1)
+            self.nachLinks()
+            time.sleep(0.1)
+            self.speed(25)
+            entkupplenLinks(3)
+            time.sleep(3.5)        
+            self.stop()
+            time.sleep(1)
+            self.status=ABGEKUPPELT
         
     def entkupplerRechts2Event(self):
         if (self.status==EINFAHRT):
