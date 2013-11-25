@@ -8,7 +8,7 @@ from br118 import BR118
 from br130 import BR130
 from mcp23s17 import *
 from kontakte import *
-import time,os
+import time,os,random
 
 try:
     import srcp
@@ -21,6 +21,8 @@ SRCP_BUS=1
 
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
+
+random.seed(1)
 
 pause=0
 
@@ -60,7 +62,7 @@ BR130.bahnhof=LINKS
 BR130.vonGleis=1
 
 ICE.status=BEREIT
-ICE.bahnhof=LINKS
+ICE.bahnhof=RECHTS
 ICE.vonGleis=2
 
 
@@ -178,13 +180,50 @@ while True:
 
     elif BR86.stat(EINGEFAHREN,LINKS,1):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
-            BR86.status=ABKUPPELN
             start_new_thread(BR86.abkuppeln, (pause,))
 
     elif BR86.stat(EINGEFAHREN,RECHTS,2):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
-            BR86.status=ABKUPPELN
             start_new_thread(BR86.abkuppeln, (pause,))
+    elif BR86.stat(EINGEFAHREN,RECHTS,3):
+        if BR110.stat(BEREIT,RECHTS,4):
+            if (BR118.stat(BEREIT,RECHTS,1)):
+                if (ICE.stat(BEREIT,LINKS,2)):
+                    rand=random.choice([1,2,3,4,5,6])
+                    if rand==1:
+                        ICE.nachGleis=2
+                        start_new_thread(ICE.ausfahrt, (pause,))
+                    elif rand==2:
+                        BR118.nachGleis=2
+                        start_new_thread(BR118.gleiswechsel, (pause,))
+                    elif rand==3:
+                        BR110.nachGleis=2
+                        start_new_thread(BR110.gleiswechsel, (pause,))
+                    elif rand==4:
+                        ICE.nachGleis=2
+                        BR110.nachGleis=2
+                        start_new_thread(BR110.ausfahrt, (pause,))
+                        start_new_thread(ICE.ausfahrt, (pause+7,))
+                    elif rand==5:
+                        ICE.nachGleis=4
+                        BR110.nachGleis=2
+                        start_new_thread(BR110.ausfahrt, (pause,))
+                        start_new_thread(ICE.ausfahrt, (pause+7,))
+                    elif rand==6:
+                        start_new_thread(BR86.abkuppeln, (pause,))                    
+                if (ICE.stat(BEREIT,RECHTS,2)):
+                    rand=random.choice([1,2,3,4])
+                    if rand==1:
+                        ICE.nachGleis=2
+                        start_new_thread(ICE.ausfahrt, (pause,))
+                    elif rand==2:
+                        BR110.nachGleis=2
+                        start_new_thread(BR110.ausfahrt, (pause,))
+                    elif rand==3:
+                        start_new_thread(BR86.abkuppeln, (pause,))                    
+                    elif rand==4:
+                        start_new_thread(BR130.abkuppeln, (pause,))                    
+
     elif BR86.stat(GLEISWECHSEL,LINKS,1):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             reset()

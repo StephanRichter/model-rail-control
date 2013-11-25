@@ -200,6 +200,7 @@ class Lok:
         self.status=0
         
     def abkuppeln(self,delay=3):
+        self.status=ABKUPPELN
         if (self.bahnhof==LINKS):
             self.abkuppelnLinks(delay)
         elif (self.bahnhof==RECHTS):
@@ -252,6 +253,7 @@ class Lok:
         self.speed(30)
 
     def ausfahrt(self,delay=3):
+        self.status=AUSFAHRT
         if (self.bahnhof==LINKS):
             self.ausfahrtLinks(delay)
         elif (self.bahnhof==RECHTS):
@@ -351,6 +353,7 @@ class Lok:
             self.status=EINGEFAHREN
             
     def gleiswechsel(self,delay=3):
+        self.status=GLEISWECHSEL
         if (self.bahnhof==RECHTS):
             self.gleiswechselRechts(delay)
         elif (self.bahnhof==LINKS):
