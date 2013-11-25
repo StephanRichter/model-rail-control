@@ -52,33 +52,19 @@ class ICE(Lok):
                 time.sleep(2)
             time.sleep(2)
             self.eingefahren()
+            self.status=BEREIT
         elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==82):
-                time.sleep(16) # hier anpassen
-            else:
-                print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
-                self.status=UNDEFINED
-                return
+            time.sleep(6) # hier anpassen
             self.stop()
             time.sleep(1)
             self.nachRechts()            
             self.einfahrWeichenRechts()
             time.sleep(WENDEZEIT)
             self.speed(20)
-            if (self.nachGleis==1 or self.nachGleis==2):
-                if (self.zuglaenge==82):
-                    time.sleep(39) # hier anpassen
-                else:
-                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
-                    self.status=UNDEFINED
-                    return
+            if (self.nachGleis<3):
+                time.sleep(21) # hier anpassen
             elif (self.nachGleis==3 or self.nachGleis==4):
-                if (self.zuglaenge==82):
-                    time.sleep(42) # hier anpassen
-                else:
-                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
-                    self.status=UNDEFINED
-                    return
+                time.sleep(23) # hier anpassen
             self.stop()   
             self.vonGleis=self.nachGleis
             self.status=BEREIT 
