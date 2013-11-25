@@ -6,6 +6,13 @@ import time
 class ICE(Lok):
     name = "ICE   "
     
+    def ausfahrtRechts(self, delay=3):
+        Lok.ausfahrtRechts(self, delay=delay)
+        self.sleep(6)
+        self.speed(128)
+        self.sleep(7)
+        self.einfahrt()
+    
 # EVENTS
 
     def einfahrtLinksEvent(self):
@@ -16,13 +23,11 @@ class ICE(Lok):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==1):
-                if (self.zuglaenge==82):
-                    time.sleep(6)
-                    self.speed(20)
-                    time.sleep(4)
-            time.sleep(1)
+            time.sleep(3)
+            self.speed(10)
+            time.sleep(3)
             self.eingefahren()
+            self.status=BEREIT
         elif (self.status==GLEISWECHSEL):
             time.sleep(4) # hier anpassen
             self.stop()
