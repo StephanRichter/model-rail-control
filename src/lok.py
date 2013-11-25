@@ -361,23 +361,27 @@ class Lok:
     def gleiswechselLinks(self,delay=3):
         print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
         self.nachRechts()
+        time.sleep(delay)
+        self.lichtAn()
         time.sleep(0.1)
         if (self.vonGleis==1):
             bahnhofLinksGerade()
         else:
             bahnhofLinksAbzweig()
-        time.sleep(delay)
+        time.sleep(1)
         self.speed(25)
         
     def gleiswechselRechts(self,delay=3):
         print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
         self.nachLinks()
+        time.sleep(delay)
+        self.lichtAn()
         time.sleep(0.1)
         dummy=self.nachGleis
         self.nachGleis=self.vonGleis
         self.einfahrWeichenRechts()
+        time.sleep(1)
         self.nachGleis=dummy
-        time.sleep(delay)
         self.speed(25)
         
     def notImplemented(self,name):

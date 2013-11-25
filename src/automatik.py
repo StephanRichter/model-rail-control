@@ -50,8 +50,9 @@ BR130.status=PARKED
 ICE.status=PARKED
 
 ICE.status=BEREIT
-ICE.bahnhof=RECHTS
-ICE.vonGleis=4
+ICE.bahnhof=LINKS
+#ICE.bahnhof=RECHTS
+ICE.vonGleis=1
 
 
 
@@ -463,7 +464,7 @@ while True:
         start_new_thread(ICE.gleiswechsel,(pause,))
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(BEREIT,LINKS,2)):
         ICE.status=AUSFAHRT
-        ICE.nachGleis=4
+        ICE.nachGleis=2
         start_new_thread(ICE.ausfahrt,(pause,))
         
     elif (BR86.stat(PARKED) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(BEREIT,RECHTS,1)):
