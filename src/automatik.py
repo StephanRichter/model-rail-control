@@ -43,16 +43,25 @@ for lok in loks:
     lok.lichtAn()
 
     
-BR86.status=PARKED
-BR110.status=PARKED
-BR118.status=PARKED
-BR130.status=PARKED
-ICE.status=PARKED
+BR86.status=EINGEFAHREN
+BR86.bahnhof=RECHTS
+BR86.vonGleis=3
+
+BR110.status=BEREIT
+BR110.bahnhof=RECHTS
+BR110.vonGleis=4
+
+BR118.status=BEREIT
+BR118.bahnhof=RECHTS
+BR118.vonGleis=1
+
+BR130.status=EINGEFAHREN
+BR130.bahnhof=LINKS
+BR130.vonGleis=1
 
 ICE.status=BEREIT
 ICE.bahnhof=LINKS
-#ICE.bahnhof=RECHTS
-ICE.vonGleis=1
+ICE.vonGleis=2
 
 
 
@@ -80,59 +89,76 @@ while True:
     
     # folgende Zeilen sind zur Ablaufsteuerung
     
-    if (BR86.stat(ABGEKUPPELT,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=UMFAHREN
-        start_new_thread(BR86.umfahren, (pause,))
-    elif (BR86.stat(ABGEKUPPELT,RECHTS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=UMFAHREN
-        start_new_thread(BR86.umfahren, (pause,))
+    if BR86.stat(ABGEKUPPELT,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=UMFAHREN
+            start_new_thread(BR86.umfahren, (pause,))
+    elif BR86.stat(ABGEKUPPELT,RECHTS,2):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=UMFAHREN
+            start_new_thread(BR86.umfahren, (pause,))
 
-    elif (BR86.stat(ABKUPPELN,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-    elif (BR86.stat(ABKUPPELN,RECHTS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-
-    elif (BR86.stat(ANKUPPELN,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-    elif (BR86.stat(ANKUPPELN,RECHTS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-
-    elif (BR86.stat(AUSFAHRT,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-    elif (BR86.stat(AUSFAHRT,LINKS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-
-    elif (BR86.stat(AUSFAHRT,RECHTS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
-
-    elif (BR86.stat(BEREIT,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=GLEISWECHSEL
-        BR86.nachGleis=2
-        start_new_thread(BR86.gleiswechsel, (pause,))                
-    elif (BR86.stat(BEREIT,LINKS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=AUSFAHRT
-        BR86.nachGleis=2
-        start_new_thread(BR86.ausfahrt, (pause,))                
+    elif BR86.stat(ABKUPPELN,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
     
-    elif (BR86.stat(BEREIT,RECHTS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=GLEISWECHSEL
-        BR86.nachGleis=3
-        start_new_thread(BR86.gleiswechsel, (pause,))                
-    elif (BR86.stat(BEREIT,RECHTS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=GLEISWECHSEL
-        BR86.nachGleis=1
-        start_new_thread(BR86.gleiswechsel, (pause,))                
-    elif (BR86.stat(BEREIT,RECHTS,3) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=GLEISWECHSEL
-        BR86.nachGleis=4
-        start_new_thread(BR86.gleiswechsel, (pause,))                
-    elif (BR86.stat(BEREIT,RECHTS,4) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        BR86.status=AUSFAHRT
-        BR86.nachGleis=1
-        start_new_thread(BR86.ausfahrt, (pause,))                
+    elif BR86.stat(ABKUPPELN,RECHTS,2):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
 
-    elif (BR86.stat(EINFAHRT,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
-        reset()
+    elif BR86.stat(ANKUPPELN,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
+    elif BR86.stat(ANKUPPELN,RECHTS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
+
+    elif BR86.stat(AUSFAHRT,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
+    elif BR86.stat(AUSFAHRT,LINKS,2):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
+
+    elif BR86.stat(AUSFAHRT,RECHTS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
+
+    elif BR86.stat(BEREIT,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=GLEISWECHSEL
+            BR86.nachGleis=2
+            start_new_thread(BR86.gleiswechsel, (pause,))                
+    elif BR86.stat(BEREIT,LINKS,2):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=AUSFAHRT
+            BR86.nachGleis=2
+            start_new_thread(BR86.ausfahrt, (pause,))                
+    
+    elif BR86.stat(BEREIT,RECHTS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=GLEISWECHSEL
+            BR86.nachGleis=3
+            start_new_thread(BR86.gleiswechsel, (pause,))                
+    elif BR86.stat(BEREIT,RECHTS,2):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=GLEISWECHSEL
+            BR86.nachGleis=1
+            start_new_thread(BR86.gleiswechsel, (pause,))                
+    elif BR86.stat(BEREIT,RECHTS,3):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=GLEISWECHSEL
+            BR86.nachGleis=4
+            start_new_thread(BR86.gleiswechsel, (pause,))                
+    elif BR86.stat(BEREIT,RECHTS,4):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            BR86.status=AUSFAHRT
+            BR86.nachGleis=1
+            start_new_thread(BR86.ausfahrt, (pause,))                
+
+    elif BR86.stat(EINFAHRT,LINKS,1):
+        if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+            reset()
     elif (BR86.stat(EINFAHRT,LINKS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
     elif (BR86.stat(EINFAHRT,LINKS,3) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
@@ -152,7 +178,6 @@ while True:
     elif (BR86.stat(EINGEFAHREN,RECHTS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         BR86.status=ABKUPPELN
         start_new_thread(BR86.abkuppeln, (pause,))
-
     elif (BR86.stat(GLEISWECHSEL,LINKS,1) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
         reset()
     elif (BR86.stat(GLEISWECHSEL,LINKS,2) and BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED)):
