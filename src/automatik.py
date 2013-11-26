@@ -120,7 +120,7 @@ while True:
                     ICE.nachGleis=2
                     start_new_thread(BR110.ausfahrt, (pause,))
                     start_new_thread(ICE.ausfahrt, (pause+7,))
-                elif rand==3:
+                elif rand==4:
                     BR110.nachGleis=2
                     ICE.nachGleis=4
                     start_new_thread(BR110.ausfahrt, (pause,))
@@ -249,7 +249,7 @@ while True:
             reset()
         elif BR110.stat(BEREIT,LINKS,2) and BR118.stat(BEREIT,RECHTS,1):
             if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
-                rand=random.choice([1,2])
+                rand=random.choice([1,2,3,4,5])
                 if rand==1:
                     BR86.nachGleis=3
                     start_new_thread(BR86.gleiswechsel, (pause,))
@@ -271,7 +271,7 @@ while True:
                     start_new_thread(ICE.gleiswechsel, (pause+7,))
                     
             elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
-                rand=random.choice([1,2,3,4,5])
+                rand=random.choice([1,2,3,4,5,6])
                 if rand==1:
                     BR86.nachGleis=3
                     start_new_thread(BR86.gleiswechsel, (pause,))
