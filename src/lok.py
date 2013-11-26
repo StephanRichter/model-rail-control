@@ -390,6 +390,7 @@ class Lok:
         return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
     
     def umfahren(self,delay=3):
+        self.status=UMFAHREN
         if (self.bahnhof==LINKS):
             self.umfahrenLinks(delay)
         elif (self.bahnhof==RECHTS):

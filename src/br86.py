@@ -50,6 +50,18 @@ class BR86(Lok):
         if (self.nachGleis==2):
             if (self.zuglaenge==55):
                 time.sleep(20)
+            else:
+                print "kein Ankuppeln definiert für Zuglänge =",self.zuglaenge
+                self.status=UNDEFINED
+        elif (self.nachGleis==3):
+            if (self.zuglaenge==55):
+                time.sleep(20)
+            else:
+                print "kein Ankuppeln definiert für Zuglänge =",self.zuglaenge
+                self.status=UNDEFINED
+        else:
+            print "nachGleis =",self.nachGleis,"nicht definiert für BR86.ankuppelnRechts"
+            self.status=UNDEFINED
         self.stop()
         time.sleep(3)
         self.lichtAus()

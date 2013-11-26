@@ -51,7 +51,7 @@ BR86.vonGleis=3
 
 BR110.status=BEREIT
 BR110.bahnhof=RECHTS
-BR110.vonGleis=4
+BR110.vonGleis=2
 
 BR118.status=BEREIT
 BR118.bahnhof=RECHTS
@@ -97,19 +97,40 @@ while True:
     
     if BR86.stat(ABGEKUPPELT,LINKS,1):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
-            BR86.status=UMFAHREN
             start_new_thread(BR86.umfahren, (pause,))
         else:
-            statecount+=1
+            err()
     elif BR86.stat(ABGEKUPPELT,RECHTS,2):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
-            BR86.status=UMFAHREN
             start_new_thread(BR86.umfahren, (pause,))
         else:
-            statecount+=1
+            err()
 
     elif BR86.stat(ABGEKUPPELT,RECHTS,3):
-        if BR110.stat(BEREIT,RECHTS,4):
+        if BR110.stat(BEREIT,RECHTS,2):
+            if BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
+                rand=random.choice([1,2,3,4,5])
+                if rand==1:
+                    start_new_thread(BR86.umfahren, (pause,))
+                elif rand==2:
+                    BR110.nachGleis=4
+                    start_new_thread(BR110.gleiswechsel, (pause,))
+                elif rand==3:
+                    BR110.nachGleis=2
+                    ICE.nachGleis=2
+                    start_new_thread(BR110.ausfahrt, (pause,))
+                    start_new_thread(ICE.ausfahrt, (pause+7,))
+                elif rand==3:
+                    BR110.nachGleis=2
+                    ICE.nachGleis=4
+                    start_new_thread(BR110.ausfahrt, (pause,))
+                    start_new_thread(ICE.ausfahrt, (pause+7,))
+                else:
+                    ICE.nachGleis=4
+                    start_new_thread(ICE.ausfahrt, (pause+7,))                    
+            else:
+                err()
+        elif BR110.stat(BEREIT,RECHTS,4):
             if BR118.stat(BEREIT,RECHTS,1):
                 if BR130.stat(EINGEFAHREN,LINKS,1):
                     if ICE.stat(BEREIT,LINKS,2):
@@ -183,6 +204,8 @@ while True:
                 reset()
         else:
             statecount+=1
+    elif BR86.stat(ANKUPPELN,RECHTS,4) and BR110.stat(BEREIT,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
+        reset()
 
     elif BR86.stat(AUSFAHRT,LINKS,1):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
@@ -814,8 +837,10 @@ while True:
             reset()
         else:
             statecount+=1
+    elif BR86.stat(UMFAHREN,RECHTS,4) and BR110.stat(BEREIT,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
+        reset()
     else:        
-        statecount+=1
+        err()
     
     if (statecount>0):
         print "undefinierter Zustand (",statecount,")"
