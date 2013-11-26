@@ -434,41 +434,39 @@ class Lok:
 # ============= Aktionen =================>               
 
     def state(self):
-        
-        print self.name,":"
+        txt=self.name+": "
         if (self.status == UNDEFINED):
-            print("UNDEFINED,"),
+            txt+="UNDEFINED,"
         elif (self.status == ABGEKUPPELT):
-            print("ABGEKUPPELT,"),
+            txt+="ABGEKUPPELT,"
         elif (self.status == ABKUPPELN):
-            print("ABKUPPELN,"),
+            txt+="ABKUPPELN,"
         elif (self.status == ANKUPPELN):
-            print("ANKUPPELN,"),
+            txt+="ANKUPPELN,"
         elif (self.status == AUSFAHRT):
-            print("AUSFAHRT,"),
+            txt+="AUSFAHRT,"
         elif (self.status == BEREIT):
-            print("BEREIT,"),
+            txt+="BEREIT,"
         elif (self.status == EINFAHRT):
-            print("EINFAHRT,"),
+            txt+="EINFAHRT,"
         elif (self.status == EINGEFAHREN):
-            print("EINGEFAHREN,"),
+            txt+="EINGEFAHREN,"
         elif (self.status == NACH_LINKS):
-            print("NACH_LINKS,"),
+            txt+="NACH_LINKS,"
         elif (self.status == NACH_RECHTS):
-            print("NACH_RECHTS,"),
+            txt+="NACH_RECHTS,"
         elif (self.status == UMFAHREN):
-            print("UMFAHREN,"),
+            txt+="UMFAHREN,"
         elif (self.status == GLEISWECHSEL):
-            print("GLEISWECHSEL,"),
+            txt+="GLEISWECHSEL,"
         elif (self.status == PARKED):
-            print("PARKED,"),
+            txt+="PARKED,"
         else:
-            print("unknown:",self.status,","),            
+            txt+="unknown:"+self.status+","            
 
         if (self.bahnhof == LINKS):
-            print("LINKS,"),
+            txt+="LINKS,"
         if (self.bahnhof == RECHTS):
-            print("RECHTS,"),
+            txt+="RECHTS,"
 
-        print self.vonGleis,"=>",self.nachGleis
-        print
+        print txt+`self.vonGleis`+" => "+`self.nachGleis`
