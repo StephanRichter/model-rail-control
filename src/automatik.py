@@ -47,7 +47,7 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=3
+BR86.vonGleis=4
 
 BR110.status=BEREIT
 BR110.bahnhof=RECHTS
