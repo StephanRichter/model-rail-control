@@ -45,7 +45,7 @@ for lok in loks:
     lok.lichtAn()
 
     
-BR86.status=EINGEFAHREN
+BR86.status=ABGEKUPPELT
 BR86.bahnhof=RECHTS
 BR86.vonGleis=3
 
@@ -78,6 +78,10 @@ def states():
     
 statecount = 0
 
+def err():
+    global statecount
+    statecount+=1
+
 def reset():
     global statecount
     statecount=0
@@ -104,6 +108,43 @@ while True:
         else:
             statecount+=1
 
+    elif BR86.stat(ABGEKUPPELT,RECHTS,3):
+        if BR110.stat(BEREIT,RECHTS,4):
+            if BR118.stat(BEREIT,RECHTS,1):
+                if BR130.stat(EINGEFAHREN,LINKS,1):
+                    if ICE.stat(BEREIT,LINKS,2):
+                        rand=random.choice([1,2,3,4,5])
+                        if rand==1:
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.gleiswechsel, (pause,))
+                        elif rand==2:
+                            BR110.nachGleis=2
+                            ICE.nachGleis=2
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                            start_new_thread(ICE.ausfahrt, (pause+7,))
+                        elif rand==3:
+                            BR110.nachGleis=2
+                            ICE.nachGleis=4
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                            start_new_thread(ICE.ausfahrt, (pause+7,))
+                        elif rand==4:
+                            BR118.nachGleis=2
+                            start_new_thread(BR118.gleiswechsel, (pause,))
+                        else:
+                            ICE.nachGleis=2
+                            start_new_thread(ICE.ausfahrt, (pause,))
+
+                    else:
+                        err()
+                else:
+                    err()
+            else:
+                err()
+        elif BR110.stat(GLEISWECHSEL,RECHTS,4) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
+            reset()
+        else:
+            err()
+
     elif BR86.stat(ABKUPPELN,LINKS,1):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
                 reset()
@@ -112,6 +153,22 @@ while True:
     
     elif BR86.stat(ABKUPPELN,RECHTS,2):
         if BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
+                reset()
+        else:
+            statecount+=1
+    elif BR86.stat(ABKUPPELN,RECHTS,3):
+        if BR110.stat(BEREIT,RECHTS,4):
+            if BR118.stat(BEREIT,RECHTS,1):
+                if BR130.stat(EINGEFAHREN,LINKS,1):
+                    if (ICE.stat(BEREIT,LINKS,2)):
+                        pass
+                    else:
+                        err()
+                else:
+                    err()
+            else:
+                err()
+        elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
                 reset()
         else:
             statecount+=1
@@ -234,43 +291,77 @@ while True:
     elif BR86.stat(EINGEFAHREN,RECHTS,3):
         if BR110.stat(BEREIT,RECHTS,4):
             if (BR118.stat(BEREIT,RECHTS,1)):
-                if (ICE.stat(BEREIT,LINKS,2)):
-                    rand=random.choice([1,2,3,4,5,6])
-                    if rand==1:
-                        ICE.nachGleis=2
-                        start_new_thread(ICE.ausfahrt, (pause,))
-                    elif rand==2:
-                        BR118.nachGleis=2
-                        start_new_thread(BR118.gleiswechsel, (pause,))
-                    elif rand==3:
-                        BR110.nachGleis=2
-                        start_new_thread(BR110.gleiswechsel, (pause,))
-                    elif rand==4:
-                        ICE.nachGleis=2
-                        BR110.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+7,))
-                    elif rand==5:
-                        ICE.nachGleis=4
-                        BR110.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+7,))
-                    elif rand==6:
-                        start_new_thread(BR86.abkuppeln, (pause,))
+                if BR130.stat(ABKUPPELN,LINKS,1):
+                    if (ICE.stat(BEREIT,RECHTS,2)):
+                        reset()
                     else:
-                        statecount+=1                    
-                elif (ICE.stat(BEREIT,RECHTS,2)):
-                    rand=random.choice([1,2,3,4])
-                    if rand==1:
-                        ICE.nachGleis=2
-                        start_new_thread(ICE.ausfahrt, (pause,))
-                    elif rand==2:
-                        BR110.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                    elif rand==3:
-                        start_new_thread(BR86.abkuppeln, (pause,))                    
-                    elif rand==4:
-                        start_new_thread(BR130.abkuppeln, (pause,))
+                        statecount+=1
+                elif BR130.stat(EINGEFAHREN,LINKS,1):
+                    if (ICE.stat(AUSFAHRT,LINKS,2)):
+                        reset()
+                    elif (ICE.stat(BEREIT,LINKS,2)):
+                        rand=random.choice([1,2,3,4,5,6])
+                        if rand==1:
+                            ICE.nachGleis=2
+                            start_new_thread(ICE.ausfahrt, (pause,))
+                        elif rand==2:
+                            BR118.nachGleis=2
+                            start_new_thread(BR118.gleiswechsel, (pause,))
+                        elif rand==3:
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.gleiswechsel, (pause,))
+                        elif rand==4:
+                            ICE.nachGleis=2
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                            start_new_thread(ICE.ausfahrt, (pause+7,))
+                        elif rand==5:
+                            ICE.nachGleis=4
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                            start_new_thread(ICE.ausfahrt, (pause+7,))
+                        elif rand==6:
+                            start_new_thread(BR86.abkuppeln, (pause,))
+                        else:
+                            statecount+=1                    
+                    elif (ICE.stat(BEREIT,RECHTS,2)):
+                        rand=random.choice([1,2,3,4])
+                        if rand==1:
+                            ICE.nachGleis=2
+                            start_new_thread(ICE.ausfahrt, (pause,))
+                        elif rand==2:
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                        elif rand==3:
+                            start_new_thread(BR86.abkuppeln, (pause,))                    
+                        elif rand==4:
+                            start_new_thread(BR130.abkuppeln, (pause,))
+                        else:
+                            statecount+=1
+                    elif (ICE.stat(EINFAHRT,LINKS,1)):
+                        reset()
+                    elif (ICE.stat(EINFAHRT,LINKS,2)):
+                        reset()
+                    elif (ICE.stat(EINFAHRT,LINKS,3)):
+                        reset()
+                    elif (ICE.stat(EINFAHRT,LINKS,4)):
+                        reset()
+                    elif (ICE.stat(EINFAHRT,RECHTS,1)):
+                        reset()
+                    elif (ICE.stat(EINFAHRT,RECHTS,2)):
+                        reset()
+                    elif (ICE.stat(NACH_LINKS,RECHTS,1)):
+                        reset()
+                    elif (ICE.stat(NACH_LINKS,RECHTS,2)):
+                        reset()
+                    elif (ICE.stat(NACH_LINKS,RECHTS,3)):
+                        reset()
+                    elif (ICE.stat(NACH_LINKS,RECHTS,4)):
+                        reset()
+                    elif (ICE.stat(NACH_RECHTS,LINKS,1)):
+                        reset()
+                    elif (ICE.stat(NACH_RECHTS,LINKS,2)):
+                        reset()
                     else:
                         statecount+=1
                 else:

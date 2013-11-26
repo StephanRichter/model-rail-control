@@ -17,7 +17,7 @@ class BR86(Lok):
         self.speed(20)
         
     def abkuppelnRechts2(self,delay=3):
-        print "BR130 startet abkuppeln auf Gleis 2, rechts, in",delay,"Sekunden"
+        print "BR 86 startet abkuppeln auf Gleis 2, rechts, in",delay,"Sekunden"
         time.sleep(delay)
         if (self.zuglaenge==55):
             self.nachRechts()
@@ -27,14 +27,14 @@ class BR86(Lok):
             print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
         
     def abkuppelnRechts3(self,delay=3):
-        print "BR130 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
+        print "BR 86 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
         time.sleep(delay)
         if (self.zuglaenge==55):
             self.nachRechts()
             time.sleep(1)
             self.speed(20)            
         else:
-            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "Abkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnLinks(self, delay)
