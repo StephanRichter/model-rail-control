@@ -30,6 +30,18 @@ class BR110(Lok):
                     time.sleep(12)
                     self.speed(20)
                     time.sleep(4)
+                else:
+                    print "keine Einfahrt definiert für Zuglänge =",self.zuglaenge
+            elif (self.nachGleis==2):
+                if (self.zuglaenge==82):
+                    time.sleep(12)
+                    self.speed(20)
+                    time.sleep(4)
+                else:
+                    print "keine Einfahrt definiert für Zuglänge =",self.zuglaenge
+            else:
+                print "keine Einfahrt definiert für Gleis",self.nachGleis
+                    
             time.sleep(1)
             self.eingefahren()
             if (self.wendezug):

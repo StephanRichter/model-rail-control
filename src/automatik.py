@@ -47,10 +47,10 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=4
+BR86.vonGleis=3
 
 BR110.status=BEREIT
-BR110.bahnhof=RECHTS
+BR110.bahnhof=LINKS
 BR110.vonGleis=2
 
 BR118.status=BEREIT
@@ -62,8 +62,8 @@ BR130.bahnhof=LINKS
 BR130.vonGleis=1
 
 ICE.status=BEREIT
-ICE.bahnhof=LINKS
-ICE.vonGleis=2
+ICE.bahnhof=RECHTS
+ICE.vonGleis=4
 
 
 
@@ -254,6 +254,7 @@ while True:
         else:
             statecount+=1
     elif BR86.stat(BEREIT,RECHTS,3):
+
         if BR110.stat(BEREIT, RECHTS, 2):
             if BR118.stat(BEREIT,RECHTS,1):
                 if BR130.stat(EINGEFAHREN,LINKS,1):
@@ -279,6 +280,16 @@ while True:
                         elif rand==5:
                             ICE.nachGleis=4
                             start_new_thread(ICE.ausfahrt, (pause,))
+                    elif ICE.stat(BEREIT,RECHTS,4):
+                        rand=random.choice([1,2,3])
+                        if rand==1:
+                            BR110.nachGleis=2
+                            start_new_thread(BR110.ausfahrt, (pause,))
+                        elif rand==2:
+                            start_new_thread(BR130.abkuppeln, (pause,))
+                        else:
+                            ICE.nachGleis=2
+                            start_new_thread(ICE.ausfahrt, (pause,))    
                     elif ICE.stat(EINFAHRT,RECHTS,2):
                         reset()
                     elif ICE.stat(NACH_RECHTS,LINKS,2):
@@ -288,7 +299,11 @@ while True:
                 else:
                     err()
             else:
-                err()                
+                err()
+        elif BR110.stat(EINFAHRT,LINKS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
+            reset()                
+        elif BR110.stat(NACH_LINKS,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
+            reset()                
         elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             BR86.status=GLEISWECHSEL
             BR86.nachGleis=4
