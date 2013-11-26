@@ -8,7 +8,7 @@ class ICE(Lok):
     sp=40
     
     def ausfahrtRechts(self, delay=3):
-        Lok.ausfahrtRechts(self, delay=delay)
+        Lok.ausfahrtRechts(self, delay)
         self.sleep(6)
         self.speed(128)
         self.sleep(7)
@@ -17,7 +17,7 @@ class ICE(Lok):
 
         
     def gleiswechsel(self, delay=3):
-        Lok.gleiswechsel(self, delay=delay)
+        Lok.gleiswechsel(self, delay)
         self.speed(self.sp)
         print "GW"
     
