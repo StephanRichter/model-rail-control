@@ -285,17 +285,13 @@ class Lok:
         self.lichtAn()
         time.sleep(delay)
         if (self.vonGleis==1):
-            einfahrt1()
-            #ausfahrt1()
+            ausfahrt1()
         elif (self.vonGleis==2):
-            einfahrt2()
-            #ausfahrt2()
+            ausfahrt2()
         elif (self.vonGleis==3):
-            einfahrt3()
-            #ausfahrt3()
+            ausfahrt3()
         elif (self.vonGleis==4):
-            einfahrt4()
-            #ausfahrt4()
+            ausfahrt4()
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
             return
