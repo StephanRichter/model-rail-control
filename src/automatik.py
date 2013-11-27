@@ -48,8 +48,8 @@ BR86.bahnhof=LINKS
 BR86.vonGleis=1
 
 BR110.status=BEREIT
-BR110.bahnhof=RECHTS
-BR110.vonGleis=4
+BR110.bahnhof=LINKS
+BR110.vonGleis=2
 
 BR118.status=BEREIT
 BR118.bahnhof=RECHTS
@@ -60,8 +60,8 @@ BR130.bahnhof=RECHTS
 BR130.vonGleis=3
 
 ICE.status=BEREIT
-ICE.bahnhof=LINKS
-ICE.vonGleis=2
+ICE.bahnhof=RECHTS
+ICE.vonGleis=4
 
 
 def states():
@@ -222,7 +222,7 @@ while True:
         elif BR110.stat(BEREIT,RECHTS,4) and BR118.stat(BEREIT,RECHTS,1):
             if BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
                 rand=random.choice([1,2,3,4])
-                rand=3
+                rand=4
                 print "z182"
                 print "rand = ",rand
                 if rand==1:
