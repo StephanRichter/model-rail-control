@@ -4,6 +4,7 @@ import time
 import srcp
 from kontakte import *
 from weichen import *
+from thread import start_new_thread
 
 UNDEFINED=-1
 
@@ -342,6 +343,7 @@ class Lok:
 
     def eingefahren(self):
             self.stop()
+            print self.name,"eingefahren"
             time.sleep(3)
             self.lichtAus()
             self.vonGleis=self.nachGleis
@@ -386,6 +388,14 @@ class Lok:
     def notImplemented(self,name):
         print name,"nicht implementiert für",self.name
         
+    def startAusfahrt(self,zielgleis,delay):
+        self.nachGleis=zielgleis
+        start_new_thread(self.ausfahrt,(delay,))
+
+    def startGleiswechsel(self,zielgleis,delay):
+        self.nachGleis=zielgleis
+        start_new_thread(self.gleiswechsel,(delay,))
+
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
         return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
     
@@ -429,7 +439,7 @@ class Lok:
             print "keine Aktion definiert für Lok auf Gleis",self.vonGleis
             self.status=UNDEFINED
             self.sleep(10)
-        self.speed(40)
+        self.speed(40)    
 
 # ============= Aktionen =================>               
 

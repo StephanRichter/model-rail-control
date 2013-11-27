@@ -88,7 +88,7 @@ class BR86(Lok):
             time.sleep(10)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
-            time.sleep(18)
+            time.sleep(12)
             self.stop()
             time.sleep(1)
             self.nachRechts()            
@@ -96,9 +96,9 @@ class BR86(Lok):
             time.sleep(WENDEZEIT)
             self.speed(20)
             if (self.nachGleis==1 or self.nachGleis==2):
-                time.sleep(38)
+                time.sleep(32)
             else:
-                time.sleep(42)
+                time.sleep(36)
             self.stop()   
             self.vonGleis=self.nachGleis
             self.status=BEREIT

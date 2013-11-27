@@ -109,49 +109,53 @@ class BR130(Lok):
 # ========== events ===========>
     
     def einfahrtLinksEvent(self):
-        if (self.status==AUSFAHRT):
-            self.speed(128)
-            self.status=NACH_RECHTS
-            time.sleep(12)            
-            self.einfahrt()
-        elif (self.status==EINFAHRT):
-            self.speed(60)
-            if (self.nachGleis==1):
+        if (self.bahnhof==LINKS):
+            if (self.status==AUSFAHRT):
+                self.speed(128)
+                self.status=NACH_RECHTS
+                time.sleep(12)            
+                self.einfahrt()
+            elif (self.status==EINFAHRT):
+                self.speed(60)
+                if (self.nachGleis==1):
+                    if (self.zuglaenge==82):
+                        time.sleep(6)
+                        self.speed(20)
+                        time.sleep(4)
+                time.sleep(1)
+                self.eingefahren()
+            elif (self.status==GLEISWECHSEL):
                 if (self.zuglaenge==82):
-                    time.sleep(6)
-                    self.speed(20)
-                    time.sleep(4)
-            time.sleep(1)
-            self.eingefahren()
-        elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==82):
-                time.sleep(16) # hier anpassen
-            self.stop()
-            time.sleep(1)
-            self.nachLinks()            
-            if (self.nachGleis==1):
-                bahnhofLinksGerade()
-            elif (self.nachGleis==2):
-                bahnhofLinksAbzweig()
-            else:
-                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
-                return
-            time.sleep(WENDEZEIT)
-            self.speed(20)
-            time.sleep(31) # hier anpassen
-            self.stop()
-            self.sleep(1)   
-            self.vonGleis=self.nachGleis
-            self.status=BEREIT         
-        elif (self.status==UMFAHREN):
-            self.stop()          
-            self.sleep(1)  
-            self.status=ANKUPPELN
-            self.ankuppelnLinks(WENDEZEIT)
+                    time.sleep(16) # hier anpassen
+                self.stop()
+                time.sleep(1)
+                self.nachLinks()            
+                if (self.nachGleis==1):
+                    bahnhofLinksGerade()
+                elif (self.nachGleis==2):
+                    bahnhofLinksAbzweig()
+                else:
+                    print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
+                    return
+                time.sleep(WENDEZEIT)
+                self.speed(20)
+                time.sleep(31) # hier anpassen
+                self.stop()
+                self.sleep(1)   
+                self.vonGleis=self.nachGleis
+                self.status=BEREIT         
+            elif (self.status==UMFAHREN):
+                self.stop()          
+                self.sleep(1)  
+                self.status=ANKUPPELN
+                self.ankuppelnLinks(WENDEZEIT)
             
     def einfahrtRechtsEvent(self):
+        if (self.bahnhof==LINKS):
+            return
         if (self.status==EINFAHRT):
             self.speed(60)
+            print "BR130.nachGleis=",self.nachGleis
             if (self.nachGleis==3 or self.nachGleis==2):
                 if (self.zuglaenge==82):
                     time.sleep(7)
