@@ -388,13 +388,16 @@ class Lok:
     def notImplemented(self,name):
         print name,"nicht implementiert für",self.name
         
-    def startAusfahrt(self,zielgleis,delay):
-        self.nachGleis=zielgleis
-        start_new_thread(self.ausfahrt,(delay,))
+    def startAbkuppeln(self,pause):
+        start_new_thread(self.abkuppeln,(pause,))
 
-    def startGleiswechsel(self,zielgleis,delay):
+    def startAusfahrt(self,zielgleis,pause):
         self.nachGleis=zielgleis
-        start_new_thread(self.gleiswechsel,(delay,))
+        start_new_thread(self.ausfahrt,(pause,))
+
+    def startGleiswechsel(self,zielgleis,pause):
+        self.nachGleis=zielgleis
+        start_new_thread(self.gleiswechsel,(pause,))
 
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
         return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
