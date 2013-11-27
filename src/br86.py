@@ -79,6 +79,8 @@ class BR86(Lok):
 # events
         
     def einfahrtRechtsEvent(self):
+        if (self.bahnhof!=RECHTS):
+            return
         if (self.status==EINFAHRT):
             self.speed(60)
             if (self.nachGleis==3 or self.nachGleis==2):
@@ -108,6 +110,8 @@ class BR86(Lok):
             self.ankuppeln(WENDEZEIT)
 
     def einfahrtLinksEvent(self):
+        if self.bahnhof!=LINKS:
+            return
         if (self.status==AUSFAHRT):
             self.speed(128)
             self.status=NACH_RECHTS

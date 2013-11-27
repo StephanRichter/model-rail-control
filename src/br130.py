@@ -151,7 +151,7 @@ class BR130(Lok):
                 self.ankuppelnLinks(WENDEZEIT)
             
     def einfahrtRechtsEvent(self):
-        if (self.bahnhof==LINKS):
+        if (self.bahnhof!=RECHTS):
             return
         if (self.status==EINFAHRT):
             self.speed(60)
