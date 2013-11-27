@@ -22,7 +22,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-random.seed(5)
+random.seed(2)
 
 pause=0
 
@@ -50,8 +50,8 @@ BR86.bahnhof=RECHTS
 BR86.vonGleis=4
 
 BR110.status=BEREIT
-BR110.bahnhof=LINKS
-BR110.vonGleis=2
+BR110.bahnhof=RECHTS
+BR110.vonGleis=3
 
 BR118.status=BEREIT
 BR118.bahnhof=RECHTS
@@ -669,6 +669,35 @@ while True:
             elif ICE.stat(EINFAHRT,RECHTS,2):
                 reset()
             elif ICE.stat(NACH_RECHTS,LINKS,2):
+                reset()
+            else:
+                err()
+        elif BR110.stat(BEREIT,RECHTS,3) and BR118.stat(BEREIT,RECHTS,1):
+            if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
+                rand=random.choice([1,2,3])
+                if rand==1:
+                    BR110.nachGleis=2
+                    start_new_thread(BR110.ausfahrt, (pause,))
+                elif rand==2:
+                    ICE.nachGleis=2
+                    start_new_thread(ICE.ausfahrt, (pause,))
+                else:
+                    start_new_thread(BR130.umfahren, (pause,))
+            elif BR130.stat(ABKUPPELN,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
+                reset()
+            elif BR130.stat(ANKUPPELN,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
+                reset()
+            elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
+                rand=random.choice([1,2,3])
+                if rand==1:
+                    BR110.nachGleis=2
+                    start_new_thread(BR110.ausfahrt, (pause,))
+                elif rand==2:
+                    ICE.nachGleis=2
+                    start_new_thread(ICE.ausfahrt, (pause,))
+                else:
+                    start_new_thread(BR130.abkuppeln, (pause,))
+            elif BR130.stat(UMFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
                 reset()
             else:
                 err()
