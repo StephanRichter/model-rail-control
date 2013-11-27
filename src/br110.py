@@ -73,7 +73,7 @@ class BR110(Lok):
                 if (self.zuglaenge==82):
                     time.sleep(9)
                     self.speed(20)
-                time.sleep(10)
+                time.sleep(3)
                 self.eingefahren()
                 if (self.wendezug):
                     self.status=BEREIT

@@ -399,6 +399,9 @@ class Lok:
         self.nachGleis=zielgleis
         start_new_thread(self.gleiswechsel,(pause,))
 
+    def startUmfahren(self,pause):
+        start_new_thread(self.umfahren,(pause,))
+
     def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
         return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
     
