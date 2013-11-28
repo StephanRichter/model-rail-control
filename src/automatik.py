@@ -489,21 +489,15 @@ while True:
                 if rand==1:
                     start_new_thread(BR86.umfahren, (pause,))
                 elif rand==2:
-                    BR110.nachGleis=4
-                    start_new_thread(BR110.gleiswechsel, (pause,))
+                    BR110.startGleiswechsel(4,pause)
                 elif rand==3:
-                    BR110.nachGleis=2
-                    ICE.nachGleis=2
-                    start_new_thread(BR110.ausfahrt, (pause,))
-                    start_new_thread(ICE.ausfahrt, (pause+13,))
+                    BR110.startAusfahrt(2,pause)
+                    ICE.startAusfahrt(2,pause+13)
                 elif rand==4:
-                    BR110.nachGleis=2
-                    ICE.nachGleis=4
-                    start_new_thread(BR110.ausfahrt, (pause,))
-                    start_new_thread(ICE.ausfahrt, (pause+13,))
+                    BR110.startAusfahrt(2,pause)
+                    ICE.startAusfahrt(4,pause+13)
                 else:
-                    ICE.nachGleis=4
-                    start_new_thread(ICE.ausfahrt, (pause,))                    
+                    ICE.startAusfahrt(4,pause)                    
             else:
                 err()
         elif BR110.stat(BEREIT,RECHTS,4):
@@ -512,25 +506,17 @@ while True:
                     if ICE.stat(BEREIT,LINKS,2):
                         rand=random.choice([1,2,3,4,5])
                         if rand==1:
-                            BR110.nachGleis=2
-                            start_new_thread(BR110.gleiswechsel, (pause,))
+                            BR110.startGleiswechsel(2,pause)
                         elif rand==2:
-                            BR110.nachGleis=2
-                            ICE.nachGleis=2
-                            start_new_thread(BR110.ausfahrt, (pause,))
-                            start_new_thread(ICE.ausfahrt, (pause+13,))
+                            BR110.startAusfahrt(2,pause)
+                            ICE.startAusfahrt(2,pause+13)
                         elif rand==3:
-                            BR110.nachGleis=2
-                            ICE.nachGleis=4
-                            start_new_thread(BR110.ausfahrt, (pause,))
-                            start_new_thread(ICE.ausfahrt, (pause+13,))
+                            BR110.startAusfahrt(2,pause)
+                            ICE.startAusfahrt(4,pause+13)
                         elif rand==4:
-                            BR118.nachGleis=2
-                            start_new_thread(BR118.gleiswechsel, (pause,))
+                            BR118.startGleiswechsel(2, pause)
                         else:
-                            ICE.nachGleis=2
-                            start_new_thread(ICE.ausfahrt, (pause,))
-
+                            ICE.startAusfahrt(2,pause)
                     else:
                         err()
                 else:
@@ -662,45 +648,31 @@ while True:
                 if ICE.stat(BEREIT,RECHTS,3):
                     rand=random.choice([1,2,3,4,5])
                     if rand==1:
-                        BR86.nachGleis=4
-                        start_new_thread(BR86.gleiswechsel, (pause,))
+                        BR86.startGleiswechsel(4, pause)
                     elif rand==2:
-                        BR110.nachGleis=4
-                        start_new_thread(BR110.ausfahrt, (pause,))
+                        BR110.startAusfahrt(4,pause)
                     elif rand==3:
-                        BR110.nachGleis=3
-                        ICE.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+13,))
-                    elif rand==4:
-                        BR110.nachGleis=4
-                        ICE.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+13,))
+                        BR110.startAusfahrt(3,pause)
+                        ICE.startAusfahrt(2,pause+13)
+                    elif rand==4:                        
+                        BR110.startAusfahrt(4,pause)
+                        ICE.startAusfahrt(2,pause+13)
                     else:
-                        ICE.nachGleis=4
-                        start_new_thread(ICE.gleiswechsel, (pause,))
+                        ICE.startAusfahrt(4,pause)
                 elif ICE.stat(BEREIT,RECHTS,4):
                     rand=random.choice([1,2,3,4,5])
                     if rand==1:
-                        BR86.nachGleis=3
-                        start_new_thread(BR86.gleiswechsel, (pause,))
+                        BR86.startGleiswechsel(3, pause)
                     elif rand==2:
-                        BR110.nachGleis=3
-                        start_new_thread(BR110.ausfahrt, (pause,))
+                        BR110.startAusfahrt(3,pause)
                     elif rand==3:
-                        BR110.nachGleis=3
-                        ICE.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+13,))
+                        BR110.startAusfahrt(3,pause)
+                        ICE.startAusfahrt(2,pause+13)
                     elif rand==4:
-                        BR110.nachGleis=4
-                        ICE.nachGleis=2
-                        start_new_thread(BR110.ausfahrt, (pause,))
-                        start_new_thread(ICE.ausfahrt, (pause+13,))
+                        BR110.startAusfahrt(4,pause)
+                        ICE.startAusfahrt(2,pause+13)
                     else:
-                        ICE.nachGleis=3
-                        start_new_thread(ICE.gleiswechsel, (pause,))
+                        ICE.startAusfahrt(3,pause)
                 elif ICE.stat(GLEISWECHSEL,RECHTS,3):
                     reset()
                 elif ICE.stat(GLEISWECHSEL,RECHTS,4):
