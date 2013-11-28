@@ -70,8 +70,8 @@ class BR118(Lok):
         self.status=BEREIT
         
     def ausfahrtRechts(self, delay=3):
-        Lok.ausfahrtRechts(self, delay=delay)
-        self.sleep(3)
+        Lok.ausfahrtRechts(self, delay)
+        self.sleep(5)
         self.speed(128)
         self.sleep(16)
         self.einfahrt()

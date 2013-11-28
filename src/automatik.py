@@ -435,7 +435,9 @@ while True:
         else:
             err()
     elif BR86.stat(ABGEKUPPELT,RECHTS,2):
-        if BR110.stat(BEREIT,LINKS,1) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+        if BR110.stat(AUSFAHRT,LINKS,2) and BR118.stat(NACH_LINKS,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+            reset()
+        elif BR110.stat(BEREIT,LINKS,1) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             rand=random.choice([1,2,3,4,5])
             rand=2
             print "z441"
@@ -473,10 +475,24 @@ while True:
                 BR118.startAusfahrt(1,pause)
             else:
                 ICE.startAusfahrt(1,pause)
+        elif BR110.stat(EINFAHRT,RECHTS,2):
+            if BR118.stat(EINFAHRT,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
+            elif BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
+            else:
+                err()
         elif BR110.stat(GLEISWECHSEL,LINKS,1) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             reset()
         elif BR110.stat(GLEISWECHSEL,LINKS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             reset()
+        elif BR110.stat(NACH_RECHTS,LINKS,2):
+            if BR118.stat(NACH_LINKS,RECHTS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
+            elif BR118.stat(EINFAHRT,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
+            else:
+                err()                
         elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             start_new_thread(BR86.umfahren, (pause,))
         else:
