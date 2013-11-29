@@ -71,6 +71,8 @@ class ICE(Lok):
             self.sleep(1)   
             self.vonGleis=self.nachGleis
             self.status=BEREIT         
+        else:
+            time.sleep(2) 
             
     def einfahrtRechtsEvent(self):
         print "EKR"
@@ -108,4 +110,6 @@ class ICE(Lok):
                 time.sleep(13.5) # hier anpassen
             self.stop()   
             self.vonGleis=self.nachGleis
-            self.status=BEREIT 
+            self.status=BEREIT
+        else:
+            time.sleep(2) 

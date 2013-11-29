@@ -49,7 +49,7 @@ class BR86(Lok):
         Lok.ankuppelnRechts(self, delay)
         if (self.nachGleis==2):
             if (self.zuglaenge==55):
-                time.sleep(20)
+                time.sleep(21)
             else:
                 print "kein Ankuppeln definiert für Zuglänge =",self.zuglaenge
                 self.status=UNDEFINED

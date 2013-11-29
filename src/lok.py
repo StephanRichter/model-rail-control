@@ -250,7 +250,7 @@ class Lok:
         self.lichtAn()
         time.sleep(delay)
         self.einfahrWeichenRechts()        
-        time.sleep(0.1)
+        time.sleep(0.5)
         self.speed(30)
 
     def ausfahrt(self,delay=3):
