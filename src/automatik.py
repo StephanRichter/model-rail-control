@@ -45,7 +45,7 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=4
+BR86.vonGleis=2
 
 BR110.status=BEREIT
 BR110.bahnhof=RECHTS
@@ -699,7 +699,25 @@ while True:
                 BR118.startAbkuppeln(pause)
             else:
                 ICE.startGleiswechsel(2,pause)
-
+        elif BR110.stat(BEREIT,RECHTS,4) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            rand=random.choice([1,2,3,4,5,6])
+            rand=2
+            print "z705"
+            print "rand =",rand
+            if rand==1:
+                BR86.startGleiswechsel(2,pause)
+            elif rand==2:
+                BR110.startGleiswechsel(2,pause)
+            elif rand==3:
+                BR110.startAusfahrt(2,pause)
+                ICE.startAusfahrt(2,pause+13)
+            elif rand==4:
+                BR110.startAusfahrt(2,pause)
+                ICE.startAusfahrt(4,pause)
+            elif rand==5:
+                BR118.startAbkuppeln(pause)
+            else:
+                ICE.startAusfahrt(2,pause)        
         elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             BR86.nachGleis=3
             start_new_thread(BR86.gleiswechsel, (pause,))                
@@ -820,7 +838,7 @@ while True:
         elif BR110.stat(BEREIT,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3):
             if ICE.stat(BEREIT,LINKS,2):
                 rand=random.choice([1,2,3,4,5,6,7])
-                rand=2
+                rand=3
                 print "z824"
                 print "rand =",rand
                 if rand==1:
@@ -909,7 +927,26 @@ while True:
                     err()
             else:
                 err()
-        #***#
+        elif BR110.stat(BEREIT,RECHTS,4) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            rand=random.choice([1,2,3,4,5,6])
+            rand=3
+            print "z915"
+            print "rand =",rand
+            if rand==1:
+                BR86.startGleiswechsel(1,pause)
+            elif rand==2:
+                BR110.startGleiswechsel(1,pause)
+            elif rand==3:
+                BR110.startAusfahrt(2, pause)
+                ICE.startAusfahrt(1,pause+13)
+            elif rand==4:
+                BR110.startAusfahrt(2, pause)
+                ICE.startAusfahrt(4,pause+13)
+            elif rand==5:
+                BR118.startAbkuppeln(pause)
+            else:
+                ICE.startAusfahrt(1,pause)
+
 
         elif BR110.stat(EINFAHRT,RECHTS,2):
             if BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
@@ -928,6 +965,10 @@ while True:
         elif BR110.stat(EINFAHRT,LINKS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             reset()
         elif BR110.stat(EINFAHRT,LINKS,3) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
+            reset()
+        elif BR110.stat(GLEISWECHSEL,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            reset()
+        elif BR110.stat(GLEISWECHSEL,RECHTS,4) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
             reset()
         elif BR110.stat(NACH_LINKS,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             reset()
@@ -1259,7 +1300,25 @@ while True:
                     err()
             else:
                 err()
-        
+        elif BR110.stat(BEREIT,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            rand=random.choice([1,2,3,4,5,6])
+            rand=2
+            print "z1265"
+            print "rand =",rand
+            if rand==1:
+                BR86.startGleiswechsel(2,pause)
+            elif rand==2:
+                BR110.startGleiswechsel(2,pause)
+            elif rand==3:
+                BR110.startAusfahrt(2, pause)
+                ICE.startAusfahrt(1,pause+13)
+            elif rand==4:
+                BR110.startAusfahrt(2,pause)
+                ICE.startAusfahrt(2,pause+13)
+            elif rand==5:
+                BR118.startAbkuppeln(pause)
+            else:
+                ICE.startAusfahrt(2,pause)                                   
         elif BR110.stat(BEREIT,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1):
             if BR130.stat(BEREIT,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
                 rand=random.choice([1,2,3,4,5,6,7,8,9])
@@ -1685,6 +1744,8 @@ while True:
     elif BR86.stat(GLEISWECHSEL,RECHTS,1):
         if BR110.stat(BEREIT,LINKS,2) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
             reset()
+        elif BR110.stat(BEREIT,RECHTS,4) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            reset()
         elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             reset()
         else:
@@ -1710,6 +1771,8 @@ while True:
         elif BR110.stat(BEREIT,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
             reset()
         elif BR110.stat(BEREIT,RECHTS,3) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(BEREIT,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
+            reset()
+        elif BR110.stat(BEREIT,RECHTS,4) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
             reset()
         elif BR110.stat(PARKED) and BR118.stat(PARKED) and BR130.stat(PARKED) and ICE.stat(PARKED):
             reset()
@@ -1753,7 +1816,9 @@ while True:
             elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
                 reset()
             else:
-                err()            
+                err()
+        elif BR110.stat(BEREIT,RECHTS,1) and BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
+            reset()            
         elif BR110.stat(BEREIT,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1):
             if BR130.stat(BEREIT,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
                 reset()
