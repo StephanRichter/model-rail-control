@@ -11,7 +11,7 @@ class ICE(Lok):
         Lok.ausfahrtRechts(self, delay)
         self.sleep(6)
         self.speed(128)
-        self.sleep(7)
+        self.sleep(8)
         self.einfahrt()
         self.speed(100)  
 
