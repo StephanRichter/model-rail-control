@@ -296,6 +296,7 @@ class Lok:
         else:
             print "rechts gibt es kein Gleis",self.vonGleis
             return
+        time.sleep(1)
         self.speed(50)
         
     def einfahrt(self):

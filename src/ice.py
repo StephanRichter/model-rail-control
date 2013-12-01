@@ -13,7 +13,9 @@ class ICE(Lok):
         self.speed(128)
         self.sleep(9)
         self.einfahrt()
-        self.speed(100)  
+        self.speed(115)
+        time.sleep(0.5)  
+        self.speed(100)           
 
         
     def gleiswechsel(self, delay=3):
