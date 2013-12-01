@@ -46,7 +46,7 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=1
+BR86.vonGleis=3
 
 BR110.status=BEREIT
 BR110.bahnhof=LINKS
@@ -1099,6 +1099,22 @@ while True:
                     ICE.startAusfahrt(2,pause+13)
                 else:
                     ICE.startGleiswechsel(2,pause)
+            elif BR118.stat(ABGEKUPPELT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
+                rand=random.choice([1,2,3,4])
+                rand=2
+                print "z1105"
+                print "rand =",rand
+                if rand==1:
+                    BR86.startGleiswechsel(3,pause)
+                elif rand==2:
+                    BR110.startAusfahrt(3,pause)
+                elif rand==3:
+                    BR110.startAusfahrt(3,pause)
+                    ICE.startAusfahrt(2,pause)
+                else:
+                    ICE.startGleiswechsel(3,pause)
+                    
+                    
             elif BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
                 rand=random.choice([1,2,3,4,5,6])
                 rand=2
@@ -3050,6 +3066,8 @@ while True:
     elif BR86.stat(GLEISWECHSEL,RECHTS,1):
         if BR110.stat(BEREIT,LINKS,2):
             if BR118.stat(ABGEKUPPELT,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
+            elif BR118.stat(ABGEKUPPELT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
                 reset()
             elif BR118.stat(EINGEFAHREN,LINKS,1) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,4):
                 reset()
