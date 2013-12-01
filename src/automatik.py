@@ -48,8 +48,8 @@ BR86.bahnhof=LINKS
 BR86.vonGleis=1
 
 BR110.status=BEREIT
-BR110.bahnhof=RECHTS
-BR110.vonGleis=4
+BR110.bahnhof=LINKS
+BR110.vonGleis=2
 
 BR118.status=EINGEFAHREN
 BR118.bahnhof=RECHTS
@@ -60,8 +60,8 @@ BR130.bahnhof=RECHTS
 BR130.vonGleis=3
 
 ICE.status=BEREIT
-ICE.bahnhof=LINKS
-ICE.vonGleis=2
+ICE.bahnhof=RECHTS
+ICE.vonGleis=1
 
 
 def states():
@@ -676,25 +676,30 @@ while True:
                 reset()
             else:
                 err()
-        elif BR110.stat(BEREIT,LINKS,2) and BR118.stat(EINGEFAHREN,RECHTS,2) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,1):
-            rand=random.choice([1,2,3,4,5,6])
-            rand=4
-            print "z675"
-            print "rand =",rand
-            if rand==1:
-                BR110.startAusfahrt(1,pause)
-                ICE.startAusfahrt(2,pause+13)
-            elif rand==2:
-                BR110.startAusfahrt(4,pause)
-            elif rand==3:
-                BR110.startAusfahrt(4,pause)
-                ICE.startAusfahrt(2,pause+13)
-            elif rand==4:
-                BR118.startAbkuppeln(pause)
-            elif rand==5:
-                BR130.startUmfahren(pause)
+        elif BR110.stat(BEREIT,LINKS,2):
+            if BR118.stat(ABKUPPELN,RECHTS,2) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,1):
+                reset()
+            elif BR118.stat(EINGEFAHREN,RECHTS,2) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,RECHTS,1):
+                rand=random.choice([1,2,3,4,5,6])
+                rand=4
+                print "z675"
+                print "rand =",rand
+                if rand==1:
+                    BR110.startAusfahrt(1,pause)
+                    ICE.startAusfahrt(2,pause+13)
+                elif rand==2:
+                    BR110.startAusfahrt(4,pause)
+                elif rand==3:
+                    BR110.startAusfahrt(4,pause)
+                    ICE.startAusfahrt(2,pause+13)
+                elif rand==4:
+                    BR118.startAbkuppeln(pause)
+                elif rand==5:
+                    BR130.startUmfahren(pause)
+                else:
+                    ICE.startGleiswechsel(4,pause)
             else:
-                ICE.startGleiswechsel(4,pause)
+                err()
         elif BR110.stat(BEREIT,RECHTS,1) and BR118.stat(EINGEFAHREN,RECHTS,2) and BR130.stat(ABGEKUPPELT,RECHTS,3) and ICE.stat(BEREIT,LINKS,2):
             rand=random.choice([1,2,3,4,5,6])
             rand=3
