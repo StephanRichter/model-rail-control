@@ -4,7 +4,7 @@ from weichen import *
 import time
 
 class ICE(Lok):
-    name = "ICE   "
+    name = "  ICE"
     sp=40
     
     def ausfahrtRechts(self, delay=3):

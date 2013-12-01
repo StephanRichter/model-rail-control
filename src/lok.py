@@ -450,7 +450,7 @@ class Lok:
 # ============= Aktionen =================>               
 
     def state(self):
-        txt=self.name+": "
+        txt=self.name+".stat("
         if (self.status == UNDEFINED):
             txt+="UNDEFINED,"
         elif (self.status == ABGEKUPPELT):
@@ -484,5 +484,4 @@ class Lok:
             txt+="LINKS,"
         if (self.bahnhof == RECHTS):
             txt+="RECHTS,"
-
-        print txt+`self.vonGleis`+" => "+`self.nachGleis`
+        print txt+`self.vonGleis`+") => "+`self.nachGleis`

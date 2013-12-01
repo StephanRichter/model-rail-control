@@ -4,7 +4,7 @@ import time,os,srcp
 from weichen import *
 
 class BR118(Lok):
-    name = "BR 118"
+    name = "BR118"
     
     def abkuppelnLinks(self,delay):
         print "BR 118 startet abkuppeln links in",delay,"Sekunden"

@@ -6,7 +6,7 @@ from weichen import *
 class BR110(Lok):
     
     wendezug = True
-    name = "BR 110"
+    name = "BR110"
     
     def ausfahrtRechts(self, delay=3):
         Lok.ausfahrtRechts(self, delay=delay)
