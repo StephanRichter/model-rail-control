@@ -1809,6 +1809,8 @@ while True:
                         reset()                
                     elif ICE.stat(NACH_LINKS,RECHTS,1):
                         reset()
+                    elif ICE.stat(NACH_LINKS,RECHTS,4):
+                        reset()
                     else:
                         err()
                 elif BR130.stat(EINGEFAHREN,LINKS,1):
@@ -1850,7 +1852,7 @@ while True:
                             ICE.startGleiswechsel(4,pause)
                     elif ICE.stat(BEREIT,RECHTS,4):
                         rand=random.choice([1,2,3,4,5])
-                        rand=3
+                        rand=4
                         print "z1836"
                         print "rand =",rand
                         if rand==1:
@@ -2222,6 +2224,8 @@ while True:
                         reset()
                     elif ICE.stat(EINFAHRT,LINKS,1):
                         reset()
+                    elif ICE.stat(EINFAHRT,LINKS,4):
+                        reset()
                     else:
                         err()
                 elif BR130.stat(EINGEFAHREN,LINKS,1):
@@ -2289,15 +2293,19 @@ while True:
         elif BR110.stat(NACH_RECHTS,LINKS,2):
             if BR118.stat(ABGEKUPPELT,RECHTS,2):
                 if BR130.stat(ABGEKUPPELT,LINKS,1):
-                    if ICE.stat(BEREIT,RECHTS,1):
+                    if ICE.stat(BEREIT,LINKS,2):
+                        reset()
+                    elif ICE.stat(BEREIT,RECHTS,1):
                         reset()
                     elif ICE.stat(BEREIT,RECHTS,4):
                         reset()
                     elif ICE.stat(EINFAHRT,LINKS,1):
                         reset()
-                    elif ICE.stat(EINGEFAHREN,LINKS,2):
+                    elif ICE.stat(EINFAHRT,LINKS,4):
                         reset()
                     elif ICE.stat(NACH_LINKS,RECHTS,1):
+                        reset()
+                    elif ICE.stat(NACH_LINKS,RECHTS,4):
                         reset()
                     else:
                         err()
