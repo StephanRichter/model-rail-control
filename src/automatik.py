@@ -46,7 +46,7 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=3
+BR86.vonGleis=1
 
 BR110.status=BEREIT
 BR110.bahnhof=LINKS
@@ -62,7 +62,7 @@ BR130.vonGleis=1
 
 ICE.status=BEREIT
 ICE.bahnhof=RECHTS
-ICE.vonGleis=1
+ICE.vonGleis=4
 
 
 def states():
@@ -1830,6 +1830,22 @@ while True:
                             ICE.startAusfahrt(2,pause+13)
                         else:
                             ICE.startGleiswechsel(4,pause)
+                    elif ICE.stat(BEREIT,RECHTS,4):
+                        rand=random.choice([1,2,3,4,5])
+                        rand=2
+                        print "z1836"
+                        print "rand =",rand
+                        if rand==1:
+                            BR86.startGleiswechsel(1,pause)
+                        elif rand==2:
+                            BR110.startAusfahrt(1,pause)
+                        elif rand==3:
+                            BR110.startAusfahrt(1,pause)
+                            ICE.startAusfahrt(2,pause+13)
+                        elif rand==4:
+                            BR118.startUmfahren(pause)
+                        else:
+                            ICE.startGleiswechsel(1,pause)
                     elif ICE.stat(GLEISWECHSEL,RECHTS,1):
                         reset()
                     else:
@@ -3105,8 +3121,13 @@ while True:
     elif BR86.stat(GLEISWECHSEL,RECHTS,3):
         if BR110.stat(BEREIT,LINKS,2):
             if BR118.stat(ABGEKUPPELT,RECHTS,2):
-                if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
-                    reset()
+                if BR130.stat(ABGEKUPPELT,LINKS,1):
+                    if ICE.stat(BEREIT,RECHTS,1):
+                        reset()
+                    elif ICE.stat(BEREIT,RECHTS,4):
+                        reset()
+                    else:
+                        err()
                 elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
                     reset()
                 else:
