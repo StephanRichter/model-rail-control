@@ -62,7 +62,7 @@ BR130.vonGleis=1
 
 ICE.status=BEREIT
 ICE.bahnhof=RECHTS
-ICE.vonGleis=1
+ICE.vonGleis=4
 
 
 def states():
@@ -2077,7 +2077,7 @@ while True:
                         ICE.startGleiswechsel(4, pause)
                 elif ICE.stat(BEREIT,RECHTS,4):
                     rand=random.choice([1,2,3,4,5,6])
-                    rand=5
+                    rand=6
                     print "z2015"
                     print "rand =",rand
                     if rand==1:
@@ -2096,6 +2096,8 @@ while True:
                         ICE.startGleiswechsel(1,pause)
                 else:
                     reset()
+            elif BR118.stat(GLEISWECHSEL,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
+                reset()
             elif BR118.stat(UMFAHREN,RECHTS,1) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
                 reset()
             else:
