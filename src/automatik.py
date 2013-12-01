@@ -46,7 +46,7 @@ for lok in loks:
     
 BR86.status=BEREIT
 BR86.bahnhof=RECHTS
-BR86.vonGleis=1
+BR86.vonGleis=3
 
 BR110.status=BEREIT
 BR110.bahnhof=RECHTS
@@ -2144,8 +2144,15 @@ while True:
         elif BR110.stat(EINFAHRT,LINKS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
             reset()
         elif BR110.stat(EINFAHRT,LINKS,4) and BR118.stat(ABGEKUPPELT,RECHTS,2):
-            if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
-                reset()
+            if BR130.stat(ABGEKUPPELT,LINKS,1):
+                if ICE.stat(BEREIT,RECHTS,1):
+                    reset()
+                elif ICE.stat(EINFAHRT,RECHTS,2):
+                    reset()
+                elif ICE.stat(EINGEFAHREN,RECHTS,1):
+                    reset()
+                else:
+                    err()
             elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
                 reset()
             else:
@@ -2204,8 +2211,19 @@ while True:
         elif BR110.stat(NACH_LINKS,RECHTS,2) and BR118.stat(BEREIT,RECHTS,1) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,4):
             reset()
         elif  BR110.stat(NACH_LINKS,RECHTS,4) and  BR118.stat(ABGEKUPPELT,RECHTS,2):
-            if BR130.stat(ABGEKUPPELT,LINKS,1) and    ICE.stat(BEREIT,RECHTS,1):
-                reset()
+            if BR130.stat(ABGEKUPPELT,LINKS,1):
+                if ICE.stat(AUSFAHRT,LINKS,2):
+                    reset()
+                elif ICE.stat(BEREIT,RECHTS,1):
+                    reset()
+                elif ICE.stat(EINFAHRT,RECHTS,2):
+                    reset()
+                elif ICE.stat(EINGEFAHREN,RECHTS,1):
+                    reset()
+                elif ICE.stat(NACH_RECHTS,LINKS,2):
+                    reset()
+                else:
+                    err()
             elif BR130.stat(EINGEFAHREN,LINKS,1) and    ICE.stat(BEREIT,RECHTS,1):
                 reset()
             else: 
