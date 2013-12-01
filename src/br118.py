@@ -47,7 +47,7 @@ class BR118(Lok):
             self.stop()
             self.status=ABGEKUPPELT
         else:
-            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "Abkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
         
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Lok.ankuppelnLinks(self, delay)
@@ -157,7 +157,12 @@ class BR118(Lok):
                     self.status=UNDEFINED
                     return
             else:
-                print "Gleiswechsel nicht definiert für Gleis ",self.nachGleis                
+                if (self.zuglaenge==100):
+                    time.sleep(53) # hier anpassen
+                else:
+                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                    self.status=UNDEFINED
+                    return
             self.stop()   
             self.vonGleis=self.nachGleis
             self.status=BEREIT         
