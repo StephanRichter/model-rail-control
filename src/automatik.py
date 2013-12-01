@@ -2063,7 +2063,7 @@ while True:
             elif BR118.stat(BEREIT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1):
                 if  ICE.stat(BEREIT,RECHTS,1):
                     rand=random.choice([1,2,3,4,5,6])
-                    rand=4
+                    rand=5
                     print "z2041"
                     print "rand =",rand
                     if rand==1:
