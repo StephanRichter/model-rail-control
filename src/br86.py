@@ -78,6 +78,49 @@ class BR86(Lok):
 
 # events
         
+    def einfahrtLinksEvent(self):
+        if self.bahnhof!=LINKS:
+            return
+        if (self.status==AUSFAHRT):
+            self.speed(128)
+            self.status=NACH_RECHTS
+            time.sleep(17)            
+            self.einfahrt()
+        elif (self.status==EINFAHRT):
+            self.speed(60)
+            if (self.nachGleis==1):
+                if (self.zuglaenge==55):
+                    time.sleep(15)
+                    self.speed(20)
+                    time.sleep(3)
+            time.sleep(1)
+            self.eingefahren()
+        elif (self.status==GLEISWECHSEL):
+            if (self.zuglaenge==55):
+                time.sleep(9)
+            self.stop()
+            time.sleep(1)
+            self.nachLinks()            
+            if (self.nachGleis==1):
+                bahnhofLinksGerade()
+            elif (self.nachGleis==2):
+                bahnhofLinksAbzweig()
+            else:
+                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
+                return
+            time.sleep(WENDEZEIT)
+            self.speed(20)
+            time.sleep(29)
+            self.stop()
+            self.sleep(1)   
+            self.vonGleis=self.nachGleis
+            self.status=BEREIT         
+        elif (self.status==UMFAHREN):
+            self.stop()          
+            self.sleep(1)  
+            self.status=ANKUPPELN
+            self.ankuppelnLinks(WENDEZEIT)
+
     def einfahrtRechtsEvent(self):
         if (self.bahnhof!=RECHTS):
             return
@@ -109,48 +152,6 @@ class BR86(Lok):
             self.status=ANKUPPELN
             self.ankuppeln(WENDEZEIT)
 
-    def einfahrtLinksEvent(self):
-        if self.bahnhof!=LINKS:
-            return
-        if (self.status==AUSFAHRT):
-            self.speed(128)
-            self.status=NACH_RECHTS
-            time.sleep(17)            
-            self.einfahrt()
-        elif (self.status==EINFAHRT):
-            self.speed(60)
-            if (self.nachGleis==1):
-                if (self.zuglaenge==55):
-                    time.sleep(13)
-                    self.speed(20)
-                    time.sleep(3)
-            time.sleep(1)
-            self.eingefahren()
-        elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==55):
-                time.sleep(9)
-            self.stop()
-            time.sleep(1)
-            self.nachLinks()            
-            if (self.nachGleis==1):
-                bahnhofLinksGerade()
-            elif (self.nachGleis==2):
-                bahnhofLinksAbzweig()
-            else:
-                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
-                return
-            time.sleep(WENDEZEIT)
-            self.speed(20)
-            time.sleep(29)
-            self.stop()
-            self.sleep(1)   
-            self.vonGleis=self.nachGleis
-            self.status=BEREIT         
-        elif (self.status==UMFAHREN):
-            self.stop()          
-            self.sleep(1)  
-            self.status=ANKUPPELN
-            self.ankuppelnLinks(WENDEZEIT)
 
     def entkupplerLinksEvent(self):
         if (self.status==ABKUPPELN):

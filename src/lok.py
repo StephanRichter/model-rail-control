@@ -274,6 +274,7 @@ class Lok:
         else:
             print "links gibt es kein Gleis",self.vonGleis
             return
+        time.sleep(1)
         self.speed(50)
         
     def ausfahrtRechts(self,delay=3):
