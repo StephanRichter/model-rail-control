@@ -56,7 +56,7 @@ BR118.status=ABGEKUPPELT
 BR118.bahnhof=RECHTS
 BR118.vonGleis=2
 
-BR130.status=EINGEFAHREN
+BR130.status=ABGEKUPPELT
 BR130.bahnhof=LINKS
 BR130.vonGleis=1
 
@@ -1786,7 +1786,24 @@ while True:
                 err()
         elif BR110.stat(BEREIT,LINKS,2):
             if BR118.stat(ABGEKUPPELT,RECHTS,2):
-                if BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
+                if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
+                    rand=random.choice([1,2,3,4,5])
+                    rand=2
+                    print "z1792"
+                    print "rand =",rand
+                    if rand==1:
+                        BR86.startGleiswechsel(4,pause)
+                    elif rand==2:
+                        BR110.startAusfahrt(1,pause)
+                        ICE.startAusfahrt(2,pause+13)
+                    elif rand==3:
+                        BR110.startAusfahrt(4,pause)
+                    elif rand==4:
+                        BR110.startAusfahrt(4,pause)
+                        ICE.startAusfahrt(2,pause)
+                    else:
+                        ICE.startGleiswechsel(4,pause)
+                elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
                     rand=random.choice([1,2,3,4,5,6])
                     rand=6
                     print "z1780"
@@ -2882,8 +2899,13 @@ while True:
             err()            
     elif BR86.stat(GLEISWECHSEL,RECHTS,3):
         if BR110.stat(BEREIT,LINKS,2):
-            if BR118.stat(ABGEKUPPELT,RECHTS,2) and BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
-                reset()
+            if BR118.stat(ABGEKUPPELT,RECHTS,2):
+                if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
+                    reset()
+                elif BR130.stat(EINGEFAHREN,LINKS,1) and ICE.stat(BEREIT,RECHTS,1):
+                    reset()
+                else:
+                    err()
             elif BR118.stat(BEREIT,RECHTS,1):
                 if BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,RECHTS,2):
                     reset()
