@@ -121,7 +121,7 @@ class BR86(Lok):
             self.speed(60)
             if (self.nachGleis==1):
                 if (self.zuglaenge==55):
-                    time.sleep(11)
+                    time.sleep(13)
                     self.speed(20)
                     time.sleep(3)
             time.sleep(1)
