@@ -49,8 +49,8 @@ BR86.bahnhof=RECHTS
 BR86.vonGleis=3
 
 BR110.status=BEREIT
-BR110.bahnhof=LINKS
-BR110.vonGleis=2
+BR110.bahnhof=RECHTS
+BR110.vonGleis=1
 
 BR118.status=BEREIT
 BR118.bahnhof=RECHTS
@@ -61,8 +61,8 @@ BR130.bahnhof=LINKS
 BR130.vonGleis=1
 
 ICE.status=BEREIT
-ICE.bahnhof=RECHTS
-ICE.vonGleis=1
+ICE.bahnhof=LINKS
+ICE.vonGleis=2
 
 
 def states():
@@ -1850,6 +1850,8 @@ while True:
             elif BR118.stat(BEREIT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1):
                 if ICE.stat(BEREIT,RECHTS,4):
                     reset()
+                elif ICE.stat(NACH_LINKS,RECHTS,1):
+                    reset()
                 elif ICE.stat(NACH_LINKS,RECHTS,4):
                     reset()
                 else:
@@ -2037,7 +2039,7 @@ while True:
             elif BR118.stat(BEREIT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1):
                 if  ICE.stat(BEREIT,RECHTS,1):
                     rand=random.choice([1,2,3,4,5,6])
-                    rand=2
+                    rand=3
                     print "z2041"
                     print "rand =",rand
                     if rand==1:
@@ -2362,6 +2364,8 @@ while True:
                     reset()
                 elif ICE.stat(BEREIT,RECHTS,4):
                     reset()
+                elif ICE.stat(EINFAHRT,LINKS,1):
+                    reset()
                 elif ICE.stat(EINFAHRT,LINKS,4):
                     reset()
                 else:
@@ -2471,7 +2475,11 @@ while True:
                     reset()
                 elif ICE.stat(BEREIT,RECHTS,4):
                     reset()
+                elif ICE.stat(EINFAHRT,LINKS,1):
+                    reset()
                 elif ICE.stat(EINFAHRT,LINKS,4):
+                    reset()
+                elif ICE.stat(NACH_LINKS,RECHTS,1):
                     reset()
                 elif ICE.stat(NACH_LINKS,RECHTS,4):
                     reset()
