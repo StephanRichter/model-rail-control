@@ -49,8 +49,8 @@ BR86.bahnhof=RECHTS
 BR86.vonGleis=3
 
 BR110.status=BEREIT
-BR110.bahnhof=LINKS
-BR110.vonGleis=2
+BR110.bahnhof=RECHTS
+BR110.vonGleis=4
 
 BR118.status=BEREIT
 BR118.bahnhof=RECHTS
@@ -2314,25 +2314,39 @@ while True:
                         ICE.startAusfahrt(2,pause)
                 else:
                     err()
-            elif BR118.stat(BEREIT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1) and ICE.stat(BEREIT,LINKS,2):
-                rand=random.choice([1,2,3,4,5,6])
-                rand=4
-                print "z2293"
-                print "rand =",rand
-                if rand==1:
-                    BR86.startGleiswechsel(1,pause)
-                elif rand==2:
-                    BR110.startAusfahrt(2,pause)
-                    ICE.startAusfahrt(1,pause+13)
-                elif rand==3:
-                    BR110.startAusfahrt(2,pause)
-                    ICE.startAusfahrt(4,pause+13)
-                elif rand==4:
-                    BR110.startGleiswechsel(1,pause)
-                elif rand==5:
-                    BR118.startGleiswechsel(1,pause)
+            elif BR118.stat(BEREIT,RECHTS,2) and BR130.stat(ABGEKUPPELT,LINKS,1):
+                if ICE.stat(BEREIT,LINKS,2):
+                    rand=random.choice([1,2,3,4,5,6])
+                    rand=4
+                    print "z2293"
+                    print "rand =",rand
+                    if rand==1:
+                        BR86.startGleiswechsel(1,pause)
+                    elif rand==2:
+                        BR110.startAusfahrt(2,pause)
+                        ICE.startAusfahrt(1,pause+13)
+                    elif rand==3:
+                        BR110.startAusfahrt(2,pause)
+                        ICE.startAusfahrt(4,pause+13)
+                    elif rand==4:
+                        BR110.startGleiswechsel(1,pause)
+                    elif rand==5:
+                        BR118.startGleiswechsel(1,pause)
+                    else:
+                        ICE.startAusfahrt(1,pause)
+                elif ICE.stat(BEREIT,RECHTS,1):
+                    rand=random.choice([1,2,3])
+                    rand=2
+                    print "z2340"
+                    print "rand =",rand
+                    if rand==1:
+                        BR110.startAusfahrt(2,pause)
+                    elif rand==2:
+                        BR130.startUmfahren(pause)
+                    else:
+                        ICE.startAusfahrt(2,pause)
                 else:
-                    ICE.startAusfahrt(1,pause)
+                    err()
             else:
                 err()
         elif BR110.stat(EINFAHRT,LINKS,1):
