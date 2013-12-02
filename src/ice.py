@@ -1,14 +1,14 @@
 # coding=utf8
-from lok import *
+from train import *
 from weichen import *
 import time
 
-class ICE(Lok):
+class ICE(Train):
     name = "  ICE"
     sp=40
     
     def ausfahrtRechts(self, delay=3):
-        Lok.ausfahrtRechts(self, delay)
+        Train.ausfahrtRechts(self, delay)
         self.sleep(6)
         self.speed(128)
         self.sleep(9)
@@ -19,7 +19,7 @@ class ICE(Lok):
 
         
     def gleiswechsel(self, delay=3):
-        Lok.gleiswechsel(self, delay)
+        Train.gleiswechsel(self, delay)
         self.speed(self.sp)
         print "GW"
     

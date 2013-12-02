@@ -1,9 +1,9 @@
 # coding=utf8
-from lok import *
+from train import *
 import time,os,srcp
 from weichen import *
 
-class BR86(Lok):
+class BR86(Train):
     name = " BR86"
     
         
@@ -37,7 +37,7 @@ class BR86(Lok):
             print "Abkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Lok.ankuppelnLinks(self, delay)
+        Train.ankuppelnLinks(self, delay)
         if (self.zuglaenge==55):
             time.sleep(24)
         self.stop()
@@ -46,7 +46,7 @@ class BR86(Lok):
         self.status=BEREIT
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Lok.ankuppelnRechts(self, delay)
+        Train.ankuppelnRechts(self, delay)
         if (self.nachGleis==2):
             if (self.zuglaenge==55):
                 time.sleep(21)
@@ -69,7 +69,7 @@ class BR86(Lok):
         self.status=BEREIT
     
     def ausfahrtRechts(self, delay=3):
-        Lok.ausfahrtRechts(self, delay=delay)
+        Train.ausfahrtRechts(self, delay=delay)
         self.sleep(16)
         self.speed(128)
         self.sleep(14)

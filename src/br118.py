@@ -1,9 +1,9 @@
 # coding=utf8
-from lok import *
+from train import *
 import time,os,srcp
 from weichen import *
 
-class BR118(Lok):
+class BR118(Train):
     name = "BR118"
     
     def abkuppelnLinks(self,delay):

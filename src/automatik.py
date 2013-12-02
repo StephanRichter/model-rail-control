@@ -47,8 +47,8 @@ for lok in loks:
     lok.lichtAn()
     time.sleep(0.01)
     
-l2=Platform("Gleis 2")
-l1=Platform("Gleis 1")
+l2=Platform("Gleis 2",124)
+l1=Platform("Gleis 1",124)
 l1.setBypass(l1)
 
 r1=Platform("Gleis 1",130)

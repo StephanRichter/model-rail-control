@@ -16,10 +16,13 @@ class Platform:
     def __str__(self):
         return self.name
     
-    def setBypass(self,platform,length):
+    def setBypass(self,platform,length=0):
         self.hasDecoupler=True
         self.bypass=platform
-        self.bypassLength=length    
+        if (length==0):
+            self.bypassLength=self.length
+        else:
+            self.bypassLength=length    
         
     def isFree(self):
         print self.name

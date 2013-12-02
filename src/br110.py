@@ -1,15 +1,15 @@
 # coding=utf8
-from lok import *
+from train import *
 import time,os,srcp
 from weichen import *
 
-class BR110(Lok):
+class BR110(Train):
     
     wendezug = True
     name = "BR110"
     
     def ausfahrtRechts(self, delay=3):
-        Lok.ausfahrtRechts(self, delay=delay)
+        Train.ausfahrtRechts(self, delay=delay)
         self.sleep(16)
         self.speed(128)
         self.sleep(20)
