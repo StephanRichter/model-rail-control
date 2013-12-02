@@ -66,7 +66,6 @@ class BR118(Train):
         self.stop()
         time.sleep(3)
         self.lichtAus()
-        self.vonGleis=self.nachGleis
         self.status=BEREIT
         
     def ausfahrtRechts(self, delay=3):

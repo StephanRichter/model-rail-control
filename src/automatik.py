@@ -49,11 +49,11 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r2,EINGEFAHREN)
-BR110.setState(l2,BEREIT)
-BR118.setState(l1,EINGEFAHREN)
-BR130.setState(r3,ABGEKUPPELT)
-ICE.setState(r1,BEREIT)
+BR86.setState(r2,ABGEKUPPELT)
+BR110.setState(r4,BEREIT)
+BR118.setState(l1,BEREIT)
+BR130.setState(r3,BEREIT)
+ICE.setState(l2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 

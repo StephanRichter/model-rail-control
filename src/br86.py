@@ -49,26 +49,23 @@ class BR86(Train):
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         self.nachRechts()
+        self.nachRechts()
         Train.ankuppeln(self, delay)
-        if (self.nachGleis==2):
+        if (self.platform==r2):
             if (self.trainlength==55):
                 time.sleep(21)
             else:
                 print "kein Ankuppeln definiert für Zuglänge =",self.trainlength
                 self.status=UNDEFINED
-        elif (self.nachGleis==3):
+        elif (self.platform==r3):
             if (self.trainlength==55):
                 time.sleep(20)
             else:
                 print "kein Ankuppeln definiert für Zuglänge =",self.trainlength
                 self.status=UNDEFINED
-        else:
-            print "nachGleis =",self.nachGleis,"nicht definiert für BR86.ankuppelnRechts"
-            self.status=UNDEFINED
         self.stop()
         time.sleep(3)
         self.lichtAus()
-        self.vonGleis=self.nachGleis
         self.status=BEREIT
     
     def ausfahrtRechts(self, delay=3):
@@ -118,7 +115,7 @@ class BR86(Train):
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
-            self.status=ANKUPPELN
+            self.status=ANKUPPELN            
             self.ankuppelnLinks(WENDEZEIT)
 
     def einfahrtRechtsEvent(self):
@@ -146,8 +143,8 @@ class BR86(Train):
             self.status=BEREIT
         elif (self.status==UMFAHREN):
             self.stop()
-            self.status=ANKUPPELN
-            self.ankuppeln(WENDEZEIT)
+            self.status=ANKUPPELN            
+            self.ankuppelnRechts(WENDEZEIT)
 
 
     def entkupplerLinksEvent(self):

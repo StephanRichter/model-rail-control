@@ -111,16 +111,16 @@ class Train:
         self.sleep(0.01)
         
     def nachLinks(self):
-        print "<= Fahrtichtung"
         self.lok.setDirection(0)
+        print "<= Fahrtichtung"
         self.lok.send()
-        self.sleep(0.01)
+        self.sleep(0.02)
         
     def nachRechts(self):
-        print "Fahrtichtung =>"
         self.lok.setDirection(1)
+        print "Fahrtichtung =>"
         self.lok.send()
-        self.sleep(0.01)
+        self.sleep(0.02)
         
     def speed(self,speed):
         self.lok.setSpeed(speed)
