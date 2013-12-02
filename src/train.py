@@ -6,30 +6,9 @@ from kontakte import *
 from weichen import *
 from thread import start_new_thread
 from platf import Platform
+from constants import *
 
-UNDEFINED=-1
-
-# status:
-NACH_LINKS=0
-NACH_RECHTS=1
-
-ABGEKUPPELT=2
-ABKUPPELN=3
-ANKUPPELN=4
-AUSFAHRT=5
-BEREIT=6
-EINFAHRT=7
-EINGEFAHREN=8
-UMFAHREN=9
-GLEISWECHSEL=10
-
-PARKED=11
-
-# Bahnhof
-LINKS=10
-RECHTS=11
-
-WENDEZEIT=3
+activeTrains=0
 
 class Train:
     
@@ -45,7 +24,13 @@ class Train:
         self.lok=lok
         lok.init('N', '1', 128, 4) # Protokoll, Version, Fahrstufen, Funktionen
         
+    def __str__(self):
+        return self.name
+    
 # <===== Events / Kontakte ===================
+
+    def contact(self,c):
+        print self.name,"<",c
 
     def action(self,contact):
         if (contact == KONTAKT_EINFAHRT_RECHTS):
