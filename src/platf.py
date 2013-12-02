@@ -1,8 +1,10 @@
 # coding=utf8
+from consts import UNDEFINED
 
 class Platform:
     name="Platform"
     train=None
+    station=UNDEFINED
     hasDecoupler=False
     bypass=None
     length=10000
@@ -27,6 +29,9 @@ class Platform:
     def isFree(self):
         print self.name
         return self.train==None
+    
+    def setStation(self,station):
+        self.station=station
     
     def setTrain(self,train):
         if self.train!=None:

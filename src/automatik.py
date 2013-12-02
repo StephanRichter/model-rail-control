@@ -7,12 +7,11 @@ from br118 import BR118
 from br130 import BR130
 from ice import ICE
 from mcp23s17 import *
-from constants import *
 import time,os,random
-import br110
 from numpy.matlib import rand
 from station import Station
 from platf import Platform
+from consts import *
 
 try:
     import srcp
@@ -81,24 +80,45 @@ ICE.setState(r1,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
+activeTrains=[]
+
+def tryAction(train):
+    global activeTrains
+    print "trying action for",train
+    activeTrains=[]
+
+def tryCrossing(train1,train2):
+    global activeTrains
+    print "trying exchange of",train1,"and",train2
+    if train1.station==train2.station:
+        activeTrains=[]
+        return 
+    if train1.status!=BEREIT:
+        activeTrains=[]
+        return
+    if train2.status!=BEREIT:
+        activeTrains=[]
+        return
+    print "sollte gehen"
+
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
     if (val != 0):
-        for station in stations:
-            start_new_thread(station.contact, (val,))
-            time.sleep(1)    
+        for train in trains:
+            start_new_thread(train.contact,(val,))
     
     # folgende Zeilen sind zur Ablaufsteuerung
     
-#    if activeTrains==0:
-#        train1=random.choice(trains)
-#        train2=random.choice(trains)
-#        if train1==train2:
-#            print "only train 1",
-#            print train1
-#        else:
-#            print train1
-#            print train2
+    if not activeTrains:
+        train1=random.choice(trains)
+        train2=random.choice(trains)
+        if train1==train2:
+            activeTrains.append(train1)
+            start_new_thread(tryAction,(train1,))
+        else:
+            activeTrains.append(train1)
+            activeTrains.append(train2)
+            start_new_thread(tryCrossing,(train1,train2))
 
     time.sleep(0.01)

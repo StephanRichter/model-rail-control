@@ -1,6 +1,7 @@
 # coding=utf8
 from platf import Platform
 import time
+from dummy_thread import start_new_thread
 
 class Station:
     
@@ -19,11 +20,7 @@ class Station:
     
     def addPlatform(self,platform):
         self.platforms.append(platform)
-        
-    def contact(self,num):
-        if num in self.contacts:           
-            for train in self.trains():
-                train.contact(num)    
+        platform.setStation(self)
         
     def freePlatforms(self):
         result=[]
@@ -31,6 +28,9 @@ class Station:
             if platform.isFree():
                 result.append(platform)
         return result
+    
+    def hasContact(self,contact):
+        return contact in self.contacts
         
     def trains(self):
         result=[]
