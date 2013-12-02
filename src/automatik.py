@@ -52,7 +52,7 @@ for train in trains:
 BR86.setState(r2,BEREIT)
 BR110.setState(r4,BEREIT)
 BR118.setState(l1,BEREIT)
-BR130.setState(r3,BEREIT)
+BR130.setState(r1,BEREIT)
 ICE.setState(l2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]

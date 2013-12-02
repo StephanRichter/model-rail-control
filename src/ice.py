@@ -60,7 +60,8 @@ class ICE(Train):
             time.sleep(10.5) # hier anpassen
             self.stop()
             self.sleep(1)   
-            self.vonGleis=self.nachGleis
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT         
         else:
             time.sleep(2) 
@@ -96,7 +97,8 @@ class ICE(Train):
             elif (self.nachGleis==3 or self.nachGleis==4):
                 time.sleep(13.5) # hier anpassen
             self.stop()   
-            self.vonGleis=self.nachGleis
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT
         else:
             time.sleep(2) 

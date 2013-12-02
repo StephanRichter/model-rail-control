@@ -42,6 +42,8 @@ class BR110(Train):
             time.sleep(40) # hier anpassen
             self.stop()
             self.sleep(1)   
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT 
 
     def einfahrtRechtsEvent(self):
@@ -65,4 +67,6 @@ class BR110(Train):
             else:
                 time.sleep(46) # hier anpassen
             self.stop()   
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT

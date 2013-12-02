@@ -104,6 +104,8 @@ class BR86(Train):
             time.sleep(29)
             self.stop()
             self.sleep(1)   
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()          
@@ -132,6 +134,8 @@ class BR86(Train):
             else:
                 time.sleep(36)
             self.stop()   
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT
         elif (self.status==UMFAHREN):
             self.stop()

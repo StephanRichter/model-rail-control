@@ -136,7 +136,9 @@ class BR130(Train):
             self.speed(20)
             time.sleep(31) # hier anpassen
             self.stop()
-            self.sleep(1)   
+            self.sleep(1)
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()   
             self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()          
@@ -183,6 +185,8 @@ class BR130(Train):
                     self.status=UNDEFINED
                     return
             self.stop()   
+            self.platform=self.targetPlatform
+            self.targetPlatform.setFree()
             self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()
