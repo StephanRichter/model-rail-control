@@ -43,8 +43,8 @@ r3.addTarget(l2)
 r4.addTarget(l1)
 r4.addTarget(l2)
 
-bahnhofLinks=Station("Bahnhof Links")
-bahnhofRechts=Station("Bahnhof Rechts")
+bahnhofLinks=Station("Bahnhof Links",NACH_RECHTS)
+bahnhofRechts=Station("Bahnhof Rechts",NACH_LINKS)
 
 bahnhofLinks.addPlatform(l1)
 bahnhofLinks.addPlatform(l2)

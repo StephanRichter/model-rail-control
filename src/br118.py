@@ -60,7 +60,7 @@ class BR118(Train):
     
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Train.ankuppeln(self, delay)
-        if (self.nachGleis==2):
+        if (self.targetPlatform==r2):
             if (self.trainlength==100):
                 time.sleep(17)
         self.stop()
@@ -87,7 +87,7 @@ class BR118(Train):
             self.speed(60)
             print self.nachGleis
             print self.trainlength
-            if (self.nachGleis==1):
+            if (self.targetPlatform==r1):
                 if (self.trainlength==100):
                     time.sleep(10)
                     self.speed(20)
@@ -100,19 +100,12 @@ class BR118(Train):
             self.stop()
             time.sleep(1)
             self.nachLinks()            
-            if (self.nachGleis==1):
-                bahnhofLinksGerade()
-            elif (self.nachGleis==2):
-                bahnhofLinksAbzweig()
-            else:
-                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
-                return
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)
             time.sleep(45) # hier anpassen
             self.stop()
             self.sleep(1)   
-            self.vonGleis=self.nachGleis
             self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()          
@@ -125,7 +118,7 @@ class BR118(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==3 or self.nachGleis==2):
+            if (self.nachGleis==3 or self.targetPlatform==r2):
                 if (self.trainlength==100):
                     time.sleep(9)
                     self.speed(20)
@@ -142,10 +135,10 @@ class BR118(Train):
             self.stop()
             time.sleep(1)
             self.nachRechts()            
-            self.einfahrWeichenRechts()
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)
-            if (self.nachGleis==1 or self.nachGleis==2):
+            if (self.targetPlatform==r1 or self.targetPlatform==r2):
                 if (self.trainlength==100):
                     time.sleep(49) # hier anpassen
                 else:
@@ -160,7 +153,6 @@ class BR118(Train):
                     self.status=UNDEFINED
                     return
             self.stop()   
-            self.vonGleis=self.nachGleis
             self.status=BEREIT         
         elif (self.status==UMFAHREN):
             self.stop()

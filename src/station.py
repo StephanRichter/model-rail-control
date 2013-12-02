@@ -5,8 +5,9 @@ class Station:
     
     name="Station"
     
-    def __init__(self,name):
+    def __init__(self,name,exitDirection):
         self.name=name
+        self.exitDirection=exitDirection
         self.platforms=[]
         self.contacts=[]
         

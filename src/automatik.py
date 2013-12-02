@@ -49,7 +49,7 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r2,ABGEKUPPELT)
+BR86.setState(r2,BEREIT)
 BR110.setState(r4,BEREIT)
 BR118.setState(l1,BEREIT)
 BR130.setState(r3,BEREIT)
@@ -81,9 +81,17 @@ def tryAction(train):
             train.startAusfahrt(target,pause)
             time.sleep(1)
             while train.status!=BEREIT and train.status!=EINGEFAHREN:
-                time.sleep(1)
+                time.sleep(1)        
         else:
-            print "no target available for",train
+            availableTargets=train.station.freePlatforms()
+            if availableTargets:
+                target=random.choice(availableTargets)
+                train.startGleiswechsel(target,pause)
+                time.sleep(1)
+                while train.status!=BEREIT and train.status!=EINGEFAHREN:
+                    time.sleep(1)        
+            else:
+                print "no target available for",train
     elif train.status==EINGEFAHREN:
         train.startAbkuppeln(pause)
         time.sleep(1)

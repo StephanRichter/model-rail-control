@@ -211,9 +211,9 @@ class Train:
         self.station=self.targetPlatform.station
             
     def einfahrWeichenLinks(self):
-        if (self.nachGleis==1):
+        if (self.targetPlatform==r1):
             bahnhofLinksGerade()
-        elif (self.nachGleis==2):
+        elif (self.targetPlatform==r2):
             bahnhofLinksAbzweig()
         else:
             self.stop()
@@ -221,9 +221,9 @@ class Train:
             return
         
     def einfahrWeichenRechts(self):       
-        if (self.nachGleis==1):
+        if (self.targetPlatform==r1):
             einfahrt1()
-        elif (self.nachGleis==2):
+        elif (self.targetPlatform==r2):
             einfahrt2()
         elif (self.nachGleis==3):
             einfahrt3()
@@ -246,40 +246,14 @@ class Train:
             self.targetPlatform=UNDEFINED
             
     def gleiswechsel(self,delay=3):
+        print self.name,"startet Gleiswechsel nach",self.targetPlatform
         self.status=GLEISWECHSEL
-        if (self.bahnhof==RECHTS):
-            self.gleiswechselRechts(delay)
-        elif (self.bahnhof==LINKS):
-            self.gleiswechselLinks(delay)
-        else:
-            print "Gleiswechsel links nicht definiert"
+        self.direction(self.station.exitDirection)
+        self.lichtAn()
+        self.platform.actuateDriveIn()
+        time.sleep(delay)
+        self.speed(25)
             
-    def gleiswechselLinks(self,delay=3):
-        print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
-        self.nachRechts()
-        time.sleep(delay)
-        self.lichtAn()
-        time.sleep(0.1)
-        if (self.vonGleis==1):
-            bahnhofLinksGerade()
-        else:
-            bahnhofLinksAbzweig()
-        time.sleep(1)
-        self.speed(25)
-        
-    def gleiswechselRechts(self,delay=3):
-        print self.name,"wechselt zu gleis",self.nachGleis,"in",delay,"Sekunden"
-        self.nachLinks()
-        time.sleep(delay)
-        self.lichtAn()
-        time.sleep(0.1)
-        dummy=self.nachGleis
-        self.nachGleis=self.vonGleis
-        self.einfahrWeichenRechts()
-        time.sleep(1)
-        self.nachGleis=dummy
-        self.speed(25)
-        
     def notImplemented(self,name):
         print name,"nicht implementiert für",self.name
         
@@ -290,8 +264,8 @@ class Train:
         self.targetPlatform=target
         start_new_thread(self.ausfahrt,(pause,))
 
-    def startGleiswechsel(self,zielgleis,pause):
-        self.nachGleis=zielgleis
+    def startGleiswechsel(self,platform,pause):
+        self.targetPlatform=platform
         start_new_thread(self.gleiswechsel,(pause,))
 
     def startUmfahren(self,pause):

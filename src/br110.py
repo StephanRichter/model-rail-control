@@ -36,19 +36,12 @@ class BR110(Train):
             self.stop()
             time.sleep(1)
             self.nachLinks()            
-            if (self.nachGleis==1):
-                bahnhofLinksGerade()
-            elif (self.nachGleis==2):
-                bahnhofLinksAbzweig()
-            else:
-                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
-                return
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)
             time.sleep(40) # hier anpassen
             self.stop()
             self.sleep(1)   
-            self.vonGleis=self.nachGleis
             self.status=BEREIT 
 
     def einfahrtRechtsEvent(self):
@@ -64,13 +57,12 @@ class BR110(Train):
             self.stop()
             time.sleep(1)
             self.nachRechts()            
-            self.einfahrWeichenRechts()
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)
-            if (self.nachGleis==1 or self.nachGleis==2):
+            if (self.targetPlatform==r1 or self.targetPlatform==r2):
                 time.sleep(45) # hier anpassen
             else:
                 time.sleep(46) # hier anpassen
             self.stop()   
-            self.vonGleis=self.nachGleis
             self.status=BEREIT

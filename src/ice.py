@@ -54,13 +54,7 @@ class ICE(Train):
             self.stop()
             time.sleep(1)
             self.nachLinks()            
-            if (self.nachGleis==1):
-                bahnhofLinksGerade()
-            elif (self.nachGleis==2):
-                bahnhofLinksAbzweig()
-            else:
-                print "es gibt kein Gleis",self.nachGleis,"im linken Bahnhof"
-                return
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(self.sp)
             time.sleep(10.5) # hier anpassen
@@ -94,7 +88,7 @@ class ICE(Train):
             self.stop()
             time.sleep(1)
             self.nachRechts()            
-            self.einfahrWeichenRechts()
+            self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(self.sp)
             if (self.nachGleis<3):
