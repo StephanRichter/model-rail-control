@@ -104,9 +104,8 @@ class BR86(Train):
             time.sleep(29)
             self.stop()
             self.sleep(1)   
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()
-            self.status=BEREIT         
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
@@ -133,10 +132,9 @@ class BR86(Train):
                 time.sleep(32)
             else:
                 time.sleep(36)
-            self.stop()   
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()
-            self.status=BEREIT
+            self.stop()
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN            

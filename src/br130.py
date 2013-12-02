@@ -137,9 +137,8 @@ class BR130(Train):
             time.sleep(31) # hier anpassen
             self.stop()
             self.sleep(1)
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()   
-            self.status=BEREIT         
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
@@ -177,7 +176,7 @@ class BR130(Train):
                     print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
                     return
-            elif (self.nachGleis==3 or self.nachGleis==4):
+            else:
                 if (self.trainlength==82):
                     time.sleep(42) # hier anpassen
                 else:
@@ -185,9 +184,8 @@ class BR130(Train):
                     self.status=UNDEFINED
                     return
             self.stop()   
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()
-            self.status=BEREIT         
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN

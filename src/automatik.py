@@ -50,9 +50,9 @@ for train in trains:
     time.sleep(0.01)
     
 BR86.setState(r2,BEREIT)
-BR110.setState(r4,BEREIT)
+BR110.setState(r3,BEREIT)
 BR118.setState(l1,BEREIT)
-BR130.setState(r1,BEREIT)
+BR130.setState(r4,BEREIT)
 ICE.setState(l2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]

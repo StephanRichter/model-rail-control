@@ -106,9 +106,8 @@ class BR118(Train):
             time.sleep(45) # hier anpassen
             self.stop()
             self.sleep(1)
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()
-            self.status=BEREIT         
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
@@ -155,9 +154,8 @@ class BR118(Train):
                     self.status=UNDEFINED
                     return
             self.stop()   
-            self.platform=self.targetPlatform
-            self.targetPlatform.setFree()
-            self.status=BEREIT         
+            self.platform.setFree()         
+            self.setState(self.targetPlatform, BEREIT)
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
