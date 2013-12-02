@@ -2,11 +2,12 @@
 from thread import allocate_lock
 import time
 import srcp
-from kontakte import *
+from myconsts import *
+from environ import *
 from weichen import *
 from thread import start_new_thread
 from platf import Platform
-from consts import *
+from myconsts import *
 from multiprocessing.synchronize import Lock
 
 activeTrains=0
@@ -17,9 +18,10 @@ class Train:
     status=UNDEFINED
     vonGleis=UNDEFINED
     nachGleis=UNDEFINED
-    bahnhof=UNDEFINED
-    wendezug=False
-    zuglaenge=40    
+    station=UNDEFINED
+    platform=UNDEFINED
+    pushpull=False
+    trainlength=40    
     activeContact=None
 
     def __init__(self,lok):
@@ -80,7 +82,20 @@ class Train:
 
     def sleep(self,secs):
         time.sleep(secs)
-
+        
+    def possibleTargets(self):
+        targs=self.platform.targets
+        res=[]
+        if self.pushpull:
+            for target in targs:
+                if self.trainlength<target.length:
+                    res.append(target)
+        else:
+            for target in targs:
+                if self.trainlength<target.bypassLength:
+                    res.append(target)
+        return res
+        
 # <========== Aktionen =====================
     def lichtAn(self):
         self.lok.setF(0,1)
@@ -120,18 +135,18 @@ class Train:
         self.status=0
         
     def abkuppeln(self,delay=3):
+        global l1,r2,r3        
         self.status=ABKUPPELN
-        if (self.bahnhof==LINKS):
+        if (self.platform==l1):
             self.abkuppelnLinks(delay)
-        elif (self.bahnhof==RECHTS):
-            self.abkuppelnRechts(delay)
+        elif (self.platform==r2):
+            self.abkuppelnRechts2(delay)
+        elif (self.platform==r3):
+            self.abkuppelnRechts3(delay)
 
         else:
             print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
             
-    def abkuppelnLinks(self,delay=3):
-        self.notImplemented("abkuppelnLinks")
-
     def abkuppelnRechts(self,delay=3):
         if (self.vonGleis==2):
             self.abkuppelnRechts2(delay)
@@ -146,32 +161,10 @@ class Train:
     def abkuppelnRechts3(self,delay=3):
         self.notImplemented("abkuppelnRechts3")
 
-
+            
     def ankuppeln(self,delay=3):
-        if (self.bahnhof==LINKS):
-            self.ankuppelnLinks(delay)
-        elif (self.bahnhof==RECHTS):
-            self.ankuppelnRechts(delay)
+        self.notImplemented("ankuppeln")
         
-    def ankuppelnLinks(self,delay=3):
-        print self.name,"kuppelt in",delay,"Sekunden an"
-        self.nachLinks()
-        self.lichtAn()
-        time.sleep(delay)
-        bahnhofLinksGerade()
-        time.sleep(0.1)
-        self.speed(30)
-        
-    def ankuppelnRechts(self,delay=3):
-        print self.name,"kuppelt in",delay,"Sekunden an"
-        self.nachRechts()
-        time.sleep(1)
-        self.lichtAn()
-        time.sleep(delay)
-        self.einfahrWeichenRechts()        
-        time.sleep(0.5)
-        self.speed(30)
-
     def ausfahrt(self,delay=3):
         self.status=AUSFAHRT
         if (self.bahnhof==LINKS):
@@ -373,6 +366,7 @@ class Train:
     def setState(self,platform,status):        
         platform.setTrain(self)
         self.station=platform.station
+        self.platform=platform
         self.status=status
 
     def state(self):

@@ -1,12 +1,13 @@
 # coding=utf8
-from train import *
 import time,os,srcp
+import myconsts
+import environ
 from weichen import *
+from train import *
 
 class BR86(Train):
     name = " BR86"
-    
-        
+            
     def abkuppelnLinks(self,delay):
         print "BR 86 startet abkuppeln links in",delay,"Sekunden"
         self.nachLinks()
@@ -74,7 +75,6 @@ class BR86(Train):
         self.speed(128)
         self.sleep(14)
         self.einfahrt()
-        
 
 # events
         

@@ -1,5 +1,5 @@
 # coding=utf8
-from consts import UNDEFINED
+from myconsts import *
 
 class Platform:
     name="Platform"
@@ -7,24 +7,32 @@ class Platform:
     station=UNDEFINED
     hasDecoupler=False
     bypass=None
-    length=10000
-    bypassLength=None
+    length=10000    
+    bypassLength=UNDEFINED
     platforms=set()
+    decoupleDirection=UNDEFINED
+    targets=UNDEFINED
     
     def __init__(self,name,length=1000):
         self.name=name
         self.length=length
+        self.targets=[]
         
     def __str__(self):
         return self.name
     
-    def setBypass(self,platform,length=0):
+    def addTarget(self,platform):
+        self.targets.append(platform)
+    
+    def setBypass(self,platform,length,direction):
         self.hasDecoupler=True
         self.bypass=platform
-        if (length==0):
-            self.bypassLength=self.length
+        self.bypassLength=length
+        if direction==NACH_LINKS:
+            self.decoupleDirection=NACH_RECHTS
         else:
-            self.bypassLength=length    
+            self.decoupleDirection=NACH_LINKS
+        self.bypassDirection=direction    
         
     def isFree(self):
         print self.name

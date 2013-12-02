@@ -1,7 +1,5 @@
 # coding=utf8
 from platf import Platform
-import time
-from dummy_thread import start_new_thread
 
 class Station:
     
