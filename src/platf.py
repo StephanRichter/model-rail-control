@@ -53,11 +53,14 @@ class Platform:
         
     def setDriveOut(self,method):
         self.driveOut=method
+        
+    def setFree(self):
+        self.train=None
     
     def setStation(self,station):
         self.station=station
     
     def setTrain(self,train):
-        if self.train!=None:
+        if self.train!=None:            
             raise Exception(self.name+" not free!")
         self.train=train

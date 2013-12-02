@@ -17,7 +17,6 @@ class ICE(Train):
         time.sleep(0.5)  
         self.speed(100)           
 
-        
     def gleiswechsel(self, delay=3):
         Train.gleiswechsel(self, delay)
         self.speed(self.sp)
@@ -85,7 +84,7 @@ class ICE(Train):
             self.speed(20)
             time.sleep(2.5)
             self.speed(10)
-            if (self.nachGleis>2):
+            if (self.targetPlatform.length==120):
                 time.sleep(2)
             time.sleep(2)
             self.eingefahren()

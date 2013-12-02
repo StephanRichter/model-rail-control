@@ -193,6 +193,7 @@ class Train:
         self.speed(50)
         
     def einfahrt(self):
+        self.platform.setFree()
         self.targetPlatform.actuateDriveIn()
         self.status=EINFAHRT
         self.station=self.targetPlatform.station
@@ -226,9 +227,11 @@ class Train:
             print self.name,"eingefahren"
             time.sleep(3)
             self.lichtAus()
-            self.vonGleis=self.nachGleis
-            self.nachGleis=UNDEFINED
-            self.status=EINGEFAHREN
+            if self.pushpull:
+                self.setState(self.targetPlatform, BEREIT)
+            else:
+                self.setState(self.targetPlatform, EINGEFAHREN)
+            self.targetPlatform=UNDEFINED
             
     def gleiswechsel(self,delay=3):
         self.status=GLEISWECHSEL

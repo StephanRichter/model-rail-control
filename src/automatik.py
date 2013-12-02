@@ -79,7 +79,7 @@ def tryAction(train):
             while train.status!=BEREIT and train.status!=EINGEFAHREN:
                 time.sleep(1)
         else:
-            print "no target available"
+            print "no target available for",train
     activeTrains=[]        
 
 def tryCrossing(train1,train2):
