@@ -5,6 +5,7 @@ import srcp
 from kontakte import *
 from weichen import *
 from thread import start_new_thread
+from platf import Platform
 
 UNDEFINED=-1
 
@@ -449,7 +450,11 @@ class Lok:
             self.sleep(10)
         self.speed(40)    
 
-# ============= Aktionen =================>               
+# ============= Status =================>
+
+    def setState(self,platform,status):
+        platform.setTrain(self)
+        self.status=status
 
     def state(self):
         txt=self.name+".stat("
