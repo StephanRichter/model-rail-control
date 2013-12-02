@@ -49,8 +49,8 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(l1,ABGEKUPPELT)
-BR110.setState(r2,BEREIT)
+BR86.setState(r2,EINGEFAHREN)
+BR110.setState(l2,BEREIT)
 BR118.setState(r4,BEREIT)
 BR130.setState(r3,ABGEKUPPELT)
 ICE.setState(r1,BEREIT)
@@ -61,11 +61,15 @@ activeTrains=[]
 
 def tryAction(train):
     global activeTrains
-    if train.status==EINGEFAHREN:
-        train.startAbkuppeln(pause)
-        time.sleep(1)
-        while train.status!=ABGEKUPPELT:
-            time.sleep(1)
+    if train.status==ABGEKUPPELT:        
+        if train.platform.bypass==None:
+            print "Achtung:",train,"ist abgekuppelt, hat aber kein Gleis zum umfahren!?"
+            return
+        if train.platform.bypass.isFree():
+            train.startUmfahren(pause)
+            time.sleep(2)
+            while train.status!=BEREIT:
+                time.sleep(1)                
     elif train.status==BEREIT:
         targetPlatforms=train.possibleTargets()
         availableTargets=[]
@@ -80,6 +84,11 @@ def tryAction(train):
                 time.sleep(1)
         else:
             print "no target available for",train
+    elif train.status==EINGEFAHREN:
+        train.startAbkuppeln(pause)
+        time.sleep(1)
+        while train.status!=ABGEKUPPELT:
+            time.sleep(1)
     activeTrains=[]        
 
 def tryCrossing(train1,train2):
@@ -106,7 +115,7 @@ while True:
     # folgende Zeilen sind zur Ablaufsteuerung
     
     if not activeTrains:
-        train1=random.choice(trains)
+        train1=random.choice(trains)        
         train2=random.choice(trains)
         if train1==train2:
             activeTrains.append(train1)

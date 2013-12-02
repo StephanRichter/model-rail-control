@@ -6,9 +6,11 @@ class Platform:
     train=None
     station=UNDEFINED
     hasDecoupler=False
-    bypass=None
     length=10000    
+    bypass=None
     bypassLength=UNDEFINED
+    bypassDirection=UNDEFINED
+    bypassSwitch=UNDEFINED
     platforms=set()
     decoupleDirection=UNDEFINED
     targets=UNDEFINED
@@ -26,10 +28,11 @@ class Platform:
     def addTarget(self,platform):
         self.targets.append(platform)
     
-    def setBypass(self,platform,length,direction):
+    def setBypass(self,platform,length,switchMethod,direction):
         self.hasDecoupler=True
         self.bypass=platform
         self.bypassLength=length
+        self.bypassSwitch=switchMethod
         if direction==NACH_LINKS:
             self.decoupleDirection=NACH_RECHTS
         else:
@@ -47,6 +50,12 @@ class Platform:
             self.driveIn()
         else:
             self.driveOut()
+    
+    def actuateBypassSwitch(self):
+        if self.bypassSwitch==UNDEFINED:
+            raise Exception("No Bypass switch defined for "+self.name)
+        else:
+            self.bypassSwitch()
     
     def setDriveIn(self,method):
         self.driveIn=method

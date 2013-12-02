@@ -128,4 +128,11 @@ def bahnhofLinksGerade():
     time.sleep(1)
     weiche10.actuate(1, 1)
     time.sleep(1)
+    
+def umfahrungRechts2():
+    weiche12.actuate(1, 1)
+    
+def umfahrungRechts3():
+    weiche34.actuate(1, 1)
+
 

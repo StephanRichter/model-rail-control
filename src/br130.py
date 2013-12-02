@@ -18,7 +18,7 @@ class BR130(Train):
     def abkuppelnRechts2(self,delay=3):
         print "BR130 startet abkuppeln auf Gleis 2, rechts, in",delay,"Sekunden"
         time.sleep(delay)
-        if (self.zuglaenge==82):
+        if (self.trainlength==82):
             self.nachLinks()
             time.sleep(1)
             self.speed(10)
@@ -47,13 +47,13 @@ class BR130(Train):
             self.stop()
             self.status=ABGEKUPPELT   
         else:
-            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "ABkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
         
 
     def abkuppelnRechts3(self,delay=3):
         print "BR130 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
         time.sleep(delay)
-        if (self.zuglaenge==82):
+        if (self.trainlength==82):
             self.nachLinks()
             time.sleep(1)
             self.speed(10)
@@ -74,11 +74,11 @@ class BR130(Train):
             self.stop()
             self.status=ABGEKUPPELT           
         else:
-            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "ABkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Train.ankuppelnLinks(self, delay)
-        if (self.zuglaenge==82):
+        if (self.trainlength==82):
             time.sleep(13)
         self.stop()
         time.sleep(3)
@@ -88,10 +88,10 @@ class BR130(Train):
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Train.ankuppelnRechts(self, delay)
         if (self.nachGleis==2):
-            if (self.zuglaenge==82):
+            if (self.trainlength==82):
                 time.sleep(15)
         elif (self.nachGleis==3):        
-            if (self.zuglaenge==82):
+            if (self.trainlength==82):
                 time.sleep(17)
         self.stop()
         time.sleep(3)
@@ -117,14 +117,14 @@ class BR130(Train):
         elif (self.status==EINFAHRT):
             self.speed(60)
             if (self.nachGleis==1):
-                if (self.zuglaenge==82):
+                if (self.trainlength==82):
                     time.sleep(6)
                     self.speed(20)
                     time.sleep(4)
             time.sleep(1)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==82):
+            if (self.trainlength==82):
                 time.sleep(16) # hier anpassen
             self.stop()
             time.sleep(1)
@@ -154,17 +154,17 @@ class BR130(Train):
             self.speed(60)
             print "BR130.nachGleis=",self.nachGleis
             if (self.nachGleis==3 or self.nachGleis==2):
-                if (self.zuglaenge==82):
+                if (self.trainlength==82):
                     time.sleep(7)
                     self.speed(20)
                     return # Dieser Zug ist zu lang und muss über den Reedkontakt beim Entkuppler hinausfahren
             time.sleep(1)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==82):
+            if (self.trainlength==82):
                 time.sleep(16) # hier anpassen
             else:
-                print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                 self.status=UNDEFINED
                 return
             self.stop()
@@ -174,17 +174,17 @@ class BR130(Train):
             time.sleep(WENDEZEIT)
             self.speed(20)
             if (self.nachGleis==1 or self.nachGleis==2):
-                if (self.zuglaenge==82):
+                if (self.trainlength==82):
                     time.sleep(39) # hier anpassen
                 else:
-                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                    print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
                     return
             elif (self.nachGleis==3 or self.nachGleis==4):
-                if (self.zuglaenge==82):
+                if (self.trainlength==82):
                     time.sleep(42) # hier anpassen
                 else:
-                    print "Gleiswechsel nicht definiert für zuglänge =",self.zuglaenge
+                    print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
                     return
             self.stop()   

@@ -14,7 +14,7 @@ activeTrains=0
 
 class Train:
     
-    name = "unbekannte Lok"    
+    name = "unbekannte Train"    
     status=UNDEFINED
     targetPlatform=UNDEFINED
     station=UNDEFINED
@@ -105,6 +105,11 @@ class Train:
         self.lok.setF(0,0)
         self.lok.send()
         
+    def direction(self,dir):
+        self.lok.setDirection(dir)
+        self.lok.send()
+        self.sleep(0.01)
+        
     def nachLinks(self):
         self.lok.setDirection(0)
         self.lok.send()
@@ -163,7 +168,26 @@ class Train:
             
     def ankuppeln(self,delay=3):
         self.notImplemented("ankuppeln")
+          
+    def ankuppelnLinks(self,delay=3):
+        print self.name,"kuppelt in",delay,"Sekunden an"
+        self.nachLinks()
+        self.lichtAn()
+        time.sleep(delay)
+        bahnhofLinksGerade()
+        time.sleep(0.1)
+        self.speed(30)
         
+    def ankuppelnRechts(self,delay=3):
+        print self.name,"kuppelt in",delay,"Sekunden an"
+        self.nachRechts()
+        time.sleep(1)
+        self.lichtAn()
+        time.sleep(delay)
+        self.einfahrWeichenRechts()        
+        time.sleep(0.5)
+        self.speed(30)  
+    
     def ausfahrt(self,delay=3):
         self.status=AUSFAHRT
         if (self.station==bahnhofLinks):
@@ -289,47 +313,16 @@ class Train:
         return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
     
     def umfahren(self,delay=3):
+        print self.name,"umfährt in",delay,"Sekunden"
         self.status=UMFAHREN
-        if (self.bahnhof==LINKS):
-            self.umfahrenLinks(delay)
-        elif (self.bahnhof==RECHTS):
-            self.umfahrenRechts(delay)
-        else:            
-            print "kann nicht umfahren, da nicht bekannt ist, wo sich",self.name,"befindet"
-            
-    def umfahrenLinks(self,delay=3):
-        print self.name,"umfährt in",delay,"Sekunden"
-        self.nachRechts()
+        self.direction(self.platform.bypassDirection)
         self.lichtAn()
         time.sleep(delay)
-        bahnhofLinksAbzweig()
+        self.platform.bypass.actuateDriveIn()
+        time.sleep(1)
+        self.platform.actuateBypassSwitch()        
         self.speed(40)
-        
-    def umfahrenRechts(self,delay=3):
-        print self.name,"umfährt in",delay,"Sekunden"
-        self.nachLinks()
-        self.lichtAn()
-        time.sleep(delay)
-        if (self.vonGleis==2):
-            self.vonGleis=1
-            self.nachGleis=1 # für self.einfahrtRechts
-            self.einfahrWeichenRechts()
-            self.nachGleis=2
-            weiche12.actuate(1, 1)
-            time.sleep(1)
-        elif (self.vonGleis==3):
-            self.vonGleis=4
-            self.nachGleis=4 # für self.einfahrtRechts
-            self.einfahrWeichenRechts()
-            self.nachGleis=3
-            weiche34.actuate(1, 1)
-            time.sleep(1)
-        else:
-            print "keine Aktion definiert für Lok auf Gleis",self.vonGleis
-            self.status=UNDEFINED
-            self.sleep(10)
-        self.speed(40)    
-
+            
 # ============= Status =================>
 
     def setState(self,platform,status):        

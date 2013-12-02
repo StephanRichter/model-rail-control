@@ -39,7 +39,7 @@ class BR86(Train):
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         Train.ankuppelnLinks(self, delay)
-        if (self.zuglaenge==55):
+        if (self.trainlength==55):
             time.sleep(24)
         self.stop()
         time.sleep(3)
@@ -122,10 +122,9 @@ class BR86(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==3 or self.nachGleis==2):
-                if (self.zuglaenge==55):
-                    time.sleep(9)
-                    self.speed(20)
+            if (self.zuglaenge==55):
+                time.sleep(9)
+                self.speed(20)
             time.sleep(10)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):

@@ -29,7 +29,7 @@ class BR110(Train):
                 self.speed(20)
                 time.sleep(4)
             else:
-                raise Exception("keine Einfahrt definiert für Zuglänge =",self.zuglaenge)                
+                raise Exception("keine Einfahrt definiert für Zuglänge =",self.trainlength)                
             time.sleep(1)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
