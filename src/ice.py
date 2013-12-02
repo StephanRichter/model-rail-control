@@ -26,10 +26,6 @@ class ICE(Train):
 # EVENTS
 
     def einfahrtLinksEvent(self):
-        print "EKL"
-        if (self.bahnhof!=LINKS):
-            time.sleep(2)
-            return
         if (self.status==AUSFAHRT):
             self.speed(128)
             self.status=NACH_RECHTS
@@ -77,10 +73,6 @@ class ICE(Train):
             time.sleep(2) 
             
     def einfahrtRechtsEvent(self):
-        print "EKR"
-        if (self.bahnhof!=RECHTS):
-            time.sleep(2)
-            return
         if (self.status==EINFAHRT):
             self.speed(100)
             time.sleep(0.5)

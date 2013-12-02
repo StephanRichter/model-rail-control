@@ -193,24 +193,10 @@ class Train:
         self.speed(50)
         
     def einfahrt(self):
-        if (self.status==NACH_RECHTS):
-            self.einfahrtRechts()
-        elif (self.status==NACH_LINKS):
-            self.einfahrtLinks()
-        else:
-            print "kann nicht einfahren, da nicht bekannt ist, wo",self.name,"hinfährt"
-            
-            
-    def einfahrtRechts(self):
-        self.einfahrWeichenRechts()
+        self.targetPlatform.actuateDriveIn()
         self.status=EINFAHRT
-        self.bahnhof=RECHTS
-        
-    def einfahrtLinks(self):
-        self.einfahrWeichenLinks()
-        self.status=EINFAHRT
-        self.bahnhof=LINKS
-
+        self.station=self.targetPlatform.station
+            
     def einfahrWeichenLinks(self):
         if (self.nachGleis==1):
             bahnhofLinksGerade()

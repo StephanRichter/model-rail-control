@@ -49,11 +49,11 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(l1,EINGEFAHREN)
-BR110.setState(l2,BEREIT)
+BR86.setState(l1,ABGEKUPPELT)
+BR110.setState(r2,BEREIT)
 BR118.setState(r4,BEREIT)
 BR130.setState(r3,ABGEKUPPELT)
-ICE.setState(r1,BEREIT)
+ICE.setState(l2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -68,7 +68,6 @@ def tryAction(train):
             time.sleep(1)
     elif train.status==BEREIT:
         targetPlatforms=train.possibleTargets()
-        print train
         availableTargets=[]
         for target in targetPlatforms:            
             if target.isFree():
@@ -76,10 +75,12 @@ def tryAction(train):
         if availableTargets:
             target=random.choice(availableTargets)
             train.startAusfahrt(target,pause)
+            time.sleep(1)
+            while train.status!=BEREIT and train.status!=EINGEFAHREN:
+                time.sleep(1)
         else:
             print "no target available"
-    else:
-        activeTrains=[]        
+    activeTrains=[]        
 
 def tryCrossing(train1,train2):
     global activeTrains
