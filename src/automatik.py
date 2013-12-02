@@ -53,7 +53,7 @@ BR86.setState(l1,ABGEKUPPELT)
 BR110.setState(r2,BEREIT)
 BR118.setState(r4,BEREIT)
 BR130.setState(r3,ABGEKUPPELT)
-ICE.setState(l2,BEREIT)
+ICE.setState(r1,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 

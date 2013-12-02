@@ -24,27 +24,14 @@ class BR110(Train):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==1):
-                if (self.zuglaenge==82):
-                    time.sleep(12)
-                    self.speed(20)
-                    time.sleep(4)
-                else:
-                    print "keine Einfahrt definiert für Zuglänge =",self.zuglaenge
-            elif (self.nachGleis==2):
-                if (self.zuglaenge==82):
-                    time.sleep(12)
-                    self.speed(20)
-                    time.sleep(4)
-                else:
-                    print "keine Einfahrt definiert für Zuglänge =",self.zuglaenge
+            if (self.trainlength==82):
+                time.sleep(12)
+                self.speed(20)
+                time.sleep(4)
             else:
-                print "keine Einfahrt definiert für Gleis",self.nachGleis
-                
+                raise Exception("keine Einfahrt definiert für Zuglänge =",self.zuglaenge)                
             time.sleep(1)
             self.eingefahren()
-            if (self.wendezug):
-                self.status=BEREIT
         elif (self.status==GLEISWECHSEL):
             self.stop()
             time.sleep(1)
@@ -67,13 +54,11 @@ class BR110(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.zuglaenge==82):
+            if (self.trainlength==82):
                 time.sleep(9)
                 self.speed(20)
             time.sleep(3)
             self.eingefahren()
-            if (self.wendezug):
-                self.status=BEREIT
         elif (self.status==GLEISWECHSEL):
             time.sleep(13) # hier anpassen
             self.stop()
