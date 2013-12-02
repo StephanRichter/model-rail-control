@@ -4,7 +4,7 @@ import time
 import srcp
 from myconsts import *
 from environ import *
-from weichen import *
+from switches import *
 from thread import start_new_thread
 from platf import Platform
 from myconsts import *
@@ -111,11 +111,13 @@ class Train:
         self.sleep(0.01)
         
     def nachLinks(self):
+        print "<= Fahrtichtung"
         self.lok.setDirection(0)
         self.lok.send()
         self.sleep(0.01)
         
     def nachRechts(self):
+        print "Fahrtichtung =>"
         self.lok.setDirection(1)
         self.lok.send()
         self.sleep(0.01)
@@ -167,26 +169,12 @@ class Train:
 
             
     def ankuppeln(self,delay=3):
-        self.notImplemented("ankuppeln")
-          
-    def ankuppelnLinks(self,delay=3):
         print self.name,"kuppelt in",delay,"Sekunden an"
-        self.nachLinks()
         self.lichtAn()
         time.sleep(delay)
-        bahnhofLinksGerade()
-        time.sleep(0.1)
-        self.speed(30)
-        
-    def ankuppelnRechts(self,delay=3):
-        print self.name,"kuppelt in",delay,"Sekunden an"
-        self.nachRechts()
-        time.sleep(1)
-        self.lichtAn()
-        time.sleep(delay)
-        self.einfahrWeichenRechts()        
+        self.platform.actuateDriveIn()
         time.sleep(0.5)
-        self.speed(30)  
+        self.speed(30)         
     
     def ausfahrt(self,delay=3):
         self.status=AUSFAHRT

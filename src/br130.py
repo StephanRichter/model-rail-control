@@ -1,7 +1,7 @@
 # coding=utf8
 from train import *
 import time,os,srcp
-from weichen import *
+from switches import *
 
 class BR130(Train):
     name = "BR130"
@@ -77,7 +77,8 @@ class BR130(Train):
             print "ABkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppelnLinks(self, delay)
+        self.nachLinks()
+        Train.ankuppeln(self, delay)
         if (self.trainlength==82):
             time.sleep(13)
         self.stop()
@@ -86,17 +87,18 @@ class BR130(Train):
         self.status=BEREIT
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppelnRechts(self, delay)
-        if (self.nachGleis==2):
+        self.nachRechts()
+        Train.ankuppeln(self, delay)
+        
+        if self.platform==r2:
             if (self.trainlength==82):
                 time.sleep(15)
-        elif (self.nachGleis==3):        
+        elif self.platform==r3:        
             if (self.trainlength==82):
                 time.sleep(17)
         self.stop()
         time.sleep(3)
         self.lichtAus()
-        self.vonGleis=self.nachGleis
         self.status=BEREIT
             
     def ausfahrtRechts(self, delay=3):
@@ -193,7 +195,7 @@ class BR130(Train):
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
-            self.ankuppeln(WENDEZEIT)
+            self.ankuppelnRechts(WENDEZEIT)
 
     def entkupplerLinksEvent(self):
         if (self.status==ABKUPPELN):

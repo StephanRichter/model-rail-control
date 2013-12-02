@@ -1,6 +1,6 @@
 # coding=utf8
 from train import *
-from weichen import *
+from switches import *
 import time
 
 class ICE(Train):

@@ -6,7 +6,6 @@ from br86 import BR86
 from br118 import BR118
 from br130 import BR130
 from mcp23s17 import *
-from kontakte import *
 import time,os
 
 

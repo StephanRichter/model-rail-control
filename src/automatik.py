@@ -51,7 +51,7 @@ for train in trains:
     
 BR86.setState(r2,EINGEFAHREN)
 BR110.setState(l2,BEREIT)
-BR118.setState(r4,BEREIT)
+BR118.setState(l1,EINGEFAHREN)
 BR130.setState(r3,ABGEKUPPELT)
 ICE.setState(r1,BEREIT)
 

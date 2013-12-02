@@ -1,7 +1,7 @@
 # coding=utf8
 from train import *
 import time,os,srcp
-from weichen import *
+from switches import *
 
 class BR110(Train):
     

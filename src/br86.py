@@ -2,7 +2,7 @@
 import time,os,srcp
 import myconsts
 import environ
-from weichen import *
+from switches import *
 from train import *
 
 class BR86(Train):
@@ -20,25 +20,26 @@ class BR86(Train):
     def abkuppelnRechts2(self,delay=3):
         print "BR 86 startet abkuppeln auf Gleis 2, rechts, in",delay,"Sekunden"
         time.sleep(delay)
-        if (self.zuglaenge==55):
+        if (self.trainlength==55):
             self.nachRechts()
             time.sleep(1)
             self.speed(20)            
         else:
-            print "ABkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "ABkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
         
     def abkuppelnRechts3(self,delay=3):
         print "BR 86 startet abkuppeln auf Gleis 3, rechts, in",delay,"Sekunden"
         time.sleep(delay)
-        if (self.zuglaenge==55):
+        if (self.trainlength==55):
             self.nachRechts()
             time.sleep(1)
             self.speed(20)            
         else:
-            print "Abkuppelvorgang für Zuglänge (",self.zuglaenge,") nicht definiert"  
+            print "Abkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppelnLinks(self, delay)
+        self.nachLinks()
+        Train.ankuppeln(self, delay)
         if (self.trainlength==55):
             time.sleep(24)
         self.stop()
@@ -47,18 +48,19 @@ class BR86(Train):
         self.status=BEREIT
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppelnRechts(self, delay)
+        self.nachRechts()
+        Train.ankuppeln(self, delay)
         if (self.nachGleis==2):
-            if (self.zuglaenge==55):
+            if (self.trainlength==55):
                 time.sleep(21)
             else:
-                print "kein Ankuppeln definiert für Zuglänge =",self.zuglaenge
+                print "kein Ankuppeln definiert für Zuglänge =",self.trainlength
                 self.status=UNDEFINED
         elif (self.nachGleis==3):
-            if (self.zuglaenge==55):
+            if (self.trainlength==55):
                 time.sleep(20)
             else:
-                print "kein Ankuppeln definiert für Zuglänge =",self.zuglaenge
+                print "kein Ankuppeln definiert für Zuglänge =",self.trainlength
                 self.status=UNDEFINED
         else:
             print "nachGleis =",self.nachGleis,"nicht definiert für BR86.ankuppelnRechts"
@@ -87,14 +89,14 @@ class BR86(Train):
         elif (self.status==EINFAHRT):
             self.speed(60)
             if (self.nachGleis==1):
-                if (self.zuglaenge==55):
+                if (self.trainlength==55):
                     time.sleep(13)
                     self.speed(20)
                     time.sleep(3)
             time.sleep(1)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
-            if (self.zuglaenge==55):
+            if (self.trainlength==55):
                 time.sleep(9)
             self.stop()
             time.sleep(1)
@@ -122,7 +124,7 @@ class BR86(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.zuglaenge==55):
+            if (self.trainlength==55):
                 time.sleep(9)
                 self.speed(20)
             time.sleep(10)
