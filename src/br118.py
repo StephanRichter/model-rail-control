@@ -119,7 +119,7 @@ class BR118(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            if (self.nachGleis==3 or self.targetPlatform==r2):
+            if self.targetPlatform==r3 or self.targetPlatform==r2:
                 if (self.trainlength==100):
                     time.sleep(9)
                     self.speed(20)
@@ -139,7 +139,7 @@ class BR118(Train):
             self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)
-            if (self.targetPlatform==r1 or self.targetPlatform==r2):
+            if self.targetPlatform==r1 or self.targetPlatform==r2:
                 if (self.trainlength==100):
                     time.sleep(49) # hier anpassen
                 else:
