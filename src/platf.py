@@ -4,15 +4,22 @@ class Platform:
     name="Platform"
     train=None
     hasDecoupler=False
-    
+    bypass=None
+    length=10000
+    bypassLength=None
     platforms=set()
     
-    def __init__(self,name,decoupler=False):
+    def __init__(self,name,length=1000):
         self.name=name
-        self.hasDecoupler=decoupler
+        self.length=length
         
     def __str__(self):
-        return self.name    
+        return self.name
+    
+    def setBypass(self,platform,length):
+        self.hasDecoupler=True
+        self.bypass=platform
+        self.bypassLength=length    
         
     def isFree(self):
         print self.name

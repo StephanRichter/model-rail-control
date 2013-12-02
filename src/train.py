@@ -31,7 +31,7 @@ RECHTS=11
 
 WENDEZEIT=3
 
-class Lok:
+class Train:
     
     name = "unbekannte Lok"    
     status=UNDEFINED

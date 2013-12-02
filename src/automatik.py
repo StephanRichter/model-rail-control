@@ -1,6 +1,6 @@
 # coding=utf8
 from thread import start_new_thread
-from lok import *
+from train import *
 from br86 import BR86
 from br110 import BR110
 from br118 import BR118
@@ -47,13 +47,16 @@ for lok in loks:
     lok.lichtAn()
     time.sleep(0.01)
     
-l1=Platform("Gleis 1",True)
 l2=Platform("Gleis 2")
+l1=Platform("Gleis 1")
+l1.setBypass(l1)
 
-r1=Platform("Gleis 1")
-r2=Platform("Gleis 2",True)
-r3=Platform("Gleis 3",True)
-r4=Platform("Gleis 4")
+r1=Platform("Gleis 1",130)
+r2=Platform("Gleis 2",130)
+r3=Platform("Gleis 3",120)
+r4=Platform("Gleis 4",120)
+r2.setBypass(r1,97)
+r3.setBypass(r4,87)
 
 bahnhofLinks=Station("Bahnhof Links")
 bahnhofLinks.addPlatform(l1)
