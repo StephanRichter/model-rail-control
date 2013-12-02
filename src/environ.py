@@ -23,7 +23,7 @@ r3.setDriveOut(ausfahrt3)
 r4.setDriveIn(einfahrt4)
 r4.setDriveOut(ausfahrt4)
 
-r2.setBypass(r1,97,umfahrungRechts2,NACH_LINKS)
+r2.setBypass(r1,101,umfahrungRechts2,NACH_LINKS)
 r3.setBypass(r4,87,umfahrungRechts3,NACH_LINKS)
 
 l1.addTarget(r1)

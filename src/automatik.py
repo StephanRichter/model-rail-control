@@ -49,8 +49,8 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r2,BEREIT)
-BR110.setState(r3,BEREIT)
+BR86.setState(r3,BEREIT)
+BR110.setState(r1,BEREIT)
 BR118.setState(l1,BEREIT)
 BR130.setState(r4,BEREIT)
 ICE.setState(l2,BEREIT)
@@ -73,7 +73,7 @@ def tryAction(train):
     elif train.status==BEREIT:
         targetPlatforms=train.possibleTargets()
         availableTargets=[]
-        for target in targetPlatforms:            
+        for target in targetPlatforms:
             if target.isFree():
                 availableTargets.append(target)
         if availableTargets:
