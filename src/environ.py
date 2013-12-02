@@ -2,15 +2,27 @@
 import myconsts
 from platf import *
 from station import *
+from switches import *
 
 l1=Platform("Gleis 1",124)
 l2=Platform("Gleis 2",124)
+l1.setDriveIn(bahnhofLinksGerade)
+l2.setDriveIn(bahnhofLinksAbzweig)
+l1.setBypass(l1,124,NACH_RECHTS)
+
 r1=Platform("Gleis 1",130)
 r2=Platform("Gleis 2",130)
 r3=Platform("Gleis 3",120)
 r4=Platform("Gleis 4",120)
+r1.setDriveIn(einfahrt1)
+r1.setDriveOut(ausfahrt1)
+r2.setDriveIn(einfahrt2)
+r2.setDriveOut(ausfahrt2)
+r3.setDriveIn(einfahrt3)
+r3.setDriveOut(ausfahrt3)
+r4.setDriveIn(einfahrt4)
+r4.setDriveOut(ausfahrt4)
 
-l1.setBypass(l1,124,NACH_RECHTS)
 r2.setBypass(r1,97,NACH_LINKS)
 r3.setBypass(r4,87,NACH_LINKS)
 

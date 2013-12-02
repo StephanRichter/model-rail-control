@@ -1,5 +1,5 @@
 from thread import start_new_thread
-from lok import Lok
+from train import Train
 from ice import ICE
 from br110 import BR110
 from br86 import BR86

@@ -16,8 +16,7 @@ class Train:
     
     name = "unbekannte Lok"    
     status=UNDEFINED
-    vonGleis=UNDEFINED
-    nachGleis=UNDEFINED
+    targetPlatform=UNDEFINED
     station=UNDEFINED
     platform=UNDEFINED
     pushpull=False
@@ -167,48 +166,29 @@ class Train:
         
     def ausfahrt(self,delay=3):
         self.status=AUSFAHRT
-        if (self.bahnhof==LINKS):
+        if (self.station==bahnhofLinks):
             self.ausfahrtLinks(delay)
-        elif (self.bahnhof==RECHTS):
+        elif (self.station==bahnhofRechts):
             self.ausfahrtRechts(delay)                    
         else:
             print "kann nicht ausfahren, da nicht bekannt ist, wo sich",self.name," befindet"
         
     def ausfahrtLinks(self,delay=3):        
-        print self.name," fährt aus Bahnhof links aus in",delay,"sekunden"
+        print self.name," fährt ausaus in",delay,"sekunden"
         self.nachRechts()
         self.lichtAn()
         time.sleep(delay)
-        if (self.vonGleis==1):
-            bahnhofLinksGerade()
-        elif (self.vonGleis==2):
-            bahnhofLinksAbzweig()
-        else:
-            print "links gibt es kein Gleis",self.vonGleis
-            return
+        self.platform.actuateDriveOut()
         time.sleep(1)
         self.speed(50)
         
     def ausfahrtRechts(self,delay=3):
-        if (self.bahnhof!=RECHTS):
-            print self.name,"ist nicht rechts, kann auch dort nicht ausfahren"
-            return
         print self.name,"fährt aus Bahnhof rechts aus in",delay,"sekunden"
         self.status=NACH_LINKS
         self.nachLinks()
         self.lichtAn()
         time.sleep(delay)
-        if (self.vonGleis==1):
-            ausfahrt1()
-        elif (self.vonGleis==2):
-            ausfahrt2()
-        elif (self.vonGleis==3):
-            ausfahrt3()
-        elif (self.vonGleis==4):
-            ausfahrt4()
-        else:
-            print "rechts gibt es kein Gleis",self.vonGleis
-            return
+        self.platform.actuateDriveOut()
         time.sleep(1)
         self.speed(50)
         
@@ -305,8 +285,8 @@ class Train:
     def startAbkuppeln(self,pause):
         start_new_thread(self.abkuppeln,(pause,))
 
-    def startAusfahrt(self,zielgleis,pause):
-        self.nachGleis=zielgleis
+    def startAusfahrt(self,target,pause):
+        self.targetPlatform=target
         start_new_thread(self.ausfahrt,(pause,))
 
     def startGleiswechsel(self,zielgleis,pause):

@@ -75,7 +75,7 @@ def tryAction(train):
                 availableTargets.append(target)
         if availableTargets:
             target=random.choice(availableTargets)
-            print target
+            train.startAusfahrt(target,pause)
         else:
             print "no target available"
     else:

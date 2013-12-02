@@ -12,6 +12,8 @@ class Platform:
     platforms=set()
     decoupleDirection=UNDEFINED
     targets=UNDEFINED
+    driveIn=UNDEFINED
+    driveOut=UNDEFINED
     
     def __init__(self,name,length=1000):
         self.name=name
@@ -35,8 +37,22 @@ class Platform:
         self.bypassDirection=direction    
         
     def isFree(self):
-        print self.name
         return self.train==None
+    
+    def actuateDriveIn(self):
+        self.driveIn()
+        
+    def actuateDriveOut(self):
+        if self.driveOut==UNDEFINED:
+            self.driveIn()
+        else:
+            self.driveOut()
+    
+    def setDriveIn(self,method):
+        self.driveIn=method
+        
+    def setDriveOut(self,method):
+        self.driveOut=method
     
     def setStation(self,station):
         self.station=station
