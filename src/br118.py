@@ -85,8 +85,6 @@ class BR118(Train):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            print self.nachGleis
-            print self.trainlength
             if (self.targetPlatform==r1):
                 if (self.trainlength==100):
                     time.sleep(10)
