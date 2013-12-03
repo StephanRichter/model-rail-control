@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from thread import start_new_thread
 from train import Train
 from ice import ICE

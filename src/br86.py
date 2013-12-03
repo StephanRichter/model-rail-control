@@ -85,7 +85,7 @@ class BR86(Train):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.targetPlatform==r1):
+            if (self.targetPlatform==l1):
                 if (self.trainlength==55):
                     time.sleep(13)
                     self.speed(20)

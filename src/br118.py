@@ -136,6 +136,7 @@ class BR118(Train):
             self.stop()
             time.sleep(1)
             self.nachRechts()            
+            self.nachRechts()            
             self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(20)

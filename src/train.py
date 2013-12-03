@@ -22,6 +22,7 @@ class Train:
     pushpull=False
     trainlength=40    
     activeContact=None
+    lastaction=UNDEFINED
 
     def __init__(self,lok):
         self.lok=lok
@@ -178,6 +179,7 @@ class Train:
     
     def ausfahrt(self,delay=3):
         self.status=AUSFAHRT
+        self.lastaction=AUSFAHRT
         if (self.station==bahnhofLinks):
             self.ausfahrtLinks(delay)
         elif (self.station==bahnhofRechts):
@@ -186,7 +188,7 @@ class Train:
             print "kann nicht ausfahren, da nicht bekannt ist, wo sich",self.name," befindet"
         
     def ausfahrtLinks(self,delay=3):        
-        print self.name," fährt ausaus in",delay,"sekunden"
+        print self.name," fährt aus",self.station,"aus in",delay,"sekunden"
         self.nachRechts()
         self.lichtAn()
         time.sleep(delay)
@@ -195,7 +197,7 @@ class Train:
         self.speed(50)
         
     def ausfahrtRechts(self,delay=3):
-        print self.name,"fährt aus Bahnhof rechts aus in",delay,"sekunden"
+        print self.name," fährt aus",self.station,"aus in",delay,"sekunden"
         self.status=NACH_LINKS
         self.nachLinks()
         self.lichtAn()
@@ -248,6 +250,7 @@ class Train:
     def gleiswechsel(self,delay=3):
         print self.name,"startet Gleiswechsel nach",self.targetPlatform
         self.status=GLEISWECHSEL
+        self.lastaction=GLEISWECHSEL
         self.direction(self.station.exitDirection)
         self.lichtAn()
         self.platform.actuateDriveIn()
