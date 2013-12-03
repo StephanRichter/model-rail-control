@@ -158,7 +158,7 @@ class BR118(Train):
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
-            self.ankuppeln(WENDEZEIT)
+            self.ankuppelnRechts(WENDEZEIT)
         elif (self.status==NACH_RECHTS):
             pass
             
