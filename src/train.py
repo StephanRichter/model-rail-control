@@ -113,13 +113,13 @@ class Train:
         
     def nachLinks(self):
         self.lok.setDirection(0)
-        print "<= Fahrtichtung"
+        print "<= Fahrtichtung (",self,")"
         self.lok.send()
         self.sleep(0.02)
         
     def nachRechts(self):
         self.lok.setDirection(1)
-        print "Fahrtichtung =>"
+        print "(",self,") Fahrtichtung =>"
         self.lok.send()
         self.sleep(0.02)
         

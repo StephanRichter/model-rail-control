@@ -27,7 +27,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=0
+pause=7
 
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR86.trainlength=55
@@ -50,10 +50,10 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r3,ABGEKUPPELT)
-BR110.setState(r1,BEREIT)
-BR118.setState(l1,EINGEFAHREN)
-BR130.setState(l2,BEREIT)
+BR86.setState(l1,ABGEKUPPELT)
+BR110.setState(l2,BEREIT)
+BR118.setState(r3,BEREIT)
+BR130.setState(r1,BEREIT)
 ICE.setState(r4,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
@@ -160,13 +160,8 @@ def tryCrossing(train1,train2):
         else:
             print "Kein Zielgleis für",train2
     else:
-        print "Kein Zielgleis für",train1
-    
-        
-    
-    
+        print "Kein Zielgleis für",train1    
     activeTrains=[]
-    print "Wechsel von",train1,"und",train2,"sollte gehen"
 
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
@@ -178,15 +173,14 @@ while True:
     # folgende Zeilen sind zur Ablaufsteuerung
     
     if not activeTrains:
-        train1=random.choice(trains)        
-        train2=random.choice(trains)
-        if train1==train2:
-            print train1
-            activeTrains.append(train1)            
-            start_new_thread(tryAction,(train1,))
-        else:
+        train1=random.choice(trains)
+        train2=random.choice(trains)                
+        if train1!=train2 and random.choice([1,2])==1:        
             activeTrains.append(train1)
             activeTrains.append(train2)
             start_new_thread(tryCrossing,(train1,train2))
+        else:
+            activeTrains.append(train1)            
+            start_new_thread(tryAction,(train1,))
 
     time.sleep(0.01)

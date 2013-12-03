@@ -50,7 +50,8 @@ class BR118(Train):
             print "Abkuppelvorgang für Zuglänge (",self.trainlength,") nicht definiert"  
         
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppeln(self, delay)
+        self.nachLinks()
+        self.ankuppeln(delay)
         if (self.trainlength==100):
             time.sleep(12)
         self.stop()
@@ -59,8 +60,13 @@ class BR118(Train):
         self.status=BEREIT
     
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
-        Train.ankuppeln(self, delay)
-        if (self.targetPlatform==r2):
+        print "nach rechts"
+        print self
+        print self.platform
+        print self.targetPlatform
+        self.nachRechts()
+        self.ankuppeln(delay)
+        if (self.platform==r2):
             if (self.trainlength==100):
                 time.sleep(17)
         self.stop()
@@ -90,6 +96,8 @@ class BR118(Train):
                     time.sleep(10)
                     self.speed(20)
                     time.sleep(4)
+            else:
+                os._exit(-1)
             time.sleep(1)
             self.eingefahren()
         elif (self.status==GLEISWECHSEL):
@@ -159,8 +167,6 @@ class BR118(Train):
             self.stop()
             self.status=ANKUPPELN
             self.ankuppelnRechts(WENDEZEIT)
-        elif (self.status==NACH_RECHTS):
-            pass
             
     def entkupplerLinksEvent(self):
         if (self.status==ABKUPPELN):

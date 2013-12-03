@@ -78,7 +78,7 @@ class BR130(Train):
 
     def ankuppelnLinks(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         self.nachLinks()
-        Train.ankuppeln(self, delay)
+        self.ankuppeln(delay)
         if (self.trainlength==82):
             time.sleep(13)
         self.stop()
@@ -88,7 +88,7 @@ class BR130(Train):
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         self.nachRechts()
-        Train.ankuppeln(self, delay)
+        self.ankuppeln(delay)
         
         if self.platform==r2:
             if (self.trainlength==82):
