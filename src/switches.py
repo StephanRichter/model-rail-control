@@ -26,18 +26,25 @@ weiche10.init("N")
 
 def ausfahrt1():
     print "Weichenstraße Ausfahrt 1"
+    time.sleep(0.5)
+    weiche4.actuate(0, 1)
+    time.sleep(1)
     weiche4.actuate(0, 1)
     time.sleep(1)
     weiche2.actuate(0, 1)      
+    time.sleep(0.5)
 
 def ausfahrt2():
     print "Weichenstraße Ausfahrt 2"
+    time.sleep(0.5)
     weiche4.actuate(1, 1)
     time.sleep(1)
     weiche2.actuate(0, 1)
+    time.sleep(0.5)
 
 def ausfahrt3():
     print "Weichenstraße Ausfahrt 3"
+    time.sleep(0.5)
     weiche2.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -45,9 +52,11 @@ def ausfahrt3():
     weiche3.actuate(0, 1)
     time.sleep(1)
     weiche34.actuate(0, 1)
+    time.sleep(0.5)
       
 def ausfahrt4():
     print "Weichenstraße Ausfahrt 4"
+    time.sleep(0.5)
     weiche2.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -55,17 +64,21 @@ def ausfahrt4():
     weiche3.actuate(1, 1)
     time.sleep(1)
     weiche34.actuate(0, 1)
+    time.sleep(0.5)
 
 def einfahrt1():
     print "Weichenstraße Einfahrt 1"
+    time.sleep(0.5)
     weiche4.actuate(0, 1)
     time.sleep(0.5)
     weiche1.actuate(1, 1)
     time.sleep(0.5)
     weiche5.actuate(0, 1)            
+    time.sleep(0.5)
 
 def einfahrt2():
     print "Weichenstraße Einfahrt 2"
+    time.sleep(0.5)
     weiche4.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(1, 1)
@@ -77,9 +90,11 @@ def einfahrt2():
     weiche4.actuate(1, 1)            
     time.sleep(1)
     weiche5.actuate(0, 1)            
+    time.sleep(0.5)
 
 def einfahrt3():
     print "Weichenstraße Einfahrt 3"
+    time.sleep(0.5)
     weiche3.actuate(0, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -87,9 +102,11 @@ def einfahrt3():
     weiche4.actuate(0, 1)            
     time.sleep(1)
     weiche34.actuate(0, 1)
+    time.sleep(0.5)
 
 def einfahrt4():
     print "Weichenstraße Einfahrt 4"
+    time.sleep(0.5)
     weiche3.actuate(1, 1)
     time.sleep(1)
     weiche1.actuate(0, 1)
@@ -97,6 +114,7 @@ def einfahrt4():
     weiche4.actuate(0, 1)            
     time.sleep(1)
     weiche34.actuate(0, 1)
+    time.sleep(0.5)
 
 def entkupplenLinks(count=1):
     for i in range(count,0,-1):
@@ -113,9 +131,11 @@ def entkuppeln3():
         
 def bahnhofLinksAbzweig():
     print "Weichenstraße Bahnhof (links) Abzweig"
+    time.sleep(0.5)
     weiche10.actuate(0, 1)
     time.sleep(1)
     weiche10.actuate(0, 1)
+    time.sleep(0.5)
 
 def bahnhofLinksGerade():
     print "Weichenstraße Bahnhof (links) Gerade"
@@ -130,9 +150,13 @@ def bahnhofLinksGerade():
     time.sleep(1)
     
 def umfahrungRechts2():
+    time.sleep(0.5)
     weiche12.actuate(1, 1)
+    time.sleep(0.5)
     
 def umfahrungRechts3():
+    time.sleep(0.5)
     weiche34.actuate(1, 1)
+    time.sleep(0.5)
 
 
