@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # coding=utf8
 from thread import start_new_thread
 from mcp23s17 import *
@@ -40,7 +41,7 @@ BR130 = BR130(srcp.GL(SRCP_BUS,5))
 BR130.trainlength=82
 
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
-ICE.trainlength=122
+ICE.trainlength=119
 ICE.pushpull=True
 trains = [ BR110, BR86, BR118, BR130, ICE ]
 
@@ -49,11 +50,11 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r3,BEREIT)
-BR110.setState(r1,BEREIT)
-BR118.setState(l1,BEREIT)
+BR86.setState(l1,ABGEKUPPELT)
+BR110.setState(l2,BEREIT)
+BR118.setState(r3,BEREIT)
 BR130.setState(r4,BEREIT)
-ICE.setState(l2,BEREIT)
+ICE.setState(r2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -83,15 +84,18 @@ def tryAction(train):
             while train.status!=BEREIT and train.status!=EINGEFAHREN:
                 time.sleep(1)        
         else:
-            availableTargets=train.station.freePlatforms()
-            if availableTargets:
-                target=random.choice(availableTargets)
-                train.startGleiswechsel(target,pause)
-                time.sleep(1)
-                while train.status!=BEREIT and train.status!=EINGEFAHREN:
-                    time.sleep(1)        
+            if train.lastaction!=GLEISWECHSEL:
+                availableTargets=train.station.freePlatforms()
+                if availableTargets:
+                    target=random.choice(availableTargets)
+                    train.startGleiswechsel(target,pause)
+                    time.sleep(1)
+                    while train.status!=BEREIT and train.status!=EINGEFAHREN:
+                        time.sleep(1)        
+                else:
+                    print "no target available for",train
             else:
-                print "no target available for",train
+                print "shifted before, will not shift again"
     elif train.status==EINGEFAHREN:
         train.startAbkuppeln(pause)
         time.sleep(1)
@@ -126,7 +130,7 @@ while True:
         train1=random.choice(trains)        
         train2=random.choice(trains)
         if train1==train2:
-            activeTrains.append(train1)
+            activeTrains.append(train1)            
             start_new_thread(tryAction,(train1,))
         else:
             activeTrains.append(train1)
