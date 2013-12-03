@@ -50,11 +50,11 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(l1,EINGEFAHREN)
-BR110.setState(r3,BEREIT)
-BR118.setState(r4,BEREIT)
+BR86.setState(r3,ABGEKUPPELT)
+BR110.setState(r1,BEREIT)
+BR118.setState(l1,EINGEFAHREN)
 BR130.setState(l2,BEREIT)
-ICE.setState(r2,BEREIT)
+ICE.setState(r4,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -97,7 +97,6 @@ def tryAction(train):
                     print "no target available for",train
             else:
                 print train,"shifted before, will not shift again"
-                train.lastaction=None
     elif train.status==EINGEFAHREN:
         train.startAbkuppeln(pause)
         time.sleep(1)
@@ -139,7 +138,7 @@ def tryCrossing(train1,train2):
             if train1==BR86:
                 pause1=pause+2
             elif train1==BR118:
-                pause1=pause+4
+                pause1=pause+6
             elif train1==BR130:
                 pause1=pause+3
             elif train1==ICE:
@@ -148,7 +147,7 @@ def tryCrossing(train1,train2):
             if train2==BR86:
                 pause2=pause+2
             elif train2==BR118:
-                pause2=pause+4
+                pause2=pause+6
             elif train2==BR130:
                 pause2=pause+3
             elif train2==ICE:

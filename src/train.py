@@ -155,12 +155,12 @@ class Train:
             print "kann nicht abkuppeln, da nicht bekannt ist, wo sich",self.name," befindet"
             
     def abkuppelnRechts(self,delay=3):
-        if (self.vonGleis==2):
+        if (self.platform==r2):
             self.abkuppelnRechts2(delay)
-        elif (self.vonGleis==3):
+        elif (self.platform==r3):
             self.abkuppelnRechts3(delay)
         else:
-            print "rechts gibt es kein Gleis",self.vonGleis
+            print "rechts gibt es kein Gleis",self.platform
             
     def abkuppelnRechts2(self,delay=3):
         self.notImplemented("abkuppelnRechts2")
@@ -219,7 +219,7 @@ class Train:
             bahnhofLinksAbzweig()
         else:
             self.stop()
-            print "rechts gibt es kein Gleis",self.nachGleis
+            print "rechts gibt es kein Gleis",self.targetPlatform
             return
         
     def einfahrWeichenRechts(self):       
@@ -227,13 +227,13 @@ class Train:
             einfahrt1()
         elif (self.targetPlatform==r2):
             einfahrt2()
-        elif (self.nachGleis==3):
+        elif (self.targetPlatform==r3):
             einfahrt3()
-        elif (self.nachGleis==4):
+        elif (self.targetPlatform==r4):
             einfahrt4()
         else:
             self.stop()
-            print "rechts gibt es kein Gleis",self.nachGleis
+            print "rechts gibt es kein Gleis",self.targetPlatform
             return
 
     def eingefahren(self):
@@ -274,8 +274,8 @@ class Train:
     def startUmfahren(self,pause):
         start_new_thread(self.umfahren,(pause,))
 
-    def stat(self,status,bahnhof=UNDEFINED,vonGleis=UNDEFINED):
-        return (status==self.status) and (bahnhof==self.bahnhof) and (vonGleis==self.vonGleis)
+    def stat(self,status,bahnhof=UNDEFINED,platform=UNDEFINED):
+        return (status==self.status) and (bahnhof==self.bahnhof) and (platform==self.platform)
     
     def umfahren(self,delay=3):
         print self.name,"umfährt in",delay,"Sekunden"
@@ -327,8 +327,8 @@ class Train:
         else:
             txt+="unknown:"+self.status+","            
 
-        if (self.bahnhof == LINKS):
+        if (self.station == bahnhofLinks):
             txt+="LINKS,"
-        if (self.bahnhof == RECHTS):
+        if (self.station == bahnhofRechts):
             txt+="RECHTS,"
-        print txt+`self.vonGleis`+") => "+`self.nachGleis`
+        print txt+`self.platform`+") => "+`self.targetPlatform`
