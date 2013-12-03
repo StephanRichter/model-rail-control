@@ -91,9 +91,9 @@ class ICE(Train):
             self.targetPlatform.actuateDriveIn()
             time.sleep(WENDEZEIT)
             self.speed(self.sp)
-            if (self.nachGleis<3):
+            if self.targetPlatform==r1 or self.targetPlatform==r2:
                 time.sleep(16) # hier anpassen
-            elif (self.nachGleis==3 or self.nachGleis==4):
+            else:
                 time.sleep(13.5) # hier anpassen
             self.stop()   
             self.platform.setFree()         
