@@ -95,7 +95,7 @@ def tryAction(train):
                 else:
                     print "no target available for",train
             else:
-                print "shifted before, will not shift again"
+                print train,"shifted before, will not shift again"
     elif train.status==EINGEFAHREN:
         train.startAbkuppeln(pause)
         time.sleep(1)
@@ -130,6 +130,7 @@ while True:
         train1=random.choice(trains)        
         train2=random.choice(trains)
         if train1==train2:
+            print train1
             activeTrains.append(train1)            
             start_new_thread(tryAction,(train1,))
         else:
