@@ -118,7 +118,7 @@ class BR130(Train):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.targetPlatform==r1):
+            if (self.targetPlatform==l1):
                 if (self.trainlength==82):
                     time.sleep(6)
                     self.speed(20)
