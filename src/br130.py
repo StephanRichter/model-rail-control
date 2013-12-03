@@ -148,7 +148,7 @@ class BR130(Train):
     def einfahrtRechtsEvent(self):
         if (self.status==EINFAHRT):
             self.speed(60)
-            print "BR130.nachGleis=",self.nachGleis
+            print "BR130.nachGleis=",self.targetPlatform
             if (self.nachGleis==3 or self.targetPlatform==r2):
                 if (self.trainlength==82):
                     time.sleep(7)
