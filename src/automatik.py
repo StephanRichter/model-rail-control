@@ -50,11 +50,11 @@ for train in trains:
     train.lichtAn()
     time.sleep(0.01)
     
-BR86.setState(r2,ABGEKUPPELT)
-BR110.setState(r4,BEREIT)
-BR118.setState(l2,BEREIT)
-BR130.setState(l1,ABGEKUPPELT)
-ICE.setState(r1,BEREIT)
+BR86.setState(l1,EINGEFAHREN)
+BR110.setState(r3,BEREIT)
+BR118.setState(r4,BEREIT)
+BR130.setState(l2,BEREIT)
+ICE.setState(r2,BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -116,6 +116,56 @@ def tryCrossing(train1,train2):
     if train2.status!=BEREIT:
         activeTrains=[]
         return
+    
+    targets=train1.possibleTargets()
+    available1=[]
+    for platform in targets:
+        train=platform.train
+        if train==train2 or train==None:
+            available1.append(platform)
+            
+    targets=train2.possibleTargets()
+    available2=[]
+    for platform in targets:
+        train=platform.train
+        if train==train1 or train==None:
+            available2.append(platform)
+    print "Wechsel von",train1,"und",train2,"?"
+    if available1:
+        if available2:
+            target1=random.choice(available1)
+            target2=random.choice(available2)
+            pause1=pause
+            if train1==BR86:
+                pause1=pause+2
+            elif train1==BR118:
+                pause1=pause+4
+            elif train1==BR130:
+                pause1=pause+3
+            elif train1==ICE:
+                pause1=pause+13
+            pause2=pause
+            if train2==BR86:
+                pause2=pause+2
+            elif train2==BR118:
+                pause2=pause+4
+            elif train2==BR130:
+                pause2=pause+3
+            elif train2==ICE:
+                pause2=pause+13
+            train1.startAusfahrt(target1,pause1)
+            train2.startAusfahrt(target2,pause2)
+            time.sleep(1)
+            while (train1.status!=BEREIT and train1.status!=EINGEFAHREN) or (train2.status!=BEREIT and train2.status!=EINGEFAHREN):
+                time.sleep(1)
+        else:
+            print "Kein Zielgleis für",train2
+    else:
+        print "Kein Zielgleis für",train1
+    
+        
+    
+    
     activeTrains=[]
     print "Wechsel von",train1,"und",train2,"sollte gehen"
 
