@@ -70,9 +70,9 @@ class BR118(Train):
             if (self.trainlength==100):
                 time.sleep(17)
         self.stop()
+        self.status=BEREIT
         time.sleep(3)
         self.lichtAus()
-        self.status=BEREIT
         
     def ausfahrtRechts(self, delay=3):
         Train.ausfahrtRechts(self, delay)
@@ -91,12 +91,13 @@ class BR118(Train):
             self.einfahrt()
         elif (self.status==EINFAHRT):
             self.speed(60)
-            if (self.targetPlatform==r1):
+            if (self.targetPlatform==l1):
                 if (self.trainlength==100):
                     time.sleep(10)
                     self.speed(20)
                     time.sleep(4)
             else:
+                print "Einfahrt auf unbekanntem Gleis!"
                 os._exit(-1)
             time.sleep(1)
             self.eingefahren()
@@ -160,9 +161,10 @@ class BR118(Train):
                     print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
                     return
-            self.stop()   
+            self.stop()
             self.platform.setFree()         
             self.setState(self.targetPlatform, BEREIT)
+            self.lichtAus()   
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
