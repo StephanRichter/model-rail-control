@@ -64,9 +64,9 @@ class BR86(Train):
                 print "kein Ankuppeln definiert für Zuglänge =",self.trainlength
                 self.status=UNDEFINED
         self.stop()
+        self.status=BEREIT
         time.sleep(3)
         self.lichtAus()
-        self.status=BEREIT
     
     def ausfahrtRechts(self, delay=3):
         Train.ausfahrtRechts(self, delay=delay)

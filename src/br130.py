@@ -88,6 +88,7 @@ class BR130(Train):
         
     def ankuppelnRechts(self, delay=3): # kein print hier, das macht schon die aufgerufene Supermethode
         self.nachRechts()
+        self.nachRechts()
         self.ankuppeln(delay)
         
         if self.platform==r2:
@@ -171,7 +172,7 @@ class BR130(Train):
             self.speed(20)
             if (self.targetPlatform==r1 or self.targetPlatform==r2):
                 if (self.trainlength==82):
-                    time.sleep(39) # hier anpassen
+                    time.sleep(40) # hier anpassen
                 else:
                     print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
@@ -183,9 +184,11 @@ class BR130(Train):
                     print "Gleiswechsel nicht definiert für zuglänge =",self.trainlength
                     self.status=UNDEFINED
                     return
-            self.stop()   
+            self.stop()
             self.platform.setFree()         
             self.setState(self.targetPlatform, BEREIT)
+            self.sleep(1)   
+            self.lichtAus()
         elif (self.status==UMFAHREN):
             self.stop()
             self.status=ANKUPPELN
