@@ -115,6 +115,7 @@ class BR118(Train):
             self.sleep(1)
             self.platform.setFree()         
             self.setState(self.targetPlatform, BEREIT)
+            self.lichtAus()
         elif (self.status==UMFAHREN):
             self.stop()          
             self.sleep(1)  
