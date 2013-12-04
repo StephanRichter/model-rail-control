@@ -27,7 +27,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=7
+pause=0
 
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR86.trainlength=55
@@ -45,16 +45,11 @@ ICE.trainlength=119
 ICE.pushpull=True
 trains = [ BR110, BR86, BR118, BR130, ICE ]
 
-for train in trains:
-    train.nachLinks()
-    train.lichtAn()
-    time.sleep(0.01)
-    
-BR86.setState(l1,ABGEKUPPELT)
-BR110.setState(l2,BEREIT)
-BR118.setState(r3,BEREIT)
-BR130.setState(r1,BEREIT)
-ICE.setState(r4,BEREIT)
+BR86.setState(r2,ABGEKUPPELT)
+BR110.setState(r1 , BEREIT)
+BR118.setState(l1 , EINGEFAHREN)
+BR130.setState(r3 , BEREIT)
+ICE.setState(l2 , BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -94,9 +89,9 @@ def tryAction(train):
                     while train.status!=BEREIT and train.status!=EINGEFAHREN:
                         time.sleep(1)        
                 else:
-                    print "no target available for",train
+                    print "kein Zielgleis frei für",train
             else:
-                print train,"shifted before, will not shift again"
+                print train,"hat schon einmal das Gleis gewechselt"
     elif train.status==EINGEFAHREN:
         train.startAbkuppeln(pause)
         time.sleep(1)
