@@ -186,7 +186,7 @@ class BR118(Train):
             time.sleep(0.1)
             self.speed(25)
             entkupplenLinks(3)
-            time.sleep(4.1)        
+            time.sleep(4.5)        
             self.stop()
             time.sleep(1)
             self.status=ABGEKUPPELT
