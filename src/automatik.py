@@ -32,7 +32,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=0
+pause=10
 
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR86.trainlength=55
@@ -50,13 +50,13 @@ ICE.trainlength=119
 ICE.pushpull=True
 trains = [ BR110, BR86, BR118, BR130, ICE ]
 
-BR86.setState(r2, ABGEKUPPELT)
-BR110.setState(l2 , BEREIT)
-BR118.setState(r4 , BEREIT)
-BR130.setState(l1 , ABGEKUPPELT)
-ICE.setState(r1 , BEREIT)
 
-stations=[bahnhofLinks,bahnhofRechts]
+BR110.setState(r4 , BEREIT)
+
+for train in trains:
+    if train.status==UNDEFINED:
+        train.loadState()
+    train.state()
 
 activeTrains=[]
 

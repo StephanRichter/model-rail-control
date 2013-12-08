@@ -309,6 +309,30 @@ class Train:
         f.write(str(self.status))        
         f.write("\n")
         f.close()
+        
+    def loadState(self):
+        file = open(self.name.strip()+".state")
+        for line in file:
+            parts=line.rstrip().split('=')
+            key=parts[0]
+            val=parts[1]
+            if key=='station':
+                if bahnhofLinks.name==val:
+                    self.station=bahnhofLinks
+                elif bahnhofRechts.name==val:
+                    self.station=bahnhofRechts
+                else:
+                    print "unknown station:",val
+            elif key=='platform':
+                for platform in self.station.platforms:
+                    if platform.name==val:
+                        self.platform=platform
+                        platform.setTrain(self)
+            elif key=='state':
+                self.status=int(val)
+            else:
+                print "unknown key in state file:",key                                
+        file.close()
 
     def state(self):
         txt=self.name+".stat("
@@ -345,4 +369,4 @@ class Train:
             txt+="LINKS,"
         if (self.station == bahnhofRechts):
             txt+="RECHTS,"
-        print txt+`self.platform`+") => "+`self.targetPlatform`
+        print txt+str(self.platform)+") => "+str(self.targetPlatform)
