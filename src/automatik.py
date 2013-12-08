@@ -14,6 +14,11 @@ from br118 import BR118
 from br130 import BR130
 from ice import ICE
 import random
+import sys
+import select
+import tty
+import termios
+from pydoc import deque
 
 try:
     import srcp
@@ -47,13 +52,16 @@ trains = [ BR110, BR86, BR118, BR130, ICE ]
 
 BR86.setState(r2, ABGEKUPPELT)
 BR110.setState(l2 , BEREIT)
-BR118.setState(r1 , BEREIT)
+BR118.setState(r4 , BEREIT)
 BR130.setState(l1 , ABGEKUPPELT)
-ICE.setState(r3 , BEREIT)
+ICE.setState(r1 , BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
 activeTrains=[]
+
+def keyPressed():
+    return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
 
 def tryAction(train):
     global activeTrains
@@ -99,8 +107,8 @@ def tryAction(train):
         time.sleep(1)
         while train.status!=ABGEKUPPELT:
             time.sleep(1)
-    activeTrains=[]        
-
+    activeTrains=[]
+    
 def tryCrossing(train1,train2):
     global activeTrains
     if train1.station==train2.station:
@@ -160,6 +168,21 @@ def tryCrossing(train1,train2):
         print "Kein Zielgleis für",train1    
     activeTrains=[]
 
+old_settings = termios.tcgetattr(sys.stdin)
+tty.setcbreak(sys.stdin.fileno())
+
+trainqueue = deque([])
+
+def nextTrain():
+    if len(trainqueue)==0:
+        return random.choice(trains)
+    return trainqueue.popleft()
+
+def queTrain(train):
+    print "putting ",train,"in the queue." 
+    trainqueue.append(train)
+    
+
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
@@ -168,10 +191,26 @@ while True:
             start_new_thread(train.contact,(val,))
     
     # folgende Zeilen sind zur Ablaufsteuerung
-    
+    if keyPressed():
+        c = sys.stdin.read(1)
+        if c == 'q':
+            break
+        elif c == ' ':
+            break
+        elif c == '1':
+            queTrain(ICE)
+        elif c == '2':
+            queTrain(BR110)
+        elif c == '3':
+            queTrain(BR130)
+        elif c == '8':
+            queTrain(BR118)
+        elif c == '6':
+            queTrain(BR86)
+            
     if not activeTrains:
-        train1=random.choice(trains)
-        train2=random.choice(trains)                
+        train1=nextTrain()
+        train2=nextTrain()                
         if train1!=train2 and random.choice([1,2])==1:        
             activeTrains.append(train1)
             activeTrains.append(train2)
@@ -181,3 +220,6 @@ while True:
             start_new_thread(tryAction,(train1,))
 
     time.sleep(0.01)
+
+commandbus.powerOff()
+termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
