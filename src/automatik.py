@@ -45,11 +45,11 @@ ICE.trainlength=119
 ICE.pushpull=True
 trains = [ BR110, BR86, BR118, BR130, ICE ]
 
-BR86.setState(r2,ABGEKUPPELT)
-BR110.setState(r1 , BEREIT)
-BR118.setState(l1 , EINGEFAHREN)
-BR130.setState(r3 , BEREIT)
-ICE.setState(l2 , BEREIT)
+BR86.setState(r2, ABGEKUPPELT)
+BR110.setState(l2 , BEREIT)
+BR118.setState(r1 , BEREIT)
+BR130.setState(l1 , ABGEKUPPELT)
+ICE.setState(r3 , BEREIT)
 
 stations=[bahnhofLinks,bahnhofRechts]
 
@@ -61,11 +61,13 @@ def tryAction(train):
         if train.platform.bypass==None:
             print "Achtung:",train,"ist abgekuppelt, hat aber kein Gleis zum umfahren!?"
             return
-        if train.platform.bypass.isFree():
+        elif train.platform.bypass.isFree():
             train.startUmfahren(pause)
             time.sleep(2)
             while train.status!=BEREIT:
-                time.sleep(1)                
+                time.sleep(1)
+        else:
+            print "Umfahrungsgleis für",train,"nicht frei."                
     elif train.status==BEREIT:
         targetPlatforms=train.possibleTargets()
         availableTargets=[]

@@ -79,7 +79,7 @@ class ICE(Train):
             time.sleep(2.5)
             self.speed(10)
             if (self.targetPlatform.length==120):
-                time.sleep(2)
+                time.sleep(2.6)
             time.sleep(2)
             self.eingefahren()
             self.status=BEREIT
