@@ -295,6 +295,20 @@ class Train:
         self.station=platform.station
         self.platform=platform
         self.status=status
+        
+    def writeState(self):
+        print "write stat"
+        f = open(self.name.strip()+".state",'w')
+        f.write("station=") # python will convert \n to os.linesep
+        f.write(self.station.name)        
+        f.write("\n")
+        f.write("platform=")
+        f.write(self.platform.name)
+        f.write("\n")
+        f.write("state=")
+        f.write(str(self.status))        
+        f.write("\n")
+        f.close()
 
     def state(self):
         txt=self.name+".stat("

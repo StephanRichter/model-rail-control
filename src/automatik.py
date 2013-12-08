@@ -223,3 +223,5 @@ while True:
 
 commandbus.powerOff()
 termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+for train in trains:
+    train.writeState()
