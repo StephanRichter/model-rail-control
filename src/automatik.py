@@ -32,7 +32,7 @@ SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
 commandbus.powerOn()
 
-pause=10
+pause=0
 
 BR86 = BR86(srcp.GL(SRCP_BUS,3))
 BR86.trainlength=55
@@ -49,9 +49,6 @@ ICE = ICE(srcp.GL(SRCP_BUS, 1))
 ICE.trainlength=119
 ICE.pushpull=True
 trains = [ BR110, BR86, BR118, BR130, ICE ]
-
-
-BR110.setState(r4 , BEREIT)
 
 for train in trains:
     if train.status==UNDEFINED:
@@ -182,7 +179,7 @@ def queTrain(train):
     print "putting ",train,"in the queue." 
     trainqueue.append(train)
     
-
+quit = False
 while True:    
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
@@ -194,7 +191,8 @@ while True:
     if keyPressed():
         c = sys.stdin.read(1)
         if c == 'q':
-            break
+            quit=True
+            print "stopping program at next safe state" 
         elif c == ' ':
             break
         elif c == '1':
@@ -209,6 +207,8 @@ while True:
             queTrain(BR86)
             
     if not activeTrains:
+        if quit:
+            break
         train1=nextTrain()
         train2=nextTrain()                
         if train1!=train2 and random.choice([1,2])==1:        

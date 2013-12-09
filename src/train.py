@@ -253,8 +253,9 @@ class Train:
         self.lastaction=GLEISWECHSEL
         self.direction(self.station.exitDirection)
         self.lichtAn()
-        self.platform.actuateDriveIn()
         time.sleep(delay)
+        self.platform.actuateDriveIn()
+        time.sleep(1)
         self.speed(25)
             
     def notImplemented(self,name):
