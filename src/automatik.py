@@ -192,7 +192,7 @@ while True:
         c = sys.stdin.read(1)
         if c == 'q':
             quit=True
-            print "stopping program at next safe state" 
+            print "Programm wird im nächsten betriebssicheren Zustand angehalten." 
         elif c == ' ':
             break
         elif c == '1':
