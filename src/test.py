@@ -10,10 +10,13 @@ from br118 import BR118
 from br130 import BR130
 from br86 import BR86
 from ice import ICE
-from kontakte import *
-from lok import *
 from mcp23s17 import *
-
+try:
+    import srcp
+except:
+    print "%Can't connect to the srcp server!"
+    print "Please start it before or check srcp.py config!"
+    exit()
 
 SRCP_BUS=1
 commandbus=srcp.BUS(SRCP_BUS);    
@@ -28,8 +31,8 @@ ICE = ICE(srcp.GL(SRCP_BUS, 1))
 tfz=ICE
 
 
-tfz.nachLinks()
+tfz.nachRechts()
 tfz.speed(50)
 
-time.sleep(15)
+time.sleep(5)
 tfz.stop()
