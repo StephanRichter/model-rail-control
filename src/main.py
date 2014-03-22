@@ -78,11 +78,17 @@ personenzug=[personenwagen]
 
 # Loks
 
+loks=[]
 ICE=Loco(SRCP_BUS,1,"ICE",10,10) # Längen korrigieren
+loks.append(ICE)
 BR110=Loco(SRCP_BUS,2,"BR110",5,5)
+loks.append(BR110)
 BR86=Loco(SRCP_BUS,3,"BR 86",5,5)
+loks.append(BR86)
 BR118=Loco(SRCP_BUS,4,"BR 118",5,5)
+loks.append(BR118)
 BR130=Loco(SRCP_BUS,5,"BR130",5,5)
+loks.append(BR130)
 
 # Züge
 BR110.appendB(doppelstockzug_lang)  
@@ -156,12 +162,14 @@ while True:
                 if target:
                     stelle(target.getTurnouts())                    
                     stopOn(trn,target)
-                    trn.setSpeed(100)                    
+                    trn.setSpeed(128)                    
                     active=True
         
     if quit:
         break        
     time.sleep(0.01)
 
+for lok in loks:
+    lok.stop()
 commandbus.powerOff()
 termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
