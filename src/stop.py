@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from thread import start_new_thread
-from train import Train
+from loco import Train
 from ice import ICE
 from br110 import BR110
 from br86 import BR86

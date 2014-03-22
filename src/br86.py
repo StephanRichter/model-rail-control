@@ -3,7 +3,7 @@ import time,os,srcp
 import myconsts
 import environ
 from switches import *
-from train import *
+from loco import *
 
 class BR86(Train):
     name = " BR86"

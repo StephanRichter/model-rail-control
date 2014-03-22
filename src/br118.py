@@ -1,5 +1,5 @@
 # coding=utf8
-from train import *
+from loco import *
 import time,os,srcp
 from switches import *
 

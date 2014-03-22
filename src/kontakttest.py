@@ -48,7 +48,7 @@ BR130.trainlength=82
 ICE = ICE(srcp.GL(SRCP_BUS, 1))
 ICE.trainlength=119
 ICE.pushpull=True
-trains = [ BR110, BR86, BR118, BR130, ICE ]
+trains = []# BR110, BR86, BR118, BR130, ICE ]
 
 for train in trains:
     if train.status==UNDEFINED:
@@ -184,40 +184,7 @@ while True:
     sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
     val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
     if (val != 0):
-        for train in trains:
-            start_new_thread(train.contact,(val,))
-    
-    # folgende Zeilen sind zur Ablaufsteuerung
-    if keyPressed():
-        c = sys.stdin.read(1)
-        if c == 'q':
-            quit=True
-            print "Programm wird im nächsten betriebssicheren Zustand angehalten." 
-        elif c == ' ':
-            break
-        elif c == '1':
-            queTrain(ICE)
-        elif c == '2':
-            queTrain(BR110)
-        elif c == '3':
-            queTrain(BR130)
-        elif c == '8':
-            queTrain(BR118)
-        elif c == '6':
-            queTrain(BR86)
-            
-    if not activeTrains:
-        if quit:
-            break
-        train1=nextTrain()
-        train2=nextTrain()                
-        if train1!=train2 and random.choice([1,2])==1:        
-            activeTrains.append(train1)
-            activeTrains.append(train2)
-            start_new_thread(tryCrossing,(train1,train2))
-        else:
-            activeTrains.append(train1)            
-            start_new_thread(tryAction,(train1,))
+        print val
 
     time.sleep(0.01)
 
