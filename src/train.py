@@ -7,17 +7,13 @@ except:
     exit()
 
 class Loco:    
-    control=None
-    lenA=0
-    lenB=0
-    
-    
-    def __init__(self,bus,addr,lenA,lenB):
+    def __init__(self,bus,addr,name,lenA,lenB):
         self.control=srcp.GL(bus,addr)
         self.lenA=lenA
         self.lenB=lenB
-        
-        
+        self.name=name
+        control=None
+    
     def __str__(self):
         return self.name
     
@@ -29,10 +25,15 @@ class Loco:
     def appendB(self,train):
         for waggon in train:
             self.lenB+=waggon.len()
-        print self.lenB
+        print self.lenB        
+        
+    def stop(self):
+        print self.name,"stop!"
+        
+    def setSpeed(self,speed):
+        
         
 class Waggon:
-    length=None
     def __init__(self,length):
         self.length=length
         
