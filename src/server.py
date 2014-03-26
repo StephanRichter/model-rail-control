@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # coding=utf8
-import socket,sys
+import socket,sys,time
 from thread import start_new_thread
 
 serverhost=''
@@ -39,6 +39,19 @@ def prnt(text,info):
     else:
         print text
         
+def sensorThread(source,sink):
+    time.sleep(1)
+    while True:    
+        nb=raw_input("Press ENTER for sensor event")
+        msg=str(time.time())+" 100 INFO 0 FB 64 1";
+        print msg
+        source.sendall(msg+"\n")
+        time.sleep(0.2)               
+        msg=str(time.time())+" 100 INFO 0 FB 64 0";
+        print msg
+        source.sendall(msg+"\n")
+        time.sleep(1)               
+        
 def connectA(source,sink,connection):
     while True:
         data=source.recv(1024)
@@ -46,13 +59,14 @@ def connectA(source,sink,connection):
             break
         prnt(data[:-1]+" >>>",infsession[connection])
         if data=="SET CONNECTIONMODE SRCP INFO\n":
-            infsession[connection]=True 
+            infsession[connection]=True
+            start_new_thread(sensorThread, (source,sink,)) 
         sink.sendall(data)
     try:
         source.close()
     except:
         pass
-    print "connection closed"
+    print "connection closed"    
     
 def connectB(source,sink,connection):
     while True:
