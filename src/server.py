@@ -48,8 +48,10 @@ def connectA(source,sink,connection):
         if data=="SET CONNECTIONMODE SRCP INFO\n":
             infsession[connection]=True 
         sink.sendall(data)
-    source.close()
-    sink.close()
+    try:
+        source.close()
+    except:
+        pass
     print "connection closed"
     
 def connectB(source,sink,connection):
@@ -59,8 +61,10 @@ def connectB(source,sink,connection):
             break
         prnt("<<< "+data[:-1],infsession[connection]) 
         sink.sendall(data)
-    source.close()
-    sink.close()
+    try:
+        source.close()
+    except:
+        pass
     print "connection closed"
 
 
