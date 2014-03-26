@@ -2,6 +2,8 @@
 # coding=utf8
 import socket,sys,time
 from thread import start_new_thread
+from mcp23s17 import *
+
 
 serverhost=''
 serverport=4304
@@ -40,17 +42,18 @@ def prnt(text,info):
         print text
         
 def sensorThread(source,sink):
-    time.sleep(1)
+    ledPattern = 0b00000000
     while True:    
-        nb=raw_input("Press ENTER for sensor event")
-        msg=str(time.time())+" 100 INFO 0 FB 64 1";
-        print msg
-        source.sendall(msg+"\n")
-        time.sleep(0.2)               
-        msg=str(time.time())+" 100 INFO 0 FB 64 0";
-        print msg
-        source.sendall(msg+"\n")
-        time.sleep(1)               
+        sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
+        val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
+        if val:
+            for i in range(8):
+                if val & (1<<i):
+                    print i
+#        msg=str(time.time())+" 100 INFO 0 FB 64 0";
+#        print msg
+#        source.sendall(msg+"\n")
+        time.sleep(0.01)            
         
 def connectA(source,sink,connection):
     while True:
