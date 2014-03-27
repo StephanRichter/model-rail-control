@@ -3,12 +3,56 @@
 import socket,sys,time
 from thread import start_new_thread
 from mcp23s17 import *
+from sys import exit
 
 
 serverhost=''
 serverport=4304
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+def sendAndRcv(sock,message):
+    print message
+    sock.sendall(message+"\n")
+    reply=sock.recv(1024)    
+    print reply[:-1]
+
+try:
+    srcpsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+except socket.error, msg:
+    print "Failed to create socket. Error code: "+str(msg[0])+", Error message: "+msg[1]
+    sys.exit()
+
+print "socket created"
+
+srcphost = 'localhost'
+srcpport = 4303
+try:
+    srcpip=socket.gethostbyname(srcphost)
+except:
+    print "Hostname "+srcphost+" could not be resolved. Exiting"
+    sys.exit()
+    
+print "Ip adress of "+srcphost+" is "+srcpip
+
+srcpsock.connect((srcpip , srcpport))
+ 
+print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
+
+welcome = srcpsock.recv(1024)
+print welcome
+
+sendAndRcv(srcpsock,"SET PROTOCOL SRCP 0.8")
+sendAndRcv(srcpsock,"SET CONNECTIONMODE SRCP COMMAND")
+sendAndRcv(srcpsock, "GO")
+sendAndRcv(srcpsock, "SET 1 POWER ON")
+for addr in range(1,20):
+    time.sleep(0.01)
+    sendAndRcv(srcpsock, "INIT 1 GL "+str(addr)+" N 1 128 4")
+    sendAndRcv(srcpsock, "INIT 1 GA "+str(addr)+" N")
+sendAndRcv(srcpsock, "TERM 0 SESSION")
+srcpsock.close()
 
 print 'Socket created'
  
@@ -45,11 +89,19 @@ def sensorThread(source,sink):
                 else:
                     msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
 
-                print msg
+                prnt(msg,True)
                 source.sendall(msg+"\n")
         old=val
         
-        time.sleep(0.01)            
+        time.sleep(0.01)
+        
+def initialize(sink):
+    for adress in range(1,20):
+        command="INIT 1 GA "+str(adress)+" N"
+        print command+" >>>"
+        sink.sendall(command+"\n")
+        response=sink.recv(1024)
+        print "<<< "+response            
         
 def connectA(source,sink,connection):
     while True:
@@ -57,10 +109,10 @@ def connectA(source,sink,connection):
         if not data:
             break
         prnt(data[:-1]+" >>>",infsession[connection])
+        sink.sendall(data)
         if data=="SET CONNECTIONMODE SRCP INFO\n":
             infsession[connection]=True
-            start_new_thread(sensorThread, (source,sink,)) 
-        sink.sendall(data)
+            start_new_thread(sensorThread, (source,sink,))
     try:
         source.close()
     except:
@@ -110,6 +162,8 @@ def clientthread(client,connection):
     
     start_new_thread(connectA, (client,srcpsock,connection,))
     start_new_thread(connectB, (srcpsock,client,connection,))
+    
+####
     
 connection=0
 infsession=[]
