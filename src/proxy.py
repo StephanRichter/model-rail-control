@@ -24,17 +24,6 @@ print 'Socket bind complete'
 serversocket.listen(10)
 print 'Socket now listening'
 
-
-
-#for style in xrange(8):
-#        for fg in xrange(30,38):
-#            s1 = ''
-#            for bg in xrange(40,48):
-#                format = ';'.join([str(style), str(fg), str(bg)])
-#                s1 += '\x1b[%sm %s \x1b[0m' % (format, format)
-#            print s1
-#        print '\n'
-        
 def prnt(text,info):
     if info:
         print "\033[1;40;31m"+text+"\033[0m"
@@ -42,17 +31,24 @@ def prnt(text,info):
         print text
         
 def sensorThread(source,sink):
-    ledPattern = 0b00000000
+    bits=8    
+    ledPattern = 0b00000000 # ideally this should adapt to the value of <bits>
+    old=0
     while True:    
         sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
         val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
-        if val:
-            for i in range(8):
-                if val & (1<<i):
-                    print i
-#        msg=str(time.time())+" 100 INFO 0 FB 64 0";
-#        print msg
-#        source.sendall(msg+"\n")
+        diff=old^val
+        for i in range(16,0,-1):
+            if 1<<i-1 & diff:
+                if 1<<i-1 & val:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
+                else:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
+
+                print msg
+                source.sendall(msg+"\n")
+        old=val
+        
         time.sleep(0.01)            
         
 def connectA(source,sink,connection):
