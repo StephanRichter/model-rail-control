@@ -1,10 +1,8 @@
 #!/usr/bin/python
 # coding=utf8
-import socket,sys,time
+import socket,sys
 from thread import start_new_thread
 from mcp23s17 import *
-from sys import exit
-
 
 serverhost=''
 serverport=4304
@@ -13,18 +11,18 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 def sendAndRcv(sock,message):
-    print message
+    #print message
     sock.sendall(message+"\n")
     reply=sock.recv(1024)    
-    print reply[:-1]
+    #print reply[:-1]
 
 try:
     srcpsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 except socket.error, msg:
     print "Failed to create socket. Error code: "+str(msg[0])+", Error message: "+msg[1]
-    sys.exit()
+    sys.exit(-1)
 
-print "socket created"
+#print "socket created"
 
 srcphost = 'localhost'
 srcpport = 4303
@@ -32,16 +30,16 @@ try:
     srcpip=socket.gethostbyname(srcphost)
 except:
     print "Hostname "+srcphost+" could not be resolved. Exiting"
-    sys.exit()
+    sys.exit(-2)
     
-print "Ip adress of "+srcphost+" is "+srcpip
+#print "Ip adress of "+srcphost+" is "+srcpip
 
 srcpsock.connect((srcpip , srcpport))
  
-print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
+#print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
 
 welcome = srcpsock.recv(1024)
-print welcome
+#print welcome
 
 sendAndRcv(srcpsock,"SET PROTOCOL SRCP 0.8")
 sendAndRcv(srcpsock,"SET CONNECTIONMODE SRCP COMMAND")
@@ -54,25 +52,25 @@ for addr in range(1,20):
 sendAndRcv(srcpsock, "TERM 0 SESSION")
 srcpsock.close()
 
-print 'Socket created'
+#print 'Socket created'
  
 try:
     serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     serversocket.bind((serverhost, serverport))
 except socket.error , msg:
     print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-    sys.exit()
+    sys.exit(-3)
      
-print 'Socket bind complete'
+#print 'Socket bind complete'
 
 serversocket.listen(10)
-print 'Socket now listening'
+#print 'Socket now listening'
 
-def prnt(text,info):
-    if info:
-        print "\033[1;40;31m"+text+"\033[0m"
-    else:
-        print text
+#def prnt(text,info):
+#    if info:
+#        print "\033[1;40;31m"+text+"\033[0m"
+#    else:
+#        print text
         
 def sensorThread(source,sink):
     bits=8    
@@ -89,7 +87,7 @@ def sensorThread(source,sink):
                 else:
                     msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
 
-                prnt(msg,True)
+                #prnt(msg,True)
                 source.sendall(msg+"\n")
         old=val
         
@@ -98,17 +96,17 @@ def sensorThread(source,sink):
 def initialize(sink):
     for adress in range(1,20):
         command="INIT 1 GA "+str(adress)+" N"
-        print command+" >>>"
+        #print command+" >>>"
         sink.sendall(command+"\n")
         response=sink.recv(1024)
-        print "<<< "+response            
+        #print "<<< "+response            
         
 def connectA(source,sink,connection):
     while True:
         data=source.recv(1024)
         if not data:
             break
-        prnt(data[:-1]+" >>>",infsession[connection])
+        #prnt(data[:-1]+" >>>",infsession[connection])
         sink.sendall(data)
         if data=="SET CONNECTIONMODE SRCP INFO\n":
             infsession[connection]=True
@@ -117,20 +115,20 @@ def connectA(source,sink,connection):
         source.close()
     except:
         pass
-    print "connection closed"    
+    #print "connection closed"    
     
 def connectB(source,sink,connection):
     while True:
         data=source.recv(1024)
         if not data:
             break
-        prnt("<<< "+data[:-1],infsession[connection]) 
+        #prnt("<<< "+data[:-1],infsession[connection]) 
         sink.sendall(data)
     try:
         source.close()
     except:
         pass
-    print "connection closed"
+    #print "connection closed"
 
 
 def clientthread(client,connection):    
@@ -140,24 +138,24 @@ def clientthread(client,connection):
         print "Failed to create socket. Error code: "+str(msg[0])+", Error message: "+msg[1]
         return()
     
-    print "socket created"
+    #print "socket created"
     
     srcphost = 'localhost'
     srcpport = 4303
     try:
         srcpip=socket.gethostbyname(srcphost)
     except:
-        print "Hostname "+srcphost+" could not be resolved. Exiting"
-        sys.exit()
+        #print "Hostname "+srcphost+" could not be resolved. Exiting"
+        sys.exit(-4)
         
-    print "Ip adress of "+srcphost+" is "+srcpip
+    #print "Ip adress of "+srcphost+" is "+srcpip
     
     srcpsock.connect((srcpip , srcpport))
      
-    print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
+    #print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
     
     welcome = srcpsock.recv(1024)
-    print welcome     
+    #print welcome     
     client.send(welcome)
     
     start_new_thread(connectA, (client,srcpsock,connection,))
@@ -172,7 +170,7 @@ while 1:
     #wait to accept a connection - blocking call
     client, addr = serversocket.accept()
     infsession.append(False)
-    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    #print 'Connected with ' + addr[0] + ':' + str(addr[1])
     start_new_thread(clientthread, (client,connection,))
     connection+=1    
  
