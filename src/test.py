@@ -1,177 +1,109 @@
 #!/usr/bin/python
 # coding=utf8
-import socket,sys
-from thread import start_new_thread
-from mcp23s17 import *
-
-serverhost=''
-serverport=4304
-
-serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-
-def sendAndRcv(sock,message):
-    #print message
-    sock.sendall(message+"\n")
-    reply=sock.recv(1024)    
-    #print reply[:-1]
-
+import time,sys
 try:
-    srcpsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-except socket.error, msg:
-    print "Failed to create socket. Error code: "+str(msg[0])+", Error message: "+msg[1]
-    sys.exit(-1)
-
-#print "socket created"
-
-srcphost = 'localhost'
-srcpport = 4303
-try:
-    srcpip=socket.gethostbyname(srcphost)
+    import RPi.GPIO as GPIO
 except:
-    print "Hostname "+srcphost+" could not be resolved. Exiting"
-    sys.exit(-2)
-    
-#print "Ip adress of "+srcphost+" is "+srcpip
+    print "Was not able to import GPIO"
+    exit()
 
-srcpsock.connect((srcpip , srcpport))
- 
-#print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
+# initialize GPIO
 
-welcome = srcpsock.recv(1024)
-#print welcome
+GPIO.setmode(GPIO.BCM);
+GPIO.setwarnings(False);
 
-sendAndRcv(srcpsock,"SET PROTOCOL SRCP 0.8")
-sendAndRcv(srcpsock,"SET CONNECTIONMODE SRCP COMMAND")
-sendAndRcv(srcpsock, "GO")
-sendAndRcv(srcpsock, "SET 1 POWER ON")
-for addr in range(1,20):
-    time.sleep(0.01)
-    sendAndRcv(srcpsock, "INIT 1 GL "+str(addr)+" N 1 128 4")
-    sendAndRcv(srcpsock, "INIT 1 GA "+str(addr)+" N")
-sendAndRcv(srcpsock, "TERM 0 SESSION")
-srcpsock.close()
+SCLK = 25 # Serial clock
+MOSI = 18 # Master-Out-Slave-In
+MISO = 23 # Master-In-Slave-Out
+CS = 24 # Chip-Select
 
-#print 'Socket created'
- 
-try:
-    serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    serversocket.bind((serverhost, serverport))
-except socket.error , msg:
-    print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-    sys.exit(-3)
-     
-#print 'Socket bind complete'
+GPIO.setup(SCLK, GPIO.OUT)
+GPIO.setup(MOSI, GPIO.OUT)
+GPIO.setup(MISO, GPIO.IN)
+GPIO.setup(CS, GPIO.OUT)
 
-serversocket.listen(10)
-#print 'Socket now listening'
+GPIO.output(CS, GPIO.HIGH) # Pegel vorbereiten
+GPIO.output(SCLK, GPIO.LOW); # Pegel vorbereiten
 
-#def prnt(text,info):
-#    if info:
-#        print "\033[1;40;31m"+text+"\033[0m"
-#    else:
-#        print text
-        
-def sensorThread(source,sink):
-    bits=8    
-    ledPattern = 0b00000000 # ideally this should adapt to the value of <bits>
-    old=0
-    while True:    
-        sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
-        val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
-        diff=old^val
-        for i in range(16,0,-1):
-            if 1<<i-1 & diff:
-                if 1<<i-1 & val:
-                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
-                else:
-                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
+PULLUP_A = 0x0C
+PULLUP_B = 0x0D
+DIRECT_A = 0x00
+DIRECT_B = 0x01
+IN_POL_A = 0x02
+IN_POL_B = 0x03
 
-                #prnt(msg,True)
-                source.sendall(msg+"\n")
-        old=val
-        
-        time.sleep(0.01)
-        
-def initialize(sink):
-    for adress in range(1,20):
-        command="INIT 1 GA "+str(adress)+" N"
-        #print command+" >>>"
-        sink.sendall(command+"\n")
-        response=sink.recv(1024)
-        #print "<<< "+response            
-        
-def connectA(source,sink,connection):
-    while True:
-        data=source.recv(1024)
-        if not data:
-            break
-        #prnt(data[:-1]+" >>>",infsession[connection])
-        sink.sendall(data)
-        if data=="SET CONNECTIONMODE SRCP INFO\n":
-            infsession[connection]=True
-            start_new_thread(sensorThread, (source,sink,))
-    try:
-        source.close()
-    except:
-        pass
-    #print "connection closed"    
-    
-def connectB(source,sink,connection):
-    while True:
-        data=source.recv(1024)
-        if not data:
-            break
-        #prnt("<<< "+data[:-1],infsession[connection]) 
-        sink.sendall(data)
-    try:
-        source.close()
-    except:
-        pass
-    #print "connection closed"
+DEVICE_1 = 0<<1
+DEVICE_2 = 1<<1
 
+OPCODE=0x40
+READ=1
+WRITE=0
 
-def clientthread(client,connection):    
-    try:
-        srcpsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    except socket.error, msg:
-        print "Failed to create socket. Error code: "+str(msg[0])+", Error message: "+msg[1]
-        return()
-    
-    #print "socket created"
-    
-    srcphost = 'localhost'
-    srcpport = 4303
-    try:
-        srcpip=socket.gethostbyname(srcphost)
-    except:
-        #print "Hostname "+srcphost+" could not be resolved. Exiting"
-        sys.exit(-4)
-        
-    #print "Ip adress of "+srcphost+" is "+srcpip
-    
-    srcpsock.connect((srcpip , srcpport))
-     
-    #print 'Socket Connected to ' + srcphost + ' on ip ' + srcpip
-    
-    welcome = srcpsock.recv(1024)
-    #print welcome     
-    client.send(welcome)
-    
-    start_new_thread(connectA, (client,srcpsock,connection,))
-    start_new_thread(connectB, (srcpsock,client,connection,))
-    
-####
-    
-connection=0
-infsession=[]
-                     
-while 1:
-    #wait to accept a connection - blocking call
-    client, addr = serversocket.accept()
-    infsession.append(False)
-    #print 'Connected with ' + addr[0] + ':' + str(addr[1])
-    start_new_thread(clientthread, (client,connection,))
-    connection+=1    
- 
-serversocket.close()
+mode=READ
+
+def sendValue(value):
+	print 'sending ',
+	print bin(value),
+	print ':'
+	# wert senden
+	for i in range(8):
+		if (value & 0x80):
+			GPIO.output(MOSI, GPIO.HIGH)
+		else:
+			GPIO.output(MOSI, GPIO.LOW)
+		# negative flanke des clocksignals generieren
+		GPIO.output(SCLK, GPIO.HIGH)
+		#sys.stdout.write(str(GPIO.input(MISO)))
+		i=GPIO.input(MISO);
+		sys.stdout.write(str(i))
+		if i>0:
+			sys.exit()
+		GPIO.output(SCLK, GPIO.LOW)
+		value <<=1 # Bitfolge eine Position nach links schieben
+	print
+
+def sendSPI(opcode, addr, data):
+	# CS aktiv (LOW-Aktiv)
+	print 'normal'
+	GPIO.output(CS, GPIO.LOW)
+
+	print 'addr 1'
+	sendValue(0)
+	sendValue(0)
+	sendValue(0)
+	GPIO.output(CS, GPIO.HIGH)
+	time.sleep(0.01)
+	print "dev 2"
+	GPIO.output(CS, GPIO.LOW)
+	sendValue(opcode|DEVICE_2)
+	sendValue(addr)
+	sendValue(data)
+
+	GPIO.output(CS, GPIO.HIGH)
+
+GPIO.output(CS, GPIO.LOW)
+
+for i in range(0,20):
+	sendValue(0xF0)
+	GPIO.output(CS, GPIO.HIGH)
+	time.sleep(0.001)
+	GPIO.output(CS, GPIO.LOW)
+
+GPIO.output(CS, GPIO.HIGH)
+
+# initialize the CHIP
+
+#sendSPI(OPCODE|WRITE,PULLUP_A,0xFF) # enable pullup resistors for port A
+#sendSPI(OPCODE|WRITE,PULLUP_B,0xFF) # enable pullup resistors for port B
+#sendSPI(OPCODE|WRITE,DIRECT_A,0xFF) # set all ports of bank A as input
+#sendSPI(OPCODE|WRITE,DIRECT_B,0xFF) # set all ports of bank B as input
+#sendSPI(OPCODE|WRITE,IN_POL_A,0xFF) # invert logic on bank A
+#sendSPI(OPCODE|WRITE,IN_POL_B,0xFF) # invert logic on bank B
+
+#sendSPI(OPCODE|DEVICE_2|WRITE,PULLUP_A,0xFF) # enable pullup resistors for port A
+#sendSPI(OPCODE|DEVICE_2|WRITE,PULLUP_B,0xFF) # enable pullup resistors for port B
+#sendSPI(OPCODE|DEVICE_2|WRITE,DIRECT_A,0xFF) # set all ports of bank A as input
+#sendSPI(OPCODE|DEVICE_2|WRITE,DIRECT_B,0xFF) # set all ports of bank B as input
+#sendSPI(OPCODE|DEVICE_2|WRITE,IN_POL_A,0xFF) # invert logic on bank A
+#sendSPI(OPCODE|DEVICE_2|WRITE,IN_POL_B,0xFF) # invert logic on bank B
+
