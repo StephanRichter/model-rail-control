@@ -65,6 +65,8 @@ GPIO.output(SCLK, GPIO.LOW);
 def activateAdressing():
     sendSPI(SPI_BASE_ADRESS, SPI_CONFIG_A, SPI_HW_ADDR)
     sendSPI(SPI_BASE_ADRESS, SPI_CONFIG_B, SPI_HW_ADDR)
+    sendSPI(SPI_BASE_ADRESS, 0x05, SPI_HW_ADDR)
+    sendSPI(SPI_BASE_ADRESS, 0x15, SPI_HW_ADDR)
 
 def initMCP23S17(addr,portsA,portsB):
     opcode = SPI_BASE_ADRESS | addr<<1
@@ -78,24 +80,20 @@ def initMCP23S17(addr,portsA,portsB):
     
     
 def sendSPI(address, register, data):
-    # CS aktiv (LOW-Aktiv)
-    opcode = SPI_BASE_ADRESS | address<<1
-    GPIO.output(CS, GPIO.LOW)
+    opcode = address<<1 | SPI_BASE_ADRESS
     
+    GPIO.output(CS, GPIO.LOW)    # CS aktiv (LOW-Aktiv)    
     sendValue(opcode)
     sendValue(register)
-    sendValue(data)
-    
-    # CS inaktiv
-    GPIO.output(CS, GPIO.HIGH)
+    sendValue(data)    
+    GPIO.output(CS, GPIO.HIGH) # CS inaktiv
     
 def readSPI(address, register):
-    # CS aktiv (Low-Aktiv)
-    GPIO.output(CS, GPIO.LOW)
-    opcode = SPI_BASE_ADRESS | address<<1    
+    opcode = address<<1 | SPI_BASE_ADRESS    
+    GPIO.output(CS, GPIO.LOW)    # CS aktiv (Low-Aktiv)
     sendValue(opcode|SPI_SLAVE_READ) # opcode senden
     sendValue(register)
-    
+        
     # empfangen
     value = 0
     for i in range(8):
@@ -106,15 +104,15 @@ def readSPI(address, register):
         GPIO.output(SCLK, GPIO.HIGH)
         GPIO.output(SCLK, GPIO.LOW)
         
-    # CS deaktivieren
-    GPIO.output(CS, GPIO.HIGH)
+    GPIO.output(CS, GPIO.HIGH)# CS deaktivieren    
     return value
-
-initMCP23S17(0,0xFF,0x00)
     
 if __name__ == '__main__':
+    print "running mcp23s17._main_"
+    addr=0
+    initMCP23S17(addr,0xFF,0x00)
     while True:
-        sendSPI(0, SPI_GPIOB, ledPattern)
+        sendSPI(addr, SPI_GPIOB, ledPattern)
         val = readSPI(0, SPI_GPIOA)
         print val
         if (val != 0):
