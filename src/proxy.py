@@ -4,11 +4,19 @@ import socket,sys
 from thread import start_new_thread
 from mcp23s17 import *
 
+# Initialisierung der Port-Expander:
+
+MCPs=(0,1)
+
+activateAdressing()
+
+for addr in MCPs:
+    initMCP23S17(addr,0xFF,0xFF) # all-read
+
 serverhost=''
 serverport=4304
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 
 def sendAndRcv(sock,message):
     #print message
@@ -73,25 +81,36 @@ serversocket.listen(10)
 #        print text
         
 def sensorThread(source,sink):
-    bits=8    
-    ledPattern = 0b00000000 # ideally this should adapt to the value of <bits>
     old=0
-    while True:    
-        sendSPI(SPI_SLAVE_ADDR, SPI_GPIOB, ledPattern)
-        val = readSPI(SPI_SLAVE_ADDR, SPI_GPIOA)
+    while True:
+        val=0
+        for addr in MCPs:    
+            val<<=8
+            val = val|readSPI(addr, SPI_GPIOA)
+            val<<=8
+            val = val|readSPI(addr, SPI_GPIOB)
+
         diff=old^val
-        for i in range(16,0,-1):
-            if 1<<i-1 & diff:
-                if 1<<i-1 & val:
-                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
-                else:
-                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
+        index=0
+        while val>0:
+            index+=1
+            on = val & 0x01            
+            if on:
+                print index 
+            val>>=1
+            
+#        for i in range(,0,-1):
+#            if 1<<i-1 & diff:
+#                if 1<<i-1 & val:
+#                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
+#                else:
+#                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
 
                 #prnt(msg,True)
-                source.sendall(msg+"\n")
+#                source.sendall(msg+"\n")
         old=val
-        
         time.sleep(0.01)
+            
         
 def initialize(sink):
     for adress in range(1,20):
@@ -166,6 +185,7 @@ def clientthread(client,connection):
 connection=0
 infsession=[]
                      
+sensorThread(None, None)
 while 1:
     #wait to accept a connection - blocking call
     client, addr = serversocket.accept()
