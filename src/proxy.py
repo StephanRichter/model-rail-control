@@ -20,24 +20,27 @@ def sendAndRcv(sock,message):
 def sensorThread(source,sink):
     old=0
     while True:
-        val=1
+        val=0
         for addr in (MCPs):
             val<<=8
             val = val|readSPI(addr, SPI_GPIOA)
             val<<=8
             val = val|readSPI(addr, SPI_GPIOB)
 
-        print bin(val)
         diff=old^val
-        index=0
- #       while val>0:
- #           index+=1
- #           on = val & 0x01            
- #           if on:
- #               print index 
- #           val>>=1            
+
+        for i in range(16*len(MCPs),0,-1):
+            if 1<<i-1 & diff:
+                if 1<<i-1 & val:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
+                else:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
+                
+                #prnt(msg,True)
+                source.sendall(msg+"\n")
         old=val
-        time.sleep(0.001)
+        
+        time.sleep(0.01)
             
         
 def initialize(sink):
@@ -113,14 +116,11 @@ def clientthread(client,connection):
 
 # Initialisierung der Port-Expander:
 
-MCPs=(0,)
+MCPs=(0,1)
 
+activateAdressing()
 for addr in MCPs:
     initMCP23S17(addr,0xFF,0xFF) # all-read    
-activateAdressing()
-
-sensorThread(None, None)
-
 
 # Initialisierung des Servers
 

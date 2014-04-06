@@ -4,20 +4,6 @@ try:
 except:
     print "Was not able to import GPIO"
     exit()
-    
-def sendValue(value):
-    # wert senden
-    for i in range(8):
-        if (value & 0x80):
-            GPIO.output(MOSI, GPIO.HIGH)
-        else:
-            GPIO.output(MOSI, GPIO.LOW)
-        # negative flanke des clocksignals generieren
-        GPIO.output(SCLK, GPIO.HIGH)
-        GPIO.output(SCLK, GPIO.LOW)
-        value <<=1 # Bitfolge eine Position nach links schieben
-        
-
 
 GPIO.setmode(GPIO.BCM);
 GPIO.setwarnings(False);
@@ -62,23 +48,19 @@ GPIO.setup(CS,   GPIO.OUT)
 GPIO.output(CS,  GPIO.HIGH);
 GPIO.output(SCLK, GPIO.LOW);
 
-def activateAdressing():
-    sendSPI(SPI_BASE_ADRESS, SPI_CONFIG_A, SPI_HW_ADDR)
-    sendSPI(SPI_BASE_ADRESS, SPI_CONFIG_B, SPI_HW_ADDR)
-    sendSPI(SPI_BASE_ADRESS, 0x05, SPI_HW_ADDR)
-    sendSPI(SPI_BASE_ADRESS, 0x15, SPI_HW_ADDR)
+def sendValue(value):
+    # wert senden
+    for i in range(8):
+        if (value & 0x80):
+            GPIO.output(MOSI, GPIO.HIGH)
+        else:
+            GPIO.output(MOSI, GPIO.LOW)
+        # negative flanke des clocksignals generieren
+        GPIO.output(SCLK, GPIO.HIGH)
+        GPIO.output(SCLK, GPIO.LOW)
+        value <<=1 # Bitfolge eine Position nach links schieben
+        
 
-def initMCP23S17(addr,portsA,portsB):
-    opcode = SPI_BASE_ADRESS | addr<<1
-    sendSPI(opcode, SPI_PULLUP_A, portsA)
-    sendSPI(opcode, SPI_IODIRA, portsA)
-    sendSPI(opcode, SPI_POL_A,portsA)
-
-    sendSPI(opcode, SPI_PULLUP_B, portsB)
-    sendSPI(opcode, SPI_IODIRB, portsB)
-    sendSPI(opcode, SPI_POL_B,portsB)
-    
-    
 def sendSPI(address, register, data):
     opcode = address<<1 | SPI_BASE_ADRESS
     
@@ -87,9 +69,21 @@ def sendSPI(address, register, data):
     sendValue(register)
     sendValue(data)    
     GPIO.output(CS, GPIO.HIGH) # CS inaktiv
+
+def activateAdressing():
+    sendSPI(0, SPI_CONFIG_A, SPI_HW_ADDR)
+    sendSPI(0, SPI_CONFIG_B, SPI_HW_ADDR)
+
+def initMCP23S17(addr,portsA,portsB):
+    sendSPI(addr, SPI_PULLUP_A, portsA) # Pullups (de)aktivieren    
+    sendSPI(addr, SPI_IODIRA, portsA) # In/Out setzen
+    sendSPI(addr, SPI_POL_A,portsA) # Logik invertieren
+    sendSPI(addr, SPI_PULLUP_B, portsB) # Pullups (de)aktivieren
+    sendSPI(addr, SPI_IODIRB, portsB) # In/Out setzen
+    sendSPI(addr, SPI_POL_B,portsB) # Logik invertieren
     
 def readSPI(address, register):
-    opcode = address<<1 | SPI_BASE_ADRESS    
+    opcode = address<<1 | SPI_BASE_ADRESS
     GPIO.output(CS, GPIO.LOW)    # CS aktiv (Low-Aktiv)
     sendValue(opcode|SPI_SLAVE_READ) # opcode senden
     sendValue(register)
