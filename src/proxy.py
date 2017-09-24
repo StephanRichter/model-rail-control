@@ -112,7 +112,7 @@ MCPs=(3,0,1,2)
 
 activateAdressing()
 for addr in MCPs:
-    initMCP23S17(addr,0xFF,0xFF) # all-read    
+    initMCP23S17(addr,0xFF,0xFF) # all-read
 
 # Initialisierung des Servers
 
