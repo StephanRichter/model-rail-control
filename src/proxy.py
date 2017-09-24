@@ -19,7 +19,7 @@ def prnt(text,info):
         
 def sensorThread(source,sink):
     old=0
-    time.sleep(1)
+    time.sleep(1) # otherwise active sensors would interfer with the handshake
     while True:
         val=0
         for addr in (MCPs):
