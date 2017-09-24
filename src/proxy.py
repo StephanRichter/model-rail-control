@@ -11,14 +11,15 @@ def sendAndRcv(sock,message):
     reply=sock.recv(1024)    
     #print reply[:-1]
 
-#def prnt(text,info):
-#    if info:
-#        print "\033[1;40;31m"+text+"\033[0m"
-#    else:
-#        print text
+def prnt(text,info):
+    if info:
+        print "\033[1;40;31m"+text+"\033[0m"
+    else:
+        print text
         
 def sensorThread(source,sink):
     old=0
+    time.sleep(1)
     while True:
         val=0
         for addr in (MCPs):
@@ -42,15 +43,6 @@ def sensorThread(source,sink):
         
         time.sleep(0.01)
             
-        
-def initialize(sink):
-    for adress in range(1,20):
-        command="INIT 1 GA "+str(adress)+" N"
-        #print command+" >>>"
-        sink.sendall(command+"\n")
-        response=sink.recv(1024)
-        #print "<<< "+response            
-        
 def connectA(source,sink,connection):
     while True:
         data=source.recv(1024)
@@ -95,7 +87,7 @@ def clientthread(client,connection):
     try:
         srcpip=socket.gethostbyname(srcphost)
     except:
-        #print "Hostname "+srcphost+" could not be resolved. Exiting"
+        print "Hostname "+srcphost+" could not be resolved. Exiting"
         sys.exit(-4)
         
     #print "Ip adress of "+srcphost+" is "+srcpip
@@ -116,7 +108,7 @@ def clientthread(client,connection):
 
 # Initialisierung der Port-Expander:
 
-MCPs=(0,1)
+MCPs=(3,0,1,2)
 
 activateAdressing()
 for addr in MCPs:
@@ -158,7 +150,7 @@ sendAndRcv(srcpsock,"SET PROTOCOL SRCP 0.8")
 sendAndRcv(srcpsock,"SET CONNECTIONMODE SRCP COMMAND")
 sendAndRcv(srcpsock, "GO")
 sendAndRcv(srcpsock, "SET 1 POWER ON")
-for addr in range(1,20):
+for addr in range(1,40):
     time.sleep(0.01)
     sendAndRcv(srcpsock, "INIT 1 GL "+str(addr)+" N 1 128 4")
     sendAndRcv(srcpsock, "INIT 1 GA "+str(addr)+" N")

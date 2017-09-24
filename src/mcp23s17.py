@@ -5,7 +5,7 @@ except:
     print "Was not able to import GPIO"
     exit()
 
-GPIO.setmode(GPIO.BCM);
+GPIO.setmode(GPIO.BOARD);
 GPIO.setwarnings(False);
 
 # Register
@@ -32,10 +32,10 @@ SPI_SLAVE_READ  = 0x01
 SPI_HW_ADDR     = 0x08
 
 # MCP23S17-Pins
-SCLK = 25 # Serial clock
+CS   = 12 # Chip-Select
+SCLK = 16 # Serial clock
 MOSI = 18 # Master-Out-Slave-In
-MISO = 23 # Master-In-Slave-Out
-CS   = 24 # Chip-Select
+MISO = 22 # Master-In-Slave-Out
 
 ledPattern = 1
 

@@ -3,7 +3,7 @@
 import socket,sys
 from mcp23s17 import *
 
-MCPs=(0,1)
+MCPs=(0,2,1,3)
 
 activateAdressing()
 for addr in MCPs:
