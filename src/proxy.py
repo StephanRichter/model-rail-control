@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import socket,sys, time
 from thread import start_new_thread
+from SensorChipFactory import *
 
 class SRCPSock(object):
 
@@ -8,8 +9,7 @@ class SRCPSock(object):
         return self.socket.recv(1024);
     
     def send(self,message):
-        self.socket.sendall(message+"\n")
-        reply=self.recv()
+        self.socket.sendall(message)
 
     def close(self):
         self.socket.close();
@@ -39,15 +39,15 @@ class SRCPSock(object):
         welcome = self.recv()
         print "Connected to SRCP:"
         print welcome
-        self.send("SET PROTOCOL SRCP 0.8")
-        self.send("SET CONNECTIONMODE SRCP COMMAND")
-        self.send("GO")
-        self.send("SET 1 POWER ON")
+        self.send("SET PROTOCOL SRCP 0.8\n")
+        self.send("SET CONNECTIONMODE SRCP COMMAND\n")
+        self.send("GO\n")
+        self.send("SET 1 POWER ON\n")
         for addr in range(1,40):
             time.sleep(0.01)
-            self.send("INIT 1 GL "+str(addr)+" N 1 128 4")
-            self.send("INIT 1 GA "+str(addr)+" N")
-        self.send("TERM 0 SESSION")
+            self.send("INIT 1 GL "+str(addr)+" N 1 128 4\n")
+            self.send("INIT 1 GA "+str(addr)+" N\n")
+        self.send("TERM 0 SESSION\n")
         self.close()
 
 class RocrailProxy(object):
@@ -63,30 +63,50 @@ class RocrailProxy(object):
     def send(self,data):
         self.socket.sendall(data)
         
-    def client2srcp(self,socket,connection):
+    def sensorThread(self,source):
+        old=0
+        time.sleep(1)
         while True:
-            data=socket.recv(1024)
+            val=0
+            for chip in (self.sensors):
+                val<<=16
+                val = val|chip.readSPI()
+
+            diff=old^val
+
+            for i in range(16*len(self.sensors),0,-1):
+                if 1<<i-1 & diff:
+                    if 1<<i-1 & val:
+                        msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
+                    else:
+                        msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
+                    
+                    #prnt(msg,True)
+                    source.sendall(msg+"\n")
+            old=val
+            
+            time.sleep(0.01)
+        
+    def client2srcp(self,source,connection):
+        while True:
+            data=source.recv(1024)
             if not data:
                 break
-            print "client == {} ==> srcp".format(data.strip());
             self.srcp.send(data)
             if data=="SET CONNECTIONMODE SRCP INFO\n":
-                self.infosession[connection]=True
-                start_new_thread(sensorThread)
+                self.infoSession[connection]=True
+                start_new_thread(self.sensorThread, (source,))
         try:
-            print "Closing client socket!"
-            socket.close()
-            
+            source.close()
         except:
             pass
-        
-    def srcp2client(self,socket,connection):
+            
+    def srcp2client(self,sink,connection):
         while True:
             data=self.srcp.recv()
             if not data:
                 break
-            print "client <== {} == srcp".format(data.strip());
-            socket.sendall(data)
+            sink.sendall(data)
         try:
             self.srcp.close()
         except:
@@ -94,8 +114,8 @@ class RocrailProxy(object):
         
     def connect(self,client,connection):    
         self.srcp.connect();
-        start_new_thread(self.srcp2client, (client,connection,))
         start_new_thread(self.client2srcp, (client,connection,))
+        start_new_thread(self.srcp2client, (client,connection,))
         
     def listen(self,srcpSock):
         try:
@@ -123,10 +143,22 @@ class RocrailProxy(object):
  
         serversocket.close()
 
+    def addSensors(self,sensors):
+        self.sensors=sensors
      
 if __name__ == "__main__":
+
+    sensorChipFactory = SensorChipFactory(12,16,18,22)
+    #signalChipFactory = signalChipFactory(SIGNAL_CS,SIGNAL_SCLK,SIGNAL_MOSI,SIGNAL_MISO)
+    
+    sensors=(sensorChipFactory.provide(3),
+        sensorChipFactory.provide(0),
+        sensorChipFactory.provide(1),
+        sensorChipFactory.provide(2))
+    
     srcpSock = SRCPSock('localhost',4303);
     srcpSock.setup()
     
     proxy = RocrailProxy('localhost',4304);
+    proxy.addSensors(sensors)
     proxy.listen(srcpSock)
