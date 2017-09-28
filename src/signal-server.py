@@ -13,8 +13,9 @@ if __name__ == "__main__":
     
     conn = SpiConnection(cable_select,clock,mosi,miso)
     signalDriver = conn.signalDriver(2)
-    signalDriver.assign(100,SignalDriver.RoGeGr)
-    signalDriver.assign(101,SignalDriver.RoGeGr)
+    signalDriver.assign(1,SignalDriver.RoGeGr)
+    signalDriver.assign(2,SignalDriver.RoGeGr)
+    signalDriver.assign(3,SignalDriver.RoGr)
     
     server = RocrailProxy('localhost',4305);    
     server.connectTo(signalDriver)

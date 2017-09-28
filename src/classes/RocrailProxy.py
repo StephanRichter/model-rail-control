@@ -55,13 +55,11 @@ class RocrailProxy(object):
             
     def process(self,client,connection,signalDriver):
         client.sendall("RocrailProxy V0.1; SRCP 0.8.4\n");
-        print "processing {}".format(connection)
         while True:
             data=client.recv(1024)
             if not data:
                 break
             data = data.strip()
-            #print "[{}] ".format(connection)+data
             response = "410 ERROR unknown command";
             if 'SET PROTOCOL SRCP' in data:
                 response = "201 OK PROTOCOL SRCP";                     
@@ -80,11 +78,11 @@ class RocrailProxy(object):
                 parts = dummy.split(' ')
                 addr=parts[0]
                 state=parts[1]
-                if (signalDriver.handle(addr,state)):
-                    response="200 OK"
+                flag=parts[2]
+                if signalDriver.handle(int(addr),int(state),int(flag)):
+                    response = "200 OK"
+                    
             response="{} ".format(time.time())+response;
-            #print "[{}] ".format(connection)+'>>'+response
-            #time.sleep(0.1)            
             client.sendall(response+"\n")
         try:
             print "connection {} closed".format(connection)
