@@ -4,6 +4,9 @@ from thread import start_new_thread
 from MCP23S17 import *
 
 class RocrailProxy(object):
+
+    reIn = False;
+
     def __init__(self,host,port):
         print "Creating new SRCP proxy @ {}:{}".format(host,port)
         self.host=host
@@ -34,9 +37,14 @@ class RocrailProxy(object):
                     else:
                         msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 0";
                     client.sendall(msg+"\n")
+                    print msg
             old=val
             
             time.sleep(0.01)
+
+            if self.reIn:
+                self.reIn = False
+                self.reInit()
           
     def connect(self,source,sink,connection):
         while True:
@@ -46,12 +54,23 @@ class RocrailProxy(object):
             print "[{}] ".format(connection)+data.strip()
             #time.sleep(0.1)
             sink.sendall(data)
+            if data=="SET 0 GM 0 0 MAINTENANCE RESET\n":
+                self.reIn = True
             if data=="SET CONNECTIONMODE SRCP INFO\n":
                 start_new_thread(self.sensorThread, (source,))
         try:
             source.close()
         except:
             pass
+
+    def reInit(self,):
+        # this currently interfers with the sensor thread!
+        for chip in (self.sensors):
+            print "Reinitializing "+str(chip.addr)
+            chip.activateAdressing();
+            chip.setDirection(0xff,0xff);
+            chip.activatePullups();
+            chip.invertLogic();
             
     def process(self,client,connection,signalDriver):
         client.sendall("RocrailProxy V0.1; SRCP 0.8.4\n");

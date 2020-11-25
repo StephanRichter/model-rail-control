@@ -7,50 +7,54 @@ except:
 
 class MCP23S17(object):
 
+    def line(self,port,val):
+        GPIO.output(port,val)
+        time.sleep(0.00008)
+
     def send(self, value):
         # wert senden
         for i in range(8):
+            self.line(self.clock, GPIO.LOW)
             if (value & 0x80):
-                GPIO.output(self.mosi, GPIO.HIGH)
+                self.line(self.mosi, GPIO.HIGH)
             else:
-                GPIO.output(self.mosi, GPIO.LOW)
+                self.line(self.mosi, GPIO.LOW)
             # negative flanke des clocksignals generieren            
-            GPIO.output(self.clock, GPIO.HIGH)
-            GPIO.output(self.clock, GPIO.LOW)
+            self.line(self.clock, GPIO.HIGH)
             value <<=1 # Bitfolge eine Position nach links schieben            
         
     def sendSPI(self, register, data):
-        GPIO.output(self.cable_select, GPIO.LOW)    # CS aktiv (LOW-Aktiv)    
+        self.line(self.cable_select, GPIO.LOW)    # CS aktiv (LOW-Aktiv)    
         self.send(self.opcode)
         self.send(register)
         self.send(data)    
-        GPIO.output(self.cable_select, GPIO.HIGH) # CS inaktiv    
+        self.line(self.cable_select, GPIO.HIGH) # CS inaktiv    
         
         
     def readSPI(self):
         value = 0
                 
-        GPIO.output(self.cable_select, GPIO.LOW)    # CS aktiv (Low-Aktiv)
+        self.line(self.cable_select, GPIO.LOW)    # CS aktiv (Low-Aktiv)
         self.send(self.opcode|0x01)
         self.send(0x12)
         for i in range(8):
             value <<= 1
             if (GPIO.input(self.miso)):
                 value |= 0x01
-            GPIO.output(self.clock, GPIO.HIGH)
-            GPIO.output(self.clock, GPIO.LOW)
-        GPIO.output(self.cable_select, GPIO.HIGH)# CS deaktivieren    
+            self.line(self.clock, GPIO.HIGH)
+            self.line(self.clock, GPIO.LOW)
+        self.line(self.cable_select, GPIO.HIGH)# CS deaktivieren    
         
-        GPIO.output(self.cable_select, GPIO.LOW)    # CS aktiv (Low-Aktiv)
+        self.line(self.cable_select, GPIO.LOW)    # CS aktiv (Low-Aktiv)
         self.send(self.opcode|0x01)
         self.send(0x13)
         for i in range(8):
             value <<= 1
             if (GPIO.input(self.miso)):
                 value |= 0x01
-            GPIO.output(self.clock, GPIO.HIGH)
-            GPIO.output(self.clock, GPIO.LOW)
-        GPIO.output(self.cable_select, GPIO.HIGH)# CS deaktivieren    
+            self.line(self.clock, GPIO.HIGH)
+            self.line(self.clock, GPIO.LOW)
+        self.line(self.cable_select, GPIO.HIGH)# CS deaktivieren    
 
         return value
         
@@ -115,8 +119,8 @@ if __name__ == "__main__":
     GPIO.setup(CS,   GPIO.OUT)
     
     print "initializing line level."
-    GPIO.output(CS,  GPIO.HIGH);
-    GPIO.output(CLK, GPIO.LOW);
+    self.line(CS,  GPIO.HIGH);
+    self.line(CLK, GPIO.LOW);
     chip = MCP23S17(2,CS, CLK, MISO, MOSI,False)
     
     chip.sendSPI(0x13,0)

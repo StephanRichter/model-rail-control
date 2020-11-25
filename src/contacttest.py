@@ -1,14 +1,14 @@
-from SensorChipFactory import *
+#!/usr/bin/python
+from classes.SpiConnection import *
 
-sensorChipFactory = SensorChipFactory(12,16,18,22)
-#signalChipFactory = signalChipFactory(SIGNAL_CS,SIGNAL_SCLK,SIGNAL_MOSI,SIGNAL_MISO)
+cable_select = 23
+clock = 21
+miso = 15
+mosi = 19
 
-sensorChip3 = sensorChipFactory.provide(3);
-sensorChip0 = sensorChipFactory.provide(0);
-sensorChip1 = sensorChipFactory.provide(1);
-sensorChip2 = sensorChipFactory.provide(2);
+conn = SpiConnection(cable_select,clock,mosi,miso)
 
-chips=(sensorChip3, sensorChip0, sensorChip1, sensorChip2)
+chips=(conn.sensor(0),conn.sensor(2),conn.sensor(3))
 old=0
 while True:
     val=0

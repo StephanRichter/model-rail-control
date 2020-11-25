@@ -21,7 +21,7 @@ class SpiConnection(object):
         print "configuring line pins."
         GPIO.setup(clock,        GPIO.OUT)
         GPIO.setup(mosi,         GPIO.OUT)
-        GPIO.setup(miso,         GPIO.IN)
+        GPIO.setup(miso,         GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cable_select, GPIO.OUT)
         
         print "initializing line level."
