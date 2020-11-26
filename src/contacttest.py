@@ -1,25 +1,20 @@
 #!/usr/bin/python
-from classes.SpiConnection import *
+from classes.S88 import *
 
-cable_select = 23
-clock = 21
-miso = 15
-mosi = 19
+RESET=5
+LOAD=7
+CLOCK=11
+DATA=13
+CONTACTS=48
 
-conn = SpiConnection(cable_select,clock,mosi,miso)
+chips = S88(CONTACTS,DATA, CLOCK, RESET,LOAD)
 
-chips=(conn.sensor(0),conn.sensor(2),conn.sensor(3))
 old=0
 while True:
-    val=0
-    for chip in (chips):
-        val<<=16
-        val = val|chip.readSPI()
-        
-        
+    val = chips.readValue()
     diff=old^val
 
-    for i in range(16*len(chips),0,-1):
+    for i in range(chips.contacts,0,-1):
         if 1<<i-1 & diff:
             if 1<<i-1 & val:
                 msg=str(time.time())+" 100 INFO 0 FB "+str(i)+" 1";
