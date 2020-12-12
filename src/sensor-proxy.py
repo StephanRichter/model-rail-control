@@ -12,7 +12,7 @@ if __name__ == "__main__":
     DATA=13
     CONTACTS=48
     
-    locos=40
+    locos=110
     accesoires=10
 
     sensors=S88(CONTACTS,DATA,CLOCK,RESET,LOAD)

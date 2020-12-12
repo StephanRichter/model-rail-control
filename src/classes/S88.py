@@ -9,7 +9,7 @@ class S88(object):
 
     def line(self,port,val):
         GPIO.output(port,val)
-        time.sleep(0.0001)
+        time.sleep(0.00005)
         
     def readValue(self,):
         value = 0
