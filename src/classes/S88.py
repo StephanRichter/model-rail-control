@@ -12,23 +12,18 @@ class S88(object):
         time.sleep(0.00005)
         
     def readValue(self,):
-        value = 0
-                
         self.line(self.load,GPIO.HIGH)
         self.line(self.clock,GPIO.HIGH)
         self.line(self.clock,GPIO.LOW)
-        if (GPIO.input(self.data)):
-            value = 1;
+        value = GPIO.input(self.data)
         self.line(self.reset,GPIO.HIGH)
         self.line(self.reset,GPIO.LOW);
         self.line(self.load,GPIO.LOW);
 
-        for i in range(self.contacts-1):
+        for i in range(1,self.contacts):
             self.line(self.clock,GPIO.HIGH)
             self.line(self.clock,GPIO.LOW)
-            value <<= 1
-            if (GPIO.input(self.data)):
-                value |= 0x01
+            value |= GPIO.input(self.data)<<i
 
         return value
     

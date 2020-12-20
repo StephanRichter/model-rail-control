@@ -8,7 +8,7 @@ class RocrailProxy(object):
         print "Creating new SRCP proxy @ {}:{}".format(host,port)
         self.host=host
         self.port=port
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
     
     def recv(self):
         return self.socket.recv(1024)

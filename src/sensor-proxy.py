@@ -18,6 +18,6 @@ if __name__ == "__main__":
     sensors=S88(CONTACTS,DATA,CLOCK,RESET,LOAD)
     srcpSock = SRCPSock('localhost',4303);
     srcpSock.setup(locos,accesoires)
-    proxy = RocrailProxy('192.168.1.225',4304);
+    proxy = RocrailProxy('',4304);
     proxy.addSensors(sensors)
     proxy.forward(srcpSock)
