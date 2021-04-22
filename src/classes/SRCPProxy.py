@@ -1,13 +1,16 @@
 #!/usr/bin/python
 import socket,sys, time
 from thread import start_new_thread
+import RPi.GPIO as GPIO
 
-class RocrailProxy(object):
+class SRCPProxy(object):
 
     def __init__(self,host,port):
         print "Creating new SRCP proxy @ {}:{}".format(host,port)
         self.host=host
         self.port=port
+        self.errorPin = 0
+        self.errorFeedback = 0
         self.socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
     
     def recv(self):
@@ -19,9 +22,10 @@ class RocrailProxy(object):
     def sensorThread(self,client):
         old=0
         time.sleep(1)
+        error = 0
         while True:
             val = self.sensors.readValue()
-
+            
             diff=old^val
 
             for i in range(self.sensors.contacts,0,-1):
@@ -33,6 +37,19 @@ class RocrailProxy(object):
                     client.sendall(msg+"\n")
                     print msg
             old=val
+
+            
+            if bool(GPIO.input(self.errorPin)) != self.errorPullup:
+                if not error:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(self.errorFeedback)+" 1";
+                    client.sendall(msg+"\n")
+                    print "Error detected! -- "+msg
+                    error = 1
+            else:
+                if error:
+                    msg=str(time.time())+" 100 INFO 0 FB "+str(self.errorFeedback)+" 0";
+                    client.sendall(msg+"\n")
+                    error = 0
             
             time.sleep(0.01)
           
@@ -52,7 +69,7 @@ class RocrailProxy(object):
             pass
 
     def process(self,client,connection,signalDriver):
-        client.sendall("RocrailProxy V0.1; SRCP 0.8.4\n");
+        client.sendall("SRCP Proxy V0.2; SRCP 0.8.4\n");
         while True:
             data=client.recv(1024)
             if not data:
@@ -137,3 +154,14 @@ class RocrailProxy(object):
             connection+=1    
  
         serversocket.close()
+
+    def setErrorInput(self,errorPin,pullUp,errorFeedback):
+        self.errorPullup = pullUp
+        self.errorFeedback = errorFeedback
+        self.errorPin = errorPin
+        if pullUp:
+            GPIO.setup(errorPin,GPIO.IN,pull_up_down=GPIO.PUD_UP);
+        else:
+            GPIO.setup(errorPin,GPIO.IN);
+        print "set up error detection on pin ",self.errorPin
+    
